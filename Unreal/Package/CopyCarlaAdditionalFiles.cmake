@@ -29,24 +29,43 @@ if (NOT WIN32)
 endif ()
 if (WIN32)
     set (EXE_EXT .exe)
+    set (RECASTBUILDER_SRC ${CARLA_BUILD_PATH}/_deps/recastnavigation-build/RecastBuilder/RecastBuilder.exe)
+    set (RECASTBUILDER_DST ${CARLA_PACKAGE_ARCHIVE_PATH}/Tools/RecastBuilder.exe)
+elseif (APPLE)
+    set (EXE_EXT)
+    set (RECASTBUILDER_SRC ${CARLA_BUILD_PATH}/_deps/recastnavigation-build/RecastBuilder/RecastBuilder.app/Contents/MacOS/RecastBuilder)
+    set (RECASTBUILDER_DST ${CARLA_PACKAGE_ARCHIVE_PATH}/Tools/RecastBuilder)
 else ()
     set (EXE_EXT)
+    set (RECASTBUILDER_SRC ${CARLA_BUILD_PATH}/_deps/recastnavigation-build/RecastBuilder/RecastBuilder)
+    set (RECASTBUILDER_DST ${CARLA_PACKAGE_ARCHIVE_PATH}/Tools/RecastBuilder)
 endif ()
 make_directory (${CARLA_PACKAGE_ARCHIVE_PATH}/Tools)
 # @TODO Temporary hack:
 # The packaged binary looks for RecastBuilder at FPaths::RootDir()/Tools, the
 # archive root once FlattenPackageLayout.cmake has run (CarlaEpisode.cpp
 # BuildRecastBuilderFile).
-file (COPY_FILE ${CARLA_BUILD_PATH}/_deps/recastnavigation-build/RecastBuilder/RecastBuilder${EXE_EXT} ${CARLA_PACKAGE_ARCHIVE_PATH}/Tools/RecastBuilder${EXE_EXT})
+file (COPY_FILE ${RECASTBUILDER_SRC} ${RECASTBUILDER_DST})
 # carla-pack installs content packs (AdditionalMaps) into this package; standard library only.
 file (COPY_FILE ${CARLA_WORKSPACE_PATH}/Util/ContentPacks/carla_pack.py ${CARLA_PACKAGE_ARCHIVE_PATH}/Tools/carla_pack.py)
 # FCarlaModule::AddShaderSearchPaths maps /Plugin/Carla to <plugin>/Shaders at
 # startup; the plugin is staged without its Shaders folder, and the shader-based
 # sensors need the .usf/.ush sources at runtime.
 cmake_path (GET CARLA_UE_PROJECT_PATH PARENT_PATH CARLA_UE_PROJECT_DIR)
-file (
-  COPY ${CARLA_UE_PROJECT_DIR}/Plugins/Carla/Shaders/
-  DESTINATION ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal/Plugins/Carla/Shaders/)
+if (APPLE)
+  file (GLOB CARLA_PACKAGE_MAC_APP_DIRS LIST_DIRECTORIES true ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal*.app)
+  foreach (CARLA_PACKAGE_APP_DIR ${CARLA_PACKAGE_MAC_APP_DIRS})
+    make_directory (${CARLA_PACKAGE_APP_DIR}/Contents/UE/Tools)
+    file (COPY_FILE ${RECASTBUILDER_SRC} ${CARLA_PACKAGE_APP_DIR}/Contents/UE/Tools/RecastBuilder)
+    file (
+      COPY ${CARLA_UE_PROJECT_DIR}/Plugins/Carla/Shaders/
+      DESTINATION ${CARLA_PACKAGE_APP_DIR}/Contents/UE/CarlaUnreal/Plugins/Carla/Shaders/)
+  endforeach ()
+else ()
+  file (
+    COPY ${CARLA_UE_PROJECT_DIR}/Plugins/Carla/Shaders/
+    DESTINATION ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal/Plugins/Carla/Shaders/)
+endif ()
 
 make_directory (${CARLA_PACKAGE_ARCHIVE_PATH}/PythonAPI/carla/dist)
 # Every wheel the build made, one per Python version in CARLA_PYTHON_VERSIONS:

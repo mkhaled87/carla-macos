@@ -55,10 +55,17 @@ if (NOT IS_DIRECTORY ${CARLA_UE_CONTENT_PATH})
   carla_error ("Missing CARLA content.")
 endif ()
 
-set (
-  UNREAL_EDITOR_PATH
-  ${CARLA_UNREAL_ENGINE_PATH}/Engine/Binaries/${UE_SYSTEM_NAME}/UnrealEditor${EXE_EXT}
-)
+if (APPLE)
+  set (
+    UNREAL_EDITOR_PATH
+    ${CARLA_UNREAL_ENGINE_PATH}/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor
+  )
+else ()
+  set (
+    UNREAL_EDITOR_PATH
+    ${CARLA_UNREAL_ENGINE_PATH}/Engine/Binaries/${UE_SYSTEM_NAME}/UnrealEditor${EXE_EXT}
+  )
+endif ()
 
 # Resolve the NVIDIA DLSS SDK (defines CARLA_UE_DLSS_ENV_COMMAND, which every
 # Unreal build/package/launch command below is prefixed with).
@@ -364,7 +371,14 @@ list (
   carla-unreal-stage-libraries
 )
 
-
+# Apple Clang 21 Slate strictness breaks ShaderCompileWorker source compilation
+# when invoked via UBT's -buildscw on macOS (Slate Core layout enum/struct
+# ambiguity). UE5 ships precompiled SCW dylibs so the build can proceed without
+# rebuilding the SCW executable from source. Linux/Windows still pass -buildscw.
+set (CARLA_UE_BUILDSCW_FLAG "-buildscw")
+if (APPLE)
+  set (CARLA_UE_BUILDSCW_FLAG "")
+endif ()
 
 carla_add_custom_target (
   carla-unreal
@@ -376,7 +390,7 @@ carla_add_custom_target (
     ${CARLA_UNREAL_BUILD_TYPE}
     -project=${CARLA_UE_PROJECT_PATH}
     -game
-    -buildscw
+    ${CARLA_UE_BUILDSCW_FLAG}
   USES_TERMINAL
   VERBATIM
 )
@@ -396,7 +410,7 @@ carla_add_custom_target (
     ${CARLA_UNREAL_BUILD_TYPE}
     -project=${CARLA_UE_PROJECT_PATH}
     -game
-    -buildscw
+    ${CARLA_UE_BUILDSCW_FLAG}
   DEPENDS
     ${CARLA_UNREAL_CONFIGURE_OUTPUTS}
   USES_TERMINAL
@@ -494,6 +508,16 @@ function (
 base content folder."
   )
 
+  if (APPLE)
+    # Tuned cook memory for macOS hardware constraints.
+    # 16 GB systems: 12000–14000 (leaves ~2–4 GB for macOS + background services)
+    # 32 GB systems: 18000–24000 (leaves ~8–14 GB headroom)
+    # 64 GB+ systems: 30000–40000 (increase further as needed)
+    list (APPEND CARLA_PACKAGE_EXTRA_UAT_ARGS
+      "-AdditionalCookerOptions=-CookMemoryMaxUsedVirtualMB=10000 -CookMemoryMinFreePhysicalMB=2048 -CookMemoryMaxUsedPhysicalMB=12000 -CookSoftGCJustInit"
+    )
+  endif ()
+
   carla_add_custom_target (
     ${TARGET_NAME}
     "Create a CARLA package in ${PACKAGE_CONFIGURATION} mode."
@@ -504,7 +528,7 @@ base content folder."
       ${UE_BUILD_CONFIGURATION}
       -project=${CARLA_UE_PROJECT_PATH}
       -game
-      -buildscw
+      ${CARLA_UE_BUILDSCW_FLAG}
     COMMAND
       ${CARLA_UE_UAT_COMMAND_PREFIX}
       BuildCookRun

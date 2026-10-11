@@ -25,11 +25,22 @@ MAP="${1:-}"
 PORT="${PORT:-${CARLA_PORT}}"
 TM_PORT="${TM_PORT:-8000}"
 
-# `comm` in /proc is truncated to 15 characters, so the shipping binary appears as
-# 'CarlaUnreal-Lin', never 'CarlaUnreal-Linux-Shipping'. Matching the full name
-# with pkill -x silently matches nothing and leaves the port held.
-COMM_PKG="CarlaUnreal-Lin"
-COMM_EDITOR="UnrealEditor"
+if [ "$(uname -s)" = "Darwin" ]; then
+  COMM_PKG="CarlaUnreal"
+  COMM_EDITOR="UnrealEditor"
+  EB="${CARLA_UNREAL_ENGINE_PATH}/Engine/Binaries/Mac/UnrealEditor.app/Contents/MacOS/UnrealEditor"
+  SGB="${CARLA_UE58_ROOT}/Unreal/CarlaUnreal/Binaries/Mac/CarlaUnreal"
+  DEFAULT_RHI="metal"
+else
+  # `comm` in /proc is truncated to 15 characters, so the shipping binary appears as
+  # 'CarlaUnreal-Lin', never 'CarlaUnreal-Linux-Shipping'. Matching the full name
+  # with pkill -x silently matches nothing and leaves the port held.
+  COMM_PKG="CarlaUnreal-Lin"
+  COMM_EDITOR="UnrealEditor"
+  EB="${CARLA_UNREAL_ENGINE_PATH}/Engine/Binaries/Linux/UnrealEditor"
+  SGB="${CARLA_UE58_ROOT}/Unreal/CarlaUnreal/Binaries/Linux/CarlaUnreal"
+  DEFAULT_RHI="vulkan"
+fi
 
 port_busy() { (echo >"/dev/tcp/127.0.0.1/$1") >/dev/null 2>&1; }
 
@@ -155,7 +166,7 @@ detect)
   [ -n "${P}" ] && echo "  package : ${P}" || echo "  package : none built (package-carla-ue58), none named by CARLA_TARGET/CARLA_PACKAGE_ROOT"
   EB="${CARLA_UNREAL_ENGINE_PATH}/Engine/Binaries/$(carla_ue58_platform)/UnrealEditor$(carla_ue58_exe)"
   UPROJ="${CARLA_UE58_ROOT}/Unreal/CarlaUnreal/CarlaUnreal.uproject"
-  if [ -x "${EB}" ] && [ -f "${UPROJ}" ]; then
+  if [ -e "${EB}" ] && [ -f "${UPROJ}" ]; then
     echo "  editor  : ${EB}"
     echo "  game    : same binary with -game (recommended headless server)"
   else
@@ -187,12 +198,12 @@ game)
   preflight_ports
   EB="${CARLA_UNREAL_ENGINE_PATH}/Engine/Binaries/$(carla_ue58_platform)/UnrealEditor$(carla_ue58_exe)"
   UPROJ="${CARLA_UE58_ROOT}/Unreal/CarlaUnreal/CarlaUnreal.uproject"
-  [ -x "${EB}" ] || { echo "ERROR ${EB} missing — build the engine" >&2; exit 3; }
+  [ -e "${EB}" ] || { echo "ERROR ${EB} missing — build the engine" >&2; exit 3; }
   [ -f "${UPROJ}" ] || { echo "ERROR ${UPROJ} missing" >&2; exit 3; }
   common_args
   CMD=("${EB}" "${UPROJ}")
   [ -n "${MAP}" ] && CMD+=("${MAP}")
-  CMD+=(-game "-${CARLA_UNREAL_RHI:-vulkan}" "${ARGS[@]}")
+  CMD+=(-game "-${CARLA_UNREAL_RHI:-${DEFAULT_RHI}}" "${ARGS[@]}")
   launch "editor binary in -game mode (uncooked tree, full client support)" "${CMD[@]}"
   ;;
 

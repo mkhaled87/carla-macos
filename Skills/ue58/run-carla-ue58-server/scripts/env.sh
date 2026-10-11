@@ -36,7 +36,13 @@ carla_ue58_is_root() {
   [ -f "${1:-}/CMakePresets.json" ] && [ -d "${1:-}/Unreal/CarlaUnreal" ]
 }
 
-carla_ue58_build_dir() { echo "${CARLA_UE58_ROOT}/Build/${CARLA_PRESET}"; }
+carla_ue58_build_dir() {
+  if [ -f "${CARLA_UE58_ROOT:-}/Build/CMakeCache.txt" ]; then
+    echo "${CARLA_UE58_ROOT:-}/Build"
+  else
+    echo "${CARLA_UE58_ROOT:-}/Build/${CARLA_PRESET:-Release}"
+  fi
+}
 
 carla_ue58_configured() { [ -f "$(carla_ue58_build_dir)/CMakeCache.txt" ]; }
 
@@ -44,7 +50,7 @@ carla_ue58_configured() { [ -f "$(carla_ue58_build_dir)/CMakeCache.txt" ]; }
 # every -D option must be repeated on each re-configure, so a forgotten
 # -DENABLE_ROS2=ON silently yields a non-ROS build with no other symptom.
 carla_ue58_cmake_opt() {
-  local cache="${CARLA_UE58_ROOT:-}/Build/${CARLA_PRESET:-Release}/CMakeCache.txt"
+  local cache="$(carla_ue58_build_dir)/CMakeCache.txt"
   [ -f "${cache}" ] || return 1
   sed -n "s|^${1}:[A-Z]*=||p" "${cache}" | head -1
 }
@@ -80,25 +86,39 @@ carla_ue58_flavor() {
 }
 
 # Unreal's name for this platform's binaries directory, and its exe suffix.
-carla_ue58_platform() { if carla_is_windows; then echo Win64; else echo Linux; fi; }
+carla_ue58_platform() {
+  if carla_is_windows; then
+    echo Win64
+  elif [ "$(uname -s)" = "Darwin" ]; then
+    echo Mac
+  else
+    echo Linux
+  fi
+}
 carla_ue58_exe() { if carla_is_windows; then echo .exe; fi; }
 
 # The packaged server's launcher: CarlaUnreal.exe on Windows, CarlaUnreal.sh
-# elsewhere. A standalone package the user named wins (CARLA_TARGET, then
-# CARLA_PACKAGE_ROOT), with the launcher at its top level or one directory down
-# (an archive extracted into a folder of its own, e.g. Carla-1.0-Win64-Shipping/).
-# Then the newest package the `package` target built in the checkout. Modelled
-# on ue4/run-carla-server's carla_detect_target.
+# elsewhere (or legacy .app binary on macOS). A standalone package the user
+# named wins (CARLA_TARGET, then CARLA_PACKAGE_ROOT), with the launcher at its
+# top level or one directory down (an archive extracted into a folder of its
+# own, e.g. Carla-1.0-Win64-Shipping/). Then the newest package the `package`
+# target built in the checkout. Modelled on ue4/run-carla-server's
+# carla_detect_target.
 carla_ue58_package_launcher() {
   local name="CarlaUnreal.sh" cand l
   carla_is_windows && name="CarlaUnreal.exe"
   for cand in "${CARLA_TARGET:-}" "${CARLA_PACKAGE_ROOT:-}"; do
     [ -n "${cand}" ] && [ -d "${cand}" ] || continue
-    for l in "${cand}/${name}" "${cand}"/*/"${name}"; do
+    for l in "${cand}/${name}" "${cand}"/*/"${name}" "${cand}"/CarlaUnreal*.app/Contents/MacOS/CarlaUnreal* "${cand}"/Mac/CarlaUnreal*.app/Contents/MacOS/CarlaUnreal*; do
       [ -f "${l}" ] && { printf '%s\n' "${l}"; return 0; }
     done
   done
-  ls -1dt "${CARLA_UE58_ROOT:-/nonexistent}"/Build/*/Package/Carla-*/"${name}" 2>/dev/null | head -1
+  ls -1dt \
+    "${CARLA_UE58_ROOT:-/nonexistent}"/Build/*/Package/Carla-*/"${name}" \
+    "${CARLA_UE58_ROOT:-/nonexistent}"/Build/Package/Carla-*/"${name}" \
+    "${CARLA_UE58_ROOT:-/nonexistent}"/Build/*/Package/Carla-*/Mac/CarlaUnreal*.app/Contents/MacOS/CarlaUnreal* \
+    "${CARLA_UE58_ROOT:-/nonexistent}"/Build/Package/Carla-*/Mac/CarlaUnreal*.app/Contents/MacOS/CarlaUnreal* \
+    2>/dev/null | head -1
 }
 
 # Kept for callers that predate the standalone-package lookup.
