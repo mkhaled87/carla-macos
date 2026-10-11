@@ -53,7 +53,9 @@ file (COPY_FILE ${CARLA_WORKSPACE_PATH}/Util/ContentPacks/carla_pack.py ${CARLA_
 # sensors need the .usf/.ush sources at runtime.
 cmake_path (GET CARLA_UE_PROJECT_PATH PARENT_PATH CARLA_UE_PROJECT_DIR)
 if (APPLE)
-  file (GLOB CARLA_PACKAGE_MAC_APP_DIRS LIST_DIRECTORIES true ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal*.app)
+  file (GLOB CARLA_PACKAGE_MAC_APP_DIRS LIST_DIRECTORIES true
+    ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal*.app
+    ${CARLA_PACKAGE_ARCHIVE_PATH}/*/CarlaUnreal*.app)
   foreach (CARLA_PACKAGE_APP_DIR ${CARLA_PACKAGE_MAC_APP_DIRS})
     make_directory (${CARLA_PACKAGE_APP_DIR}/Contents/UE/Tools)
     file (COPY_FILE ${RECASTBUILDER_SRC} ${CARLA_PACKAGE_APP_DIR}/Contents/UE/Tools/RecastBuilder)
@@ -65,6 +67,25 @@ else ()
   file (
     COPY ${CARLA_UE_PROJECT_DIR}/Plugins/Carla/Shaders/
     DESTINATION ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal/Plugins/Carla/Shaders/)
+endif ()
+
+if (APPLE)
+  make_directory (${CARLA_PACKAGE_ARCHIVE_PATH}/Mac/Tools)
+  file (COPY_FILE ${RECASTBUILDER_SRC} ${CARLA_PACKAGE_ARCHIVE_PATH}/Mac/Tools/RecastBuilder)
+
+  file (WRITE ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal.sh
+"#!/bin/bash
+SCRIPT_DIR=\"\$(cd \"\$(dirname \"\${BASH_SOURCE[0]}\")\" && pwd)\"
+exec \"\$SCRIPT_DIR/Mac/CarlaUnreal-Mac-Shipping.app/Contents/MacOS/CarlaUnreal-Mac-Shipping\" \"\$@\"
+")
+  execute_process (COMMAND chmod +x ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal.sh)
+
+  file (WRITE ${CARLA_PACKAGE_ARCHIVE_PATH}/Mac/CarlaUnreal.sh
+"#!/bin/bash
+SCRIPT_DIR=\"\$(cd \"\$(dirname \"\${BASH_SOURCE[0]}\")\" && pwd)\"
+exec \"\$SCRIPT_DIR/CarlaUnreal-Mac-Shipping.app/Contents/MacOS/CarlaUnreal-Mac-Shipping\" \"\$@\"
+")
+  execute_process (COMMAND chmod +x ${CARLA_PACKAGE_ARCHIVE_PATH}/Mac/CarlaUnreal.sh)
 endif ()
 
 make_directory (${CARLA_PACKAGE_ARCHIVE_PATH}/PythonAPI/carla/dist)

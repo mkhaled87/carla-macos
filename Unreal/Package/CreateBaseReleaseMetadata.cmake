@@ -31,12 +31,19 @@ endforeach ()
 
 # The packaged project dir (what FPaths::ProjectDir() resolves to in the
 # packaged binary).
-set (PROJECT_DIR ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal)
-if (NOT IS_DIRECTORY ${PROJECT_DIR})
-  message (FATAL_ERROR "No ${PROJECT_DIR} directory.")
+file (GLOB PROJECT_DIRS LIST_DIRECTORIES true
+  ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal
+  ${CARLA_PACKAGE_ARCHIVE_PATH}/*/CarlaUnreal
+  ${CARLA_PACKAGE_ARCHIVE_PATH}/*.app/Contents/UE/CarlaUnreal
+  ${CARLA_PACKAGE_ARCHIVE_PATH}/*/*.app/Contents/UE/CarlaUnreal
+)
+if (NOT PROJECT_DIRS)
+  message (FATAL_ERROR "No CarlaUnreal project directory under ${CARLA_PACKAGE_ARCHIVE_PATH}.")
 endif ()
-file (WRITE ${PROJECT_DIR}/BaseRelease "${CARLA_BASE_RELEASE_NAME}\n")
-message (STATUS "Wrote ${PROJECT_DIR}/BaseRelease = ${CARLA_BASE_RELEASE_NAME}")
+foreach (PROJECT_DIR ${PROJECT_DIRS})
+  file (WRITE ${PROJECT_DIR}/BaseRelease "${CARLA_BASE_RELEASE_NAME}\n")
+  message (STATUS "Wrote ${PROJECT_DIR}/BaseRelease = ${CARLA_BASE_RELEASE_NAME}")
+endforeach ()
 # Also at the archive root for humans/tools that never open the project dir.
 file (WRITE ${CARLA_PACKAGE_ARCHIVE_PATH}/BaseRelease "${CARLA_BASE_RELEASE_NAME}\n")
 

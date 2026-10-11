@@ -479,6 +479,13 @@ function (
     "${UE_SYSTEM_NAME}"
   )
 
+  # Zen must outlive the cook (stage reads the cooked oplog back).
+  # Windows requires an external zenserver on port 8558; on macOS/Linux,
+  # UE auto-launches Zen with [Zen.AutoLaunch] LimitProcessLifetime=False.
+  if (WIN32)
+    list (APPEND CARLA_PACKAGE_EXTRA_UAT_ARGS -NoZenAutoLaunch=127.0.0.1)
+  endif ()
+
   # Content packs (Plugins/Packs/*) are cooked as DLC "based on" this release:
   # the cook writes Unreal/CarlaUnreal/Releases/<release>/<Platform>/
   # (AssetRegistry.bin + pak/container lists) which a pack cook needs as its
