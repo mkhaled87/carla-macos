@@ -23,6 +23,13 @@ nav:
 - Agentic CARLA:
   - 'Agentic CARLA skills': 'agent_skills.md'
 
+- Next steps:
+  - 'Editor-free Map Maker': 'map-maker/README.md'
+  - 'Map Maker Tutorial (Munich OSM)': 'map-maker/tutorial_munich_osm_e2e.md'
+  #- 'Content authoring - maps': 'tuto_content_authoring_maps.md'  
+  - 'Content authoring - vehicles': 'tuto_content_authoring_vehicles.md'  
+  - 'Content authoring - content packs': 'content_packs.md'
+
 - CARLA topics:
   - Foundations:
     - 'core_foundations.md'

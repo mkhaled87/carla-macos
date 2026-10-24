@@ -80,6 +80,11 @@ public:
     return ObjectRegister->GetEnvironmentObjects(QueriedTag);
   }
 
+  UObjectRegister* GetObjectRegister() const
+  {
+    return ObjectRegister;
+  }
+
   void EnableEnvironmentObjects(const TSet<uint64>& EnvObjectIds, bool Enable);
 
   /// The registered environment objects disabled now, and a count of the

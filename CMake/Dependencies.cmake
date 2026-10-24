@@ -78,6 +78,10 @@ add_library (
   ${sqlite3_SOURCE_DIR}/sqlite3.h
   ${sqlite3_SOURCE_DIR}/sqlite3.c
 )
+target_include_directories (
+  libsqlite3 PUBLIC
+  ${sqlite3_SOURCE_DIR}
+)
 
 add_executable (
   sqlite3

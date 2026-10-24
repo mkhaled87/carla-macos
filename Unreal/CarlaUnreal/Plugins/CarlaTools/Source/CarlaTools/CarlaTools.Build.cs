@@ -158,7 +158,6 @@ public class CarlaTools :
 
       throw new NotImplementedException();
     }
-
     // OSM2ODR needs no extra library: the converter is compiled into
     // libcarla-server, which this module already links.
   }

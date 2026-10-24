@@ -44,6 +44,8 @@ public:
       const TSet<uint64>& EnvObjectIds,
       const TSet<const AActor*>& Actors) const;
 
+  uint64 RegisterPMCComponents(AActor* Actor);
+
 private:
 
   void RegisterEnvironmentObject(
