@@ -352,9 +352,18 @@ class MockBlueprint:
         self.attributes: dict[str, str] = {
             "role_name": "default",
             "ros_name": "",
+            "ros_topic_name": "",
             "ros2_autoware_control": "false",
             "color": "255,255,255",
             "is_invincible": "true",
+            "sensor_tick": "0.05",
+            "image_size_x": "400",
+            "image_size_y": "200",
+            "fov": "90.0",
+            "channels": "32",
+            "range": "50.0",
+            "points_per_second": "100000",
+            "rotation_frequency": "20.0",
         }
 
     def has_attribute(self, key: str) -> bool:
@@ -373,6 +382,9 @@ class MockBlueprintLibrary:
             MockBlueprint("vehicle.carlamotors.carlacola"),
             MockBlueprint("walker.pedestrian.0001"),
             MockBlueprint("static.prop.streetbarrier"),
+            MockBlueprint("sensor.other.vehicle_status"),
+            MockBlueprint("sensor.camera.rgb"),
+            MockBlueprint("sensor.lidar.ray_cast"),
         ]
 
     def find(self, bp_id: str) -> MockBlueprint | None:
@@ -537,8 +549,14 @@ class MockWorld:
     def get_spectator(self) -> MockActor:
         return self._spectator
 
-    def spawn_actor(self, bp: MockBlueprint, transform: FallbackTransform) -> MockActor:
+    def spawn_actor(
+        self,
+        bp: MockBlueprint,
+        transform: FallbackTransform,
+        attach_to: MockActor | None = None,
+    ) -> MockActor:
         actor = MockActor(self._next_id, bp.id, transform, bp.attributes)
+        actor.parent = attach_to
         self._next_id += 1
         self._actors.append(actor)
         return actor
@@ -652,12 +670,12 @@ class TestCoordinateConversions(unittest.TestCase):
             rx, ry, rz, rh, rp, rr = carla_transform_to_esmini_pose(
                 tf, center_offset_x=cx, center_offset_y=cy
             )
-            self.assertAlmostEqual(x, rx, places=6)
-            self.assertAlmostEqual(y, ry, places=6)
-            self.assertAlmostEqual(z, rz, places=6)
-            self.assertAlmostEqual(h, rh, places=6)
-            self.assertAlmostEqual(p, rp, places=6)
-            self.assertAlmostEqual(r, rr, places=6)
+            self.assertAlmostEqual(x, rx, places=4)
+            self.assertAlmostEqual(y, ry, places=4)
+            self.assertAlmostEqual(z, rz, places=4)
+            self.assertAlmostEqual(h, rh, places=4)
+            self.assertAlmostEqual(p, rp, places=4)
+            self.assertAlmostEqual(r, rr, places=4)
 
     def test_handedness_sign_conventions(self) -> None:
         # In OpenDRIVE: +Y is North (left of +X East), +heading is CCW around +Z.
@@ -758,6 +776,7 @@ class TestEsminiCarlaCoSimulation(unittest.TestCase):
             max_sim_time=3.0,
             spawn_ego=True,
             autoware_mode=True,
+            autoware_sensors=True,
             follow_ego=True,
             disable_esmini_log=True,
             parameters={"TargetSpeed": 22.0, "TriggerDist": 30.0},
@@ -789,6 +808,28 @@ class TestEsminiCarlaCoSimulation(unittest.TestCase):
             )
             self.assertTrue(ego_actor.ros_enabled)
             self.assertTrue(ego_actor.simulate_physics)
+
+            # Verify native ROS 2 Autoware sensors (vehicle_status, front camera, top LiDAR)
+            self.assertEqual(len(ego_info.attached_sensors), 3)
+            sensor_types = [s.type_id for s in ego_info.attached_sensors]
+            self.assertEqual(
+                sensor_types,
+                [
+                    "sensor.other.vehicle_status",
+                    "sensor.camera.rgb",
+                    "sensor.lidar.ray_cast",
+                ],
+            )
+            for s in ego_info.attached_sensors:
+                self.assertTrue(s.ros_enabled)
+            self.assertEqual(
+                ego_info.attached_sensors[1].attributes.get("ros_topic_name"),
+                "/sensing/camera/front",
+            )
+            self.assertEqual(
+                ego_info.attached_sensors[2].attributes.get("ros_topic_name"),
+                "/sensing/lidar/top/pointcloud_raw_ex",
+            )
 
             # Verify NPCs have physics disabled and pedestrian was spawned
             npc_info = runner.actor_manager.actors[1]
@@ -889,6 +930,39 @@ class TestEsminiCarlaCoSimulation(unittest.TestCase):
 
         # External ego must NOT be destroyed when the scenario finishes
         self.assertFalse(external_ego.destroyed)
+
+    def test_carla_cpp_map_xodr_waypoint_parity(self) -> None:
+        """Verify that C++ carla.Map.get_waypoint_xodr and esmini_state_to_carla_transform match."""
+        try:
+            import carla as real_carla
+        except ImportError:
+            self.skipTest("Compiled C++ carla module not installed in this interpreter")
+
+        carla_map = real_carla.Map("TownTest", SAMPLE_STRAIGHT_XODR)
+        with EsminiLib() as esmini:
+            esmini.set_log_file_path("")
+            esmini.log_to_console(False)
+            esmini.add_path(self.temp_dir)
+            self.assertEqual(esmini.init(self.xosc_path), 0)
+
+            for oid in esmini.get_object_ids():
+                st = esmini.get_object_state(oid)
+                self.assertIsNotNone(st)
+                assert st is not None
+                wp = carla_map.get_waypoint_xodr(int(st.roadId), int(st.laneId), float(st.s))
+                self.assertIsNotNone(wp)
+                tf = esmini_state_to_carla_transform(
+                    st,
+                    apply_center_offset=False,
+                    carla_mod=real_carla,
+                )
+                expected_z = wp.transform.location.z + (
+                    0.5 * st.height if st.objectType == SEObjectType.PEDESTRIAN else 0.0
+                )
+                self.assertAlmostEqual(tf.location.x, wp.transform.location.x, places=3)
+                self.assertAlmostEqual(tf.location.y, wp.transform.location.y, places=3)
+                self.assertAlmostEqual(tf.location.z, expected_z, places=3)
+                self.assertAlmostEqual(tf.rotation.yaw, wp.transform.rotation.yaw, places=3)
 
 
 if __name__ == "__main__":

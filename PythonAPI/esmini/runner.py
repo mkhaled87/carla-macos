@@ -55,6 +55,7 @@ class RunnerConfig:
     keep_ego_on_exit: bool = False
     enable_ros2: bool = False
     autoware_mode: bool = False
+    autoware_sensors: bool = False
 
     # Visualization & alignment options
     follow_ego: bool = False
@@ -204,6 +205,7 @@ class CarlaEsminiRunner:
             keep_ego_on_exit=self.config.keep_ego_on_exit,
             enable_ros2=self.config.enable_ros2,
             autoware_mode=self.config.autoware_mode,
+            autoware_sensors=self.config.autoware_sensors,
             apply_center_offset=self.config.apply_center_offset,
             draw_ghost=self.config.draw_ghost,
             carla_mod=self.carla_mod,

@@ -158,6 +158,7 @@ class ManagedActorInfo:
     last_light_mask: int = 0
     wheel_rotation: float = 0.0
     properties: dict[str, str] = field(default_factory=dict)
+    attached_sensors: list[Any] = field(default_factory=list)
 
 
 class ActorManager:
@@ -178,6 +179,7 @@ class ActorManager:
         keep_ego_on_exit: bool = False,
         enable_ros2: bool = False,
         autoware_mode: bool = False,
+        autoware_sensors: bool = False,
         apply_center_offset: bool = True,
         draw_ghost: bool = False,
         carla_mod: Any = None,
@@ -188,9 +190,10 @@ class ActorManager:
         self.carla_mod = carla_mod if carla_mod is not None else _carla_module
 
         self.ego_name_hint = ego_name
-        self.autoware_mode = autoware_mode
-        self.enable_ros2 = enable_ros2 or autoware_mode
-        if autoware_mode and ego_role_name == "hero":
+        self.autoware_sensors = autoware_sensors
+        self.autoware_mode = autoware_mode or autoware_sensors
+        self.enable_ros2 = enable_ros2 or self.autoware_mode
+        if self.autoware_mode and ego_role_name == "hero":
             self.ego_role_name = "ego"
         else:
             self.ego_role_name = ego_role_name
@@ -311,6 +314,10 @@ class ActorManager:
             if hasattr(carla_actor, "set_target_angular_velocity"):
                 carla_actor.set_target_angular_velocity(zero_vec)
 
+        attached_sensors: list[Any] = []
+        if carla_actor is not None and spawned_by_runner and self.autoware_mode:
+            attached_sensors = self._spawn_autoware_ego_sensors(carla_actor)
+
         info = ManagedActorInfo(
             esmini_id=esmini_id,
             name=name,
@@ -327,6 +334,7 @@ class ActorManager:
             carla_bbox_y=carla_bbox_y,
             walker_half_height=walker_hh,
             properties=props,
+            attached_sensors=attached_sensors,
         )
         self.actors[esmini_id] = info
 
@@ -334,6 +342,100 @@ class ActorManager:
         # DefaultController (ctrl_type == 0) on Ego, esmini's internal step never overwrites
         # the CARLA Ego's actual position or speed.
         self.esmini.register_object_callback(esmini_id, self._on_ego_esmini_callback)
+
+    def _spawn_autoware_ego_sensors(self, ego_actor: Any) -> list[Any]:
+        """Attach native ROS 2 Autoware status (and optional perception) sensors to Ego."""
+        if self.world is None or self._blueprint_library is None:
+            return []
+
+        from .coordinates import make_transform
+
+        sensors: list[Any] = []
+
+        # 1. Vehicle status sensor (/vehicle/status/*) required by CARLA's native ROS 2 Autoware bridge
+        status_bp = self._find_blueprint_by_id_or_filter("sensor.other.vehicle_status")
+        if status_bp is not None:
+            if status_bp.has_attribute("ros_name"):
+                status_bp.set_attribute("ros_name", "vehicle_status")
+            if status_bp.has_attribute("role_name"):
+                status_bp.set_attribute("role_name", "vehicle_status")
+            if status_bp.has_attribute("sensor_tick"):
+                status_bp.set_attribute("sensor_tick", "0.05")
+            status_tf = make_transform(carla_mod=self.carla_mod)
+            try:
+                status_sensor = self.world.spawn_actor(
+                    status_bp, status_tf, attach_to=ego_actor
+                )
+            except TypeError:
+                status_sensor = self.world.spawn_actor(status_bp, status_tf)
+            if status_sensor is not None:
+                if hasattr(status_sensor, "enable_for_ros"):
+                    status_sensor.enable_for_ros()
+                sensors.append(status_sensor)
+
+        if not self.autoware_sensors:
+            return sensors
+
+        # 2. Optional Front RGB Camera (/sensing/camera/front/image & camera_info)
+        cam_bp = self._find_blueprint_by_id_or_filter("sensor.camera.rgb")
+        if cam_bp is not None:
+            for attr, val in (
+                ("image_size_x", "400"),
+                ("image_size_y", "200"),
+                ("fov", "90.0"),
+                ("sensor_tick", "0.1"),
+                ("ros_name", "front_camera"),
+                ("role_name", "front_camera"),
+                ("ros_topic_name", "/sensing/camera/front"),
+            ):
+                if cam_bp.has_attribute(attr):
+                    cam_bp.set_attribute(attr, val)
+            cam_tf = make_transform(
+                make_location(x=1.5, y=0.0, z=1.6, carla_mod=self.carla_mod),
+                carla_mod=self.carla_mod,
+            )
+            try:
+                cam_sensor = self.world.spawn_actor(
+                    cam_bp, cam_tf, attach_to=ego_actor
+                )
+            except TypeError:
+                cam_sensor = self.world.spawn_actor(cam_bp, cam_tf)
+            if cam_sensor is not None:
+                if hasattr(cam_sensor, "enable_for_ros"):
+                    cam_sensor.enable_for_ros()
+                sensors.append(cam_sensor)
+
+        # 3. Optional Top Ray-Cast LiDAR (/sensing/lidar/top/pointcloud_raw_ex)
+        lidar_bp = self._find_blueprint_by_id_or_filter("sensor.lidar.ray_cast")
+        if lidar_bp is not None:
+            for attr, val in (
+                ("channels", "32"),
+                ("range", "50.0"),
+                ("points_per_second", "100000"),
+                ("rotation_frequency", "20.0"),
+                ("sensor_tick", "0.1"),
+                ("ros_name", "top_lidar"),
+                ("role_name", "top_lidar"),
+                ("ros_topic_name", "/sensing/lidar/top/pointcloud_raw_ex"),
+            ):
+                if lidar_bp.has_attribute(attr):
+                    lidar_bp.set_attribute(attr, val)
+            lidar_tf = make_transform(
+                make_location(x=0.0, y=0.0, z=2.2, carla_mod=self.carla_mod),
+                carla_mod=self.carla_mod,
+            )
+            try:
+                lidar_sensor = self.world.spawn_actor(
+                    lidar_bp, lidar_tf, attach_to=ego_actor
+                )
+            except TypeError:
+                lidar_sensor = self.world.spawn_actor(lidar_bp, lidar_tf)
+            if lidar_sensor is not None:
+                if hasattr(lidar_sensor, "enable_for_ros"):
+                    lidar_sensor.enable_for_ros()
+                sensors.append(lidar_sensor)
+
+        return sensors
 
     def _find_existing_ego_actor(self, esmini_name: str) -> Any | None:
         if self.world is None:
@@ -958,6 +1060,12 @@ class ActorManager:
             return
         if info.is_ego and (not info.spawned_by_runner or self.keep_ego_on_exit):
             return
+        for sensor in info.attached_sensors:
+            try:
+                sensor.destroy()
+            except Exception:
+                pass
+        info.attached_sensors.clear()
         try:
             info.carla_actor.destroy()
         except Exception:
