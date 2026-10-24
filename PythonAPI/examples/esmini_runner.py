@@ -145,7 +145,12 @@ def build_arg_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         "--autoware",
         action="store_true",
-        help="Configure the Ego vehicle for CARLA native ROS 2 Autoware control (ros2_autoware_control=true).",
+        help="Configure the Ego vehicle for CARLA native ROS 2 Autoware control (ros2_autoware_control=true and sensor.other.vehicle_status).",
+    )
+    parser.add_argument(
+        "--autoware-sensors",
+        action="store_true",
+        help="Also attach Autoware ROS 2 front RGB camera (/sensing/camera/front) and top LiDAR (/sensing/lidar/top/pointcloud_raw_ex) to Ego.",
     )
 
     # Visualization & esmini options
@@ -240,7 +245,8 @@ def main(argv: list[str] | None = None) -> int:
         teleport_external_ego=not args.no_teleport_ego,
         keep_ego_on_exit=args.keep_ego,
         enable_ros2=args.ros2,
-        autoware_mode=args.autoware,
+        autoware_mode=args.autoware or args.autoware_sensors,
+        autoware_sensors=args.autoware_sensors,
         follow_ego=args.follow_ego,
         draw_ghost=args.draw_ghost,
         apply_center_offset=not args.no_center_offset,
