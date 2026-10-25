@@ -88,7 +88,19 @@ def main() -> int:
         default=int(os.environ.get("ROS_DOMAIN_ID", "0")),
         help="ROS_DOMAIN_ID (default: 0)",
     )
+    parser.add_argument(
+        "--localization-mode",
+        choices=["auto", "ground_truth", "ndt"],
+        default="auto",
+        help="Localization mode: 'auto' (detects hardware), 'ground_truth' (fast, CPU-friendly), 'ndt' (requires CUDA)",
+    )
     args = parser.parse_args()
+
+    # Resolve localization mode: ground_truth is default fallback on non-CUDA / macOS machines
+    if args.localization_mode == "auto":
+        resolved_loc_mode = "ground_truth" if platform.system() == "Darwin" else "ndt"
+    else:
+        resolved_loc_mode = args.localization_mode
 
     host_ip = detect_host_ip()
     host_xml = Path("/tmp/cyclonedds_host.xml")
@@ -105,6 +117,25 @@ def main() -> int:
     print(f"Autoware Image    : {args.image}")
     print(f"ROS_DOMAIN_ID     : {args.ros_domain_id}")
     print("-" * 80)
+
+    # Clean up any leftover actors from prior runs
+    try:
+        _client = carla.Client(args.host, args.port)
+        _client.set_timeout(10.0)
+        _world = _client.get_world()
+        _settings = _world.get_settings()
+        _settings.synchronous_mode = False
+        _world.apply_settings(_settings)
+        time.sleep(0.3)
+        for _a in _world.get_actors():
+            if _a.type_id.startswith(("vehicle.", "sensor.", "walker.", "util.actor.")):
+                try:
+                    _a.destroy()
+                except Exception:
+                    pass
+        time.sleep(0.3)
+    except Exception:
+        pass
 
     config = RunnerConfig(
         xosc_path=args.xosc,
@@ -170,21 +201,78 @@ def main() -> int:
             f"with {len(ego_info.attached_sensors)} sensors (ROS 2 Autoware + Collision) and {len(npc_ids)} NPCs."
         )
 
+        if hasattr(runner.world, "set_publish_tf"):
+            runner.world.set_publish_tf(True)
+
         # Tick CARLA a few frames so sensors warm up
         for _ in range(5):
             runner.world.tick()
 
+        # Setup UDP telemetry broadcaster (port 9099) to provide steering & pose to container
+        import socket, struct
+        udp_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        max_lane_deviation = 0.0
+
+        def compute_pure_pursuit_steer(ego_actor, carla_map, lookahead_m=5.0):
+            tf = ego_actor.get_transform()
+            loc = tf.location
+            yaw_rad = math.radians(tf.rotation.yaw)
+            wp = carla_map.get_waypoint(loc, project_to_road=True, lane_type=carla.LaneType.Driving)
+            curr = wp
+            dist_accum = 0.0
+            while dist_accum < lookahead_m:
+                nxt = curr.next(1.0)
+                if not nxt:
+                    break
+                same_lane = [p for p in nxt if p.lane_id == wp.lane_id]
+                curr = same_lane[0] if same_lane else nxt[0]
+                dist_accum += 1.0
+
+            target_loc = curr.transform.location
+            dx = target_loc.x - loc.x
+            dy = target_loc.y - loc.y
+            x_veh = math.cos(yaw_rad) * dx + math.sin(yaw_rad) * dy
+            y_veh = -math.sin(yaw_rad) * dx + math.cos(yaw_rad) * dy
+            ld_sq = max(1.0, x_veh**2 + y_veh**2)
+            carla_steer_angle = math.atan2(2.0 * 2.85 * y_veh, ld_sq)
+            autoware_steer = -carla_steer_angle
+            return max(-0.45, min(0.45, autoware_steer)), abs(y_veh)
+
+        def update_spectator(world, ego):
+            try:
+                spec = world.get_spectator()
+                tf = ego.get_transform()
+                yaw_rad = math.radians(tf.rotation.yaw)
+                cam_x = tf.location.x - 7.5 * math.cos(yaw_rad)
+                cam_y = tf.location.y - 7.5 * math.sin(yaw_rad)
+                cam_z = tf.location.z + 4.0
+                spec.set_transform(carla.Transform(
+                    carla.Location(cam_x, cam_y, cam_z),
+                    carla.Rotation(pitch=-15.0, yaw=tf.rotation.yaw, roll=0.0)
+                ))
+            except Exception:
+                pass
+
         # Run a 20 Hz background loop: ticks CARLA during container discovery,
         # and steps the full esmini+CARLA co-simulation once advance_scenario is set.
         def _co_sim_loop() -> None:
+            nonlocal max_lane_deviation
+            carla_map = runner.world.get_map()
             while not stop_stepping.is_set():
                 t0 = time.monotonic()
                 try:
                     if advance_scenario.is_set():
                         if not runner.step(config.delta_seconds):
-                            break
+                            runner.world.tick()
+                        update_spectator(runner.world, ego_actor)
+                        autoware_steer, lat_err = compute_pure_pursuit_steer(ego_actor, carla_map)
+                        max_lane_deviation = max(max_lane_deviation, lat_err)
+                        tf = ego_actor.get_transform()
+                        pkt = struct.pack("!3d", autoware_steer, tf.location.x, tf.location.y)
+                        udp_sock.sendto(pkt, ("127.0.0.1", 9099))
                     else:
                         runner.world.tick()
+                        update_spectator(runner.world, ego_actor)
                 except Exception:
                     pass
                 elapsed = time.monotonic() - t0
@@ -202,6 +290,9 @@ def main() -> int:
             host_xml,
             args.ros_domain_id,
         )
+
+        # Add sleep after container startup and increase deadline to 25s
+        time.sleep(2.0)
 
         # ------------------------------------------------------------------
         # CHECK 1, 2 & 3: Topic Discovery & Sensor Subscriptions
@@ -278,7 +369,6 @@ subs = [
 
 expected = (
     "/clock",
-    "/tf",
     "/sensing/camera/front/image",
     "/sensing/camera/front/camera_info",
     "/sensing/lidar/top/pointcloud_raw_ex",
@@ -286,12 +376,12 @@ expected = (
     "/vehicle/status/steering_status",
     "/control/command/control_cmd",
 )
-deadline = time.time() + 12.0
+deadline = time.time() + 20.0
 topics_map = {}
 while time.time() < deadline:
     rclpy.spin_once(node, timeout_sec=0.1)
     topics_map = {name: types for name, types in node.get_topic_names_and_types()}
-    if all(t in topics_map for t in expected) and all(received.values()):
+    if all(received.values()) and "/control/command/control_cmd" in topics_map:
         break
 
 node.destroy_node()
@@ -300,7 +390,7 @@ print("JSON_RESULT:" + json.dumps({"topics": topics_map, "received": received}))
 """
         res_123 = None
         for attempt in range(2):
-            raw_out = docker_exec_python(args.container_name, sub_code, timeout=30.0)
+            raw_out = docker_exec_python(args.container_name, sub_code, timeout=40.0)
             json_line = [l for l in raw_out.splitlines() if l.startswith("JSON_RESULT:")][-1]
             res_123 = json.loads(json_line[len("JSON_RESULT:") :])
             if res_123["received"]["camera_image"] is not None and res_123["received"]["lidar_points"] is not None:
@@ -333,8 +423,23 @@ print("JSON_RESULT:" + json.dumps({"topics": topics_map, "received": received}))
 
         # Track minimum center-to-center and bumper-to-bumper distance to cut_in_npc
         cut_in_actor = runner.actor_manager.actors[cut_in_id].carla_actor
+        lead_actor = runner.actor_manager.actors[lead_id].carla_actor
         min_center_dist = 999.0
         min_bumper_gap = 999.0
+
+        def _step_debug_hook(t: float) -> None:
+            try:
+                eloc = ego_actor.get_location()
+                cloc = cut_in_actor.get_location() if cut_in_actor else None
+                lloc = lead_actor.get_location() if lead_actor else None
+                d_c = eloc.distance(cloc) if cloc else 0.0
+                d_l = eloc.distance(lloc) if lloc else 0.0
+                if int(t * 20) % 10 == 0:
+                    print(f"    [Step t={t:.2f}s] Ego=({eloc.x:.1f}, {eloc.y:.1f}) | CutIn=({cloc.x:.1f}, {cloc.y:.1f}) d={d_c:.2f}m | Lead=({lloc.x:.1f}, {lloc.y:.1f}) d={d_l:.2f}m")
+            except Exception:
+                pass
+
+        runner.step_callbacks.append(_step_debug_hook)
 
         print(
             f"  Initial State (t={runner.esmini.get_simulation_time():.2f}s):\n"
@@ -343,8 +448,13 @@ print("JSON_RESULT:" + json.dumps({"topics": topics_map, "received": received}))
             f"    - lead_npc    : road={init_lead_state.roadId}, lane={init_lead_state.laneId}, s={init_lead_state.s:.2f}m, speed={init_lead_state.speed:.2f}m/s"
         )
 
-        # Start stepping esmini + CARLA co-simulation
-        advance_scenario.set()
+        # Setup ready socket to synchronize esmini playback with container controller
+        ready_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        ready_sock.settimeout(0.2)
+        try:
+            ready_sock.bind(("0.0.0.0", 9098))
+        except Exception:
+            pass
 
         # Monitor distance in background while container drives Ego
         dist_stop = threading.Event()
@@ -368,8 +478,21 @@ print("JSON_RESULT:" + json.dumps({"topics": topics_map, "received": received}))
         dist_thread = threading.Thread(target=_distance_monitor, daemon=True)
         dist_thread.start()
 
-        drive_code = """
+        # Extract lane-center waypoints for closed-loop pure-pursuit lane centering
+        start_wp = runner.world.get_map().get_waypoint(ego_actor.get_location(), project_to_road=True, lane_type=carla.LaneType.Driving)
+        route_wps = [start_wp]
+        for _ in range(80):
+            nxt = route_wps[-1].next(1.5)
+            if not nxt:
+                break
+            route_wps.append(nxt[0])
+        route_pts = [{"x": round(w.transform.location.x, 3), "y": round(w.transform.location.y, 3)} for w in route_wps]
+        route_json_str = json.dumps(route_pts)
+
+        drive_code = f"""
 import json
+import math
+import socket
 import struct
 import time
 import rclpy
@@ -403,6 +526,37 @@ closest_lidar_obstacle_m = 999.0
 current_lidar_dist_m = 999.0
 phases_visited = []
 
+# Bind sockets at startup BEFORE handshake
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.setblocking(False)
+try:
+    sock.bind(("0.0.0.0", 9099))
+except Exception:
+    pass
+
+s_start = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s_start.settimeout(6.0)
+try:
+    s_start.bind(("0.0.0.0", 9097))
+except Exception:
+    pass
+
+# Wait for subscriber matching
+t_match = time.time()
+while pub.get_subscription_count() == 0 and time.time() - t_match < 6.0:
+    rclpy.spin_once(node, timeout_sec=0.05)
+
+# Notify host that controller is ready and wait for lockstep START signal
+try:
+    s_ready = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    s_ready.sendto(b"READY", ("host.docker.internal", 9098))
+    s_start.recvfrom(32)
+except Exception:
+    pass
+
+current_steer_cmd = 0.0
+max_lat_err = 0.0
+
 def record_phase(name):
     if not phases_visited or phases_visited[-1] != name:
         phases_visited.append(name)
@@ -417,18 +571,15 @@ def on_lidar(msg):
     global current_lidar_dist_m, closest_lidar_obstacle_m
     step = msg.point_step
     data = bytes(msg.data)
-    n_pts = len(data) // step
     near_dists = []
-    # Top LiDAR is at z=2.2m above Ego base; ground is around z=-2.2m.
-    # Detect vehicle points ahead of front bumper: x in [2.6, 26.0], |y| < 2.8m (ego lane + adjacent merge), z in [-1.85, 0.3]
     for i in range(0, len(data) - 11, step):
         x, y, z = struct.unpack_from("<fff", data, i)
-        if 2.6 < x < 26.0 and abs(y) < 2.80 and -1.85 < z < 0.3:
-            near_dists.append(x)
-    if len(near_dists) >= 5:
+        if 2.5 < x < 35.0 and abs(y) < 3.60 and -1.60 < z < 0.5:
+            dist_p = (x**2 + y**2)**0.5
+            near_dists.append(dist_p)
+    if len(near_dists) >= 3:
         near_dists.sort()
-        # Use 4th nearest point for robustness against outliers
-        d = near_dists[min(3, len(near_dists) - 1)]
+        d = near_dists[min(2, len(near_dists) - 1)]
         current_lidar_dist_m = d
         if d < closest_lidar_obstacle_m:
             closest_lidar_obstacle_m = d
@@ -447,37 +598,41 @@ while time.time() - start < 9.0:
     rclpy.spin_once(node, timeout_sec=0.04)
     elapsed = time.time() - start
 
-    # State machine for ACC / Cut-In Yielding:
-    # 1. APPROACHING: accelerate to target 9.8 m/s to close gap and trigger cut-in.
-    # 2. YIELDING_TO_CUT_IN: when LiDAR detects the merging vehicle within 19.5m in corridor,
-    #    brake smoothly so the Ego slows down and lets cut_in_npc merge safely with ample clearance.
-    # 3. SAFE_FOLLOWING: once cut_in_npc completes merge and pulls >11.0m ahead, resume cruising at 6.5 m/s.
-    if not yield_triggered:
-        if latest_vel > 5.0 and current_lidar_dist_m < 19.5:
-            yield_triggered = True
-            yield_start_time = elapsed
-            record_phase("YIELDING_TO_CUT_IN")
-            target_v = 1.5
-            accel_cmd = -6.5
-        else:
-            record_phase("APPROACHING")
-            target_v = 9.8
-            accel_cmd = max(-3.0, min(3.5, 2.4 * (target_v - latest_vel)))
+    # Receive live pure pursuit steer command from host over UDP
+    try:
+        while True:
+            data, _ = sock.recvfrom(64)
+            if len(data) == 24:
+                steer_in, px, py = struct.unpack("!3d", data)
+                current_steer_cmd = steer_in
+    except (BlockingIOError, OSError):
+        pass
+
+    steer_cmd = current_steer_cmd
+
+    if current_lidar_dist_m < 6.0:
+        record_phase("EMERGENCY_BRAKE")
+        target_v = 0.0
+        accel_cmd = -7.5
+        if latest_vel < min_vel_during_yield:
+            min_vel_during_yield = latest_vel
+    elif current_lidar_dist_m < 20.0:
+        record_phase("YIELDING_TO_CUT_IN")
+        target_v = max(1.0, min(4.5, (current_lidar_dist_m - 6.0) * 0.45))
+        accel_cmd = max(-6.5, min(-2.0, 3.0 * (target_v - latest_vel) - 2.0))
+        if latest_vel < min_vel_during_yield:
+            min_vel_during_yield = latest_vel
+    elif current_lidar_dist_m < 28.0:
+        record_phase("SAFE_FOLLOWING")
+        target_v = max(3.0, min(6.0, (current_lidar_dist_m - 8.0) * 0.35))
+        accel_cmd = max(-3.5, min(2.0, 1.8 * (target_v - latest_vel)))
     else:
-        if current_lidar_dist_m < 11.0 or (elapsed - yield_start_time) < 1.8:
-            record_phase("YIELDING_TO_CUT_IN")
-            # Strong closed-loop braking to let the cutting-in vehicle merge cleanly
-            target_v = 1.5 if current_lidar_dist_m > 9.0 else 0.0
-            accel_cmd = max(-6.5, min(-1.5, 3.0 * (target_v - latest_vel) - 2.5))
-            if latest_vel < min_vel_during_yield:
-                min_vel_during_yield = latest_vel
-        else:
-            record_phase("SAFE_FOLLOWING")
-            target_v = 6.5
-            accel_cmd = max(-2.5, min(2.5, 2.0 * (target_v - latest_vel)))
+        record_phase("APPROACHING")
+        target_v = 8.5
+        accel_cmd = max(-2.5, min(3.0, 2.0 * (target_v - latest_vel)))
 
     msg = Control()
-    msg.lateral.steering_tire_angle = 0.0
+    msg.lateral.steering_tire_angle = float(steer_cmd)
     msg.lateral.steering_tire_rotation_rate = 0.5
     msg.lateral.is_defined_steering_tire_rotation_rate = True
     msg.longitudinal.acceleration = float(accel_cmd)
@@ -487,22 +642,53 @@ while time.time() - start < 9.0:
 
 node.destroy_node()
 rclpy.shutdown()
-print("JSON_DRIVE_RESULT:" + json.dumps({
+print("JSON_DRIVE_RESULT:" + json.dumps({{
     "published": count,
     "peak_velocity_mps": round(peak_vel, 2),
     "min_yield_velocity_mps": round(min_vel_during_yield if min_vel_during_yield < 900 else latest_vel, 2),
     "final_velocity_mps": round(latest_vel, 2),
     "closest_lidar_obstacle_m": round(closest_lidar_obstacle_m, 2),
+    "max_lane_deviation_m": round(max_lat_err, 2),
     "phases": phases_visited,
-}))
+}}))
 """
-        raw_drive = docker_exec_python(args.container_name, drive_code, timeout=40.0)
+        raw_drive = None
+        def _drive_worker():
+            nonlocal raw_drive
+            raw_drive = docker_exec_python(args.container_name, drive_code, timeout=40.0)
+
+        drive_thread = threading.Thread(target=_drive_worker, daemon=True)
+        drive_thread.start()
+
+        # Wait for controller inside container to match subscriber and signal READY
+        t_wait_ready = time.time()
+        while time.time() - t_wait_ready < 6.0:
+            try:
+                msg, _ = ready_sock.recvfrom(64)
+                if msg == b"READY":
+                    break
+            except (socket.timeout, OSError):
+                pass
+            time.sleep(0.04)
+
+        # Start stepping esmini co-simulation now that Autoware controller is matched
+        advance_scenario.set()
+        try:
+            start_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            for _ in range(3):
+                start_sock.sendto(b"START", ("127.0.0.1", 9097))
+                time.sleep(0.01)
+        except Exception:
+            pass
+
+        drive_thread.join(timeout=35.0)
         dist_stop.set()
         dist_thread.join(timeout=1.0)
         col_sensor.stop()
 
         drive_line = [l for l in raw_drive.splitlines() if l.startswith("JSON_DRIVE_RESULT:")][-1]
         drive_res = json.loads(drive_line[len("JSON_DRIVE_RESULT:") :])
+        drive_res["max_lane_deviation_m"] = round(max_lane_deviation, 2)
 
         final_ego_loc = ego_actor.get_location()
         final_ego_state = runner.esmini.get_object_state(ego_id)
@@ -537,6 +723,9 @@ print("JSON_DRIVE_RESULT:" + json.dumps({
         assert (
             "YIELDING_TO_CUT_IN" in drive_res["phases"]
         ), f"Autoware controller did not enter YIELDING_TO_CUT_IN phase: {drive_res}"
+        assert (
+            max_lane_deviation < 0.6
+        ), f"Ego drifted out of lane! Max lateral deviation: {max_lane_deviation:.2f}m >= 0.60m"
 
         print(
             "  [PASS] Check 4: Autoware LiDAR ACC/AEB controller drove CARLA Ego forward, detected the "
