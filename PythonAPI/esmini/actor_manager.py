@@ -411,8 +411,10 @@ class ActorManager:
             for attr, val in (
                 ("channels", "32"),
                 ("range", "50.0"),
-                ("points_per_second", "100000"),
+                ("points_per_second", "56000"),
                 ("rotation_frequency", "20.0"),
+                ("upper_fov", "10.0"),
+                ("lower_fov", "-25.0"),
                 ("sensor_tick", "0.1"),
                 ("ros_name", "top_lidar"),
                 ("role_name", "top_lidar"),
