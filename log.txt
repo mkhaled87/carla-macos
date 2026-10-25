@@ -1,0 +1,482 @@
+esmini GIT REV: v3.10.2-0-d1d4423b
+esmini GIT TAG: v3.10.2
+esmini GIT BRANCH: tags/v3.10.2^0
+esmini BUILD VERSION: 6464
+[] [info] Loaded /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/town10hd_autoware_cut_in.xosc
+[2026-10-25 15:19:07]
+[] [info] Player options: --osc /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/town10hd_autoware_cut_in.xosc --camera_mode orbit --ground_plane auto --headless --info_text 1 --logfile_path log.txt --log_level info --path /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples --text_scale 1.0 --traj_filter 0.1 --light_mode auto 
+[] [info] No fixed timestep specified - running in realtime speed
+[] [info] Added path /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v
+[] [info] Added path /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples
+[] [info] Generated seed 3839502308
+[] [info] Loading /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/town10hd_autoware_cut_in.xosc (v1.2)
+[] [info] 0 variables
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 206--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 206--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] INFO: signal element "signalReference" not supported yet
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 206--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 206--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 206--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 206--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 205--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 205--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Loaded OpenDRIVE: /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/Town10HD_Opt.xodr
+[] [info] 3D model search paths attempted for file car_white.osgb:
+[] [info]   car_white.osgb
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./car_white.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_white.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_white.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./car_white.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/../models/./car_white.osgb
+[] [warn] 3D model car_white.osgb not located, using specified file path
+[] [info] Assigned 3D model car_white.osgb to vehicle car_ego
+[] [info] Add and deactivate new object "ego" (id 0)
+[] [info] 3D model search paths attempted for file car_red.osgb:
+[] [info]   car_red.osgb
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/../models/./car_red.osgb
+[] [warn] 3D model car_red.osgb not located, using specified file path
+[] [info] Assigned 3D model car_red.osgb to vehicle car_red
+[] [info] Add and deactivate new object "lead_npc" (id 1)
+[] [info] 3D model search paths attempted for file car_red.osgb:
+[] [info]   car_red.osgb
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/../models/./car_red.osgb
+[] [warn] 3D model car_red.osgb not located, using specified file path
+[] [info] Assigned 3D model car_red.osgb to vehicle car_yellow
+[] [info] Add and deactivate new object "cut_in_npc" (id 2)
+[] [info] 3D model search paths attempted for file walkman.osgb:
+[] [info]   walkman.osgb
+[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./walkman.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./walkman.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./walkman.osgb
+[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./walkman.osgb
+[] [warn] 3D model walkman.osgb not located, using specified file path
+[] [info] Add and deactivate new object "sidewalk_walker" (id 3)
+[] [info] Parsing global action EnvironmentAction
+[] [warn] Info: "overwrite" priority deprecated in v1.2. Use "override" instead. Accepting it anyway.
+[] [warn] Info: "overwrite" priority deprecated in v1.2. Use "override" instead. Accepting it anyway.
+[] [warn] Info: "overwrite" priority deprecated in v1.2. Use "override" instead. Accepting it anyway.
+[] [info] 3 parameters:
+[] [info]    TriggerDistance = 32.0
+[] [info]    CutInSpeed = 11.5
+[] [info]    LeadTargetSpeed = 15.0
+[0.000] [info] Init EnvironmentAction initState -> startTransition -> runningState
+[0.000] [info] Init EnvironmentAction runningState -> stopTransition -> completeState
+[0.000] [info] Init ego TeleportAction initState -> startTransition -> runningState
+[0.000] [info] Starting teleport Action
+[0.000] [info] ego New position:
+[0.000] [info] Pos(27.35, -137.50, 0.00) Rot(6.28, 0.00, 0.00) roadId 1 laneId -1 s 8.00 offset 0.00 t -1.75
+[0.000] [info] Init ego TeleportAction runningState -> endTransition -> completeState
+[0.000] [info] Init lead_npc TeleportAction initState -> startTransition -> runningState
+[0.000] [info] Starting teleport Action
+[0.000] [info] lead_npc New position:
+[0.000] [info] Pos(65.38, -137.71, 0.00) Rot(0.01, 0.00, 0.00) roadId 1 laneId -1 s 46.00 offset 0.00 t -1.75
+[0.000] [info] Init lead_npc TeleportAction runningState -> endTransition -> completeState
+[0.000] [info] Init lead_npc LongitudinalAction initState -> startTransition -> runningState
+[0.000] [info] Init lead_npc LongitudinalAction runningState -> endTransition -> completeState
+[0.000] [info] Init cut_in_npc TeleportAction initState -> startTransition -> runningState
+[0.000] [info] Starting teleport Action
+[0.000] [info] cut_in_npc New position:
+[0.000] [info] Pos(47.33, -141.12, 0.00) Rot(6.28, 0.00, 0.00) roadId 1 laneId -2 s 28.00 offset 0.00 t -5.25
+[0.000] [info] Init cut_in_npc TeleportAction runningState -> endTransition -> completeState
+[0.000] [info] Init cut_in_npc LongitudinalAction initState -> startTransition -> runningState
+[0.000] [info] Init cut_in_npc LongitudinalAction runningState -> endTransition -> completeState
+[0.000] [info] Init sidewalk_walker TeleportAction initState -> startTransition -> runningState
+[0.000] [info] Starting teleport Action
+[0.000] [info] sidewalk_walker New position:
+[0.000] [info] Pos(87.25, -137.26, 0.00) Rot(0.54, 0.00, 0.00) roadId 1 laneId -2 s 65.00 offset -2.20 t -7.45
+[0.000] [info] Init sidewalk_walker TeleportAction runningState -> endTransition -> completeState
+[0.000] [info] Init sidewalk_walker LongitudinalAction initState -> startTransition -> runningState
+[0.000] [info] Init sidewalk_walker LongitudinalAction runningState -> endTransition -> completeState
+[0.000] [info] storyBoard initState -> startTransition -> runningState
+[0.000] [info] AutowareCutInStory initState -> startTransition -> runningState
+[0.000] [info] CutInAndAccelerateAct initState -> initToStandbyTransition -> standbyState
+[0.000] [info] ActStartCondition: true, delay: 0.00, 0.0000 >= 0.0000, edge: none
+[0.000] [info] Trigger /------------------------------------------------
+[0.000] [info] Group 0:
+[0.000] [info] ActStartCondition: true
+[0.000] [info] Trigger  ------------------------------------------------/
+[0.000] [info] CutInAndAccelerateAct standbyState -> startTransition -> runningState
+[0.000] [info] CutInManeuverGroup initState -> startTransition -> runningState
+[0.000] [info] CutInManeuver initState -> startTransition -> runningState
+[0.000] [info] CutInWhenEgoApproachesEvent initState -> initToStandbyTransition -> standbyState
+[0.000] [info] CutInAccelerateAfterMergeEvent initState -> initToStandbyTransition -> standbyState
+[0.000] [info] LeadVehicleManeuverGroup initState -> startTransition -> runningState
+[0.000] [info] LeadAccelerateManeuver initState -> startTransition -> runningState
+[0.000] [info] LeadAcceleratesWhenEgoClosesGapEvent initState -> initToStandbyTransition -> standbyState
+[1.000] [info] Closing

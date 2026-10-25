@@ -74,7 +74,7 @@ def write_cyclonedds_configs(host_ip: str, host_xml: Path, container_xml: Path) 
     </General>
     <Discovery>
       <ParticipantIndex>0</ParticipantIndex>
-      <MaxAutoParticipantIndex>20</MaxAutoParticipantIndex>
+      <MaxAutoParticipantIndex>80</MaxAutoParticipantIndex>
       <Peers>
         <Peer address="{host_ip}"/>
         <Peer address="127.0.0.1"/>
@@ -96,9 +96,10 @@ def write_cyclonedds_configs(host_ip: str, host_xml: Path, container_xml: Path) 
     </General>
     <Discovery>
       <ParticipantIndex>auto</ParticipantIndex>
-      <MaxAutoParticipantIndex>20</MaxAutoParticipantIndex>
+      <MaxAutoParticipantIndex>80</MaxAutoParticipantIndex>
       <Peers>
         <Peer address="{host_ip}"/>
+        <Peer address="127.0.0.1"/>
       </Peers>
     </Discovery>
   </Domain>
@@ -140,12 +141,14 @@ def start_autoware_container(
     ]
 
     if is_macos:
-        # On macOS (Docker Desktop VM), forward CycloneDDS unicast participant ports (indices 1..15)
+        # On macOS (Docker Desktop VM), forward CycloneDDS unicast participant ports (indices 1..80)
         # and reserve UDP 7410 inside the container so ParticipantIndex=auto picks index >= 1 (7412+),
         # while index 0 (7410/7411) is owned by CARLA on the macOS host.
         cmd += [
             "-p",
-            "7412-7440:7412-7440/udp",
+            "7412-7650:7412-7650/udp",
+            "-p",
+            "9097-9099:9097-9099/udp",
             "-v",
             f"{container_xml}:/tmp/cyclonedds.xml:ro",
             "-e",

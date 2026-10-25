@@ -1,5 +1,6 @@
 ## LATEST Changes
 
+<<<<<<< HEAD
 ### New features
 
 #### Unreal Engine 5.8
@@ -45,6 +46,10 @@
 * Added **`CARLA_MAPS_TO_COOK`**, a CMake option taking a `+`-separated list of map package paths, to cook a smaller package.
 * Added **opt-in ground snapping for OpenDRIVE-generated traffic signs and lights**, through `adjust_signs_height_to_ground` on `carla.WorldSettings` or `bAdjustSignsHeightToGround` on the traffic-light manager. Off by default; hand-placed actors are never moved.
 * **Vehicle wheels now turn when Chaos is not simulating them**: with physics disabled, or while another movement component drives the vehicle, the wheels roll by the distance they travel instead of staying frozen, and they keep their spin when Chaos takes them back. A wheel that moves faster than 150 m/s is treated as teleported and is not turned. Custom vehicles need their animation blueprint reparented to `CarlaVehicleAnimationInstance` to get this.
+
+#### esmini OpenSCENARIO 1.x Integration
+
+* Added `esminiLib` OpenSCENARIO 1.x integration (`PythonAPI/esmini/` and `PythonAPI/examples/esmini_runner.py`): enables executing ASAM OpenSCENARIO 1.x (`.xosc`) scenarios in CARLA via `esmini`'s `libesminiLib` shared library (`ctypes` bindings in `PythonAPI/esmini/esmini_lib.py` and automatic release downloader in `PythonAPI/esmini/fetch_esmini.py`). Supports both runner-spawned Ego vehicles (`--spawn-ego`, with optional native ROS 2 and Autoware attributes `--ros2`, `--autoware`, `--autoware-sensors`, and spectator follow mode `--follow-ego`) and attaching to externally spawned Ego vehicles (`--wait-for-ego`), reports CARLA Ego pose, velocity, angular velocity, acceleration, and wheel status back into `esminiLib` for trigger evaluation, updates NPC vehicles, pedestrians (`ApplyWalkerState`), props, and vehicle light states via batched CARLA RPC commands, synchronizes OpenDRIVE road networks (`world.get_map().to_opendrive()`), and bridges OpenSCENARIO `EnvironmentAction` weather and `TrafficSignalAction` traffic light transitions to CARLA (`PythonAPI/esmini/environment_sync.py`). Includes a `Town10HD_Opt` cut-in and lead-vehicle OpenSCENARIO example (`PythonAPI/esmini/examples/town10hd_autoware_cut_in.xosc`), an automated 3-way CARLA + `esminiLib` + Autoware Docker container ROS 2 test (`PythonAPI/examples/ros2/test_carla_esmini_autoware_ros2.py`), unit and co-simulation tests (`PythonAPI/test/unit/test_esmini_integration.py`), and a user guide (`Docs/esmini-integration/README.md`).
 
 #### Native ROS 2 on macOS
 
