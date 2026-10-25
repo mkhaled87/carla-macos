@@ -52,3 +52,7 @@ Help.md
 # Map maker tutorial and procedural output
 Docs/map-maker/output/
 
+# Downloaded esmini prebuilt binaries and vendor cache
+PythonAPI/esmini/_vendor/
+
+
