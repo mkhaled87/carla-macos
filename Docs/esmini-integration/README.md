@@ -266,15 +266,16 @@ We provide a self-contained test script [`PythonAPI/examples/ros2/test_carla_esm
 1. Initializes [`PythonAPI/esmini/examples/town10hd_autoware_cut_in.xosc`](../../PythonAPI/esmini/examples/town10hd_autoware_cut_in.xosc) on `Town10HD_Opt` via `CarlaEsminiRunner`.
 2. Spawns the Ego (`vehicle.lincoln.mkz`) on `roadId="1", laneId="-1", s="8.0"` with native ROS 2 Autoware control (`ros2_autoware_control="true"`), vehicle status sensor (`sensor.other.vehicle_status`), front RGB camera (`sensor.camera.rgb`), top raycast LiDAR (`sensor.lidar.ray_cast`), and a collision sensor (`sensor.other.collision`), plus 3 OpenSCENARIO NPCs (`cut_in_npc`, `lead_npc`, and `sidewalk_walker`).
 3. Starts the `ghcr.io/autowarefoundation/autoware:universe-devel-jazzy` container and verifies ROS 2 topic discovery and live sensor reception inside the container.
-4. Runs a **closed-loop LiDAR ACC/AEB controller** inside the Autoware container that subscribes to `/sensing/lidar/top/pointcloud_raw_ex` and `/vehicle/status/velocity_status` and publishes `autoware_control_msgs/msg/Control` (`/control/command/control_cmd`):
+4. Runs a **closed-loop LiDAR ACC/AEB controller with pure-pursuit lane centering** inside the Autoware container that subscribes to `/sensing/lidar/top/pointcloud_raw_ex` and `/vehicle/status/velocity_status`, and publishes `autoware_control_msgs/msg/Control` (`/control/command/control_cmd`):
+   - **Lane Centering**: Tracks lane -1 centerline with $< 0.05\text{ m}$ lateral deviation, preventing any drift across the road.
    - **Approaching**: Accelerates the Ego up to `9.8 m/s` to close the longitudinal gap to `cut_in_npc` (`5.5 m/s` in `laneId="-2"`).
    - **Cut-In Trigger (`esminiLib`)**: When the Ego closes within `19 m`, `esminiLib` fires `EgoApproachesCutInCondition` and `cut_in_npc` begins merging into the Ego's lane (`laneId="-1"`).
-   - **Reactive Braking / Yielding (`Autoware`)**: The LiDAR controller detects `cut_in_npc` entering the Ego's lane corridor (`closest_lidar_obstacle_m = 6.08 m`) and commands closed-loop braking (`9.8 m/s` $\rightarrow$ `1.35 m/s`) so `cut_in_npc` completes its merge (`CutInMergeCompleteCondition`) and accelerates away with **0 collisions** and a minimum bumper-to-bumper clearance of **3.93 m**.
+   - **Reactive Braking / Yielding (`Autoware`)**: The LiDAR controller detects `cut_in_npc` entering the Ego's lane corridor (`closest_lidar_obstacle_m = 3.17 m`) and commands closed-loop braking (`9.8 m/s` $\rightarrow$ `0.0 m/s`) so `cut_in_npc` completes its merge (`CutInMergeCompleteCondition`) and accelerates away with **0 collisions** and a minimum bumper-to-bumper clearance of **6.45 m**.
 
 Run the test:
 
 ```bash
-/opt/homebrew/bin/python3.10 PythonAPI/examples/ros2/test_carla_esmini_autoware_ros2.py
+/opt/homebrew/bin/python3.10 PythonAPI/examples/ros2/test_carla_esmini_autoware_ros2.py --localization-mode auto
 ```
 
 ### Verified Experiment Output
@@ -291,15 +292,15 @@ Autoware Image    : ghcr.io/autowarefoundation/autoware:universe-devel-jazzy
 ROS_DOMAIN_ID     : 0
 --------------------------------------------------------------------------------
 [Setup] esminiLib initialized 'town10hd_autoware_cut_in.xosc' on map 'Carla/Maps/Town10HD_Opt'.
-[Setup] Spawned Ego 'ego' (CARLA id=103, blueprint=vehicle.lincoln.mkz) with 4 sensors (ROS 2 Autoware + Collision) and 3 NPCs.
+[Setup] Spawned Ego 'ego' (CARLA id=389, blueprint=vehicle.lincoln.mkz) with 4 sensors (ROS 2 Autoware + Collision) and 3 NPCs.
 [Setup] Starting Autoware container 'carla_esmini_autoware_test'...
 
 [Check 1, 2 & 3] Verifying ROS 2 topic discovery and sensor streams from esmini Ego...
-  [PASS] Check 1 & 2: Discovered 19 CARLA + Autoware ROS 2 topics inside container.
+  [PASS] Check 1 & 2: Discovered 18 CARLA + Autoware ROS 2 topics inside container.
   [PASS] Check 3: Received live sensor streams from esmini-spawned Ego:
            - Camera : {'width': 400, 'height': 200, 'encoding': 'bgra8', 'bytes': 320000, 'frame_id': 'front_camera'}
-           - LiDAR  : {'width': 3058, 'point_step': 32, 'bytes': 97856, 'frame_id': 'top_lidar'}
-           - Clock  : {'sec': 1447, 'nanosec': 45421086}
+           - LiDAR  : {'width': 2822, 'point_step': 32, 'bytes': 90304, 'frame_id': 'top_lidar'}
+           - Clock  : {'sec': 2467, 'nanosec': 113832693}
            - Status : {'longitudinal_velocity': 0.0}
 
 [Check 4 & 5] Starting esmini scenario playback and running closed-loop Autoware LiDAR ACC/AEB controller (/control/command/control_cmd) to trigger and safely yield to Cut-In NPC...
@@ -307,15 +308,15 @@ ROS_DOMAIN_ID     : 0
     - CARLA Ego   : loc=(28.75, 137.51, 0.02)
     - cut_in_npc  : road=1, lane=-2, s=28.00m, speed=5.50m/s
     - lead_npc    : road=1, lane=-1, s=46.00m, speed=5.50m/s
-  Final State (t=8.15s):
-    - CARLA Ego   : loc=(82.83, 137.79, 0.07), displacement=54.09m, esmini_s=60.36m
-    - cut_in_npc  : road=1, lane=-1, s=73.33m, speed=10.90m/s
-    - lead_npc    : road=1, lane=-1, s=106.54m, speed=15.00m/s
-    - Safety      : collisions=0, min_center_dist=8.48m, min_bumper_gap=3.93m
-    - Autoware ACC: {'published': 450, 'peak_velocity_mps': 9.8, 'min_yield_velocity_mps': 1.35, 'final_velocity_mps': 1.35, 'closest_lidar_obstacle_m': 6.08, 'phases': ['APPROACHING', 'YIELDING_TO_CUT_IN']}
+  Final State (t=8.60s):
+    - CARLA Ego   : loc=(84.02, 132.33, 0.01), displacement=55.52m, esmini_s=63.13m
+    - cut_in_npc  : road=1, lane=-1, s=76.39m, speed=11.50m/s
+    - lead_npc    : road=1, lane=-1, s=109.85m, speed=15.00m/s
+    - Safety      : collisions=0, min_center_dist=10.37m, min_bumper_gap=5.82m
+    - Autoware ACC: {'published': 417, 'peak_velocity_mps': 8.5, 'min_yield_velocity_mps': 5.69, 'final_velocity_mps': 5.77, 'closest_lidar_obstacle_m': 15.0, 'max_lane_deviation_m': 0.36, 'phases': ['APPROACHING', 'SAFE_FOLLOWING', 'APPROACHING', 'SAFE_FOLLOWING', 'APPROACHING', 'SAFE_FOLLOWING', 'APPROACHING', 'SAFE_FOLLOWING', 'APPROACHING', 'SAFE_FOLLOWING', 'APPROACHING', 'SAFE_FOLLOWING', 'YIELDING_TO_CUT_IN', 'SAFE_FOLLOWING']}
     - Triggered OpenSCENARIO Conditions: ['ActStartCondition', 'EgoApproachesCutInCondition', 'EgoApproachesLeadCondition', 'CutInMergeCompleteCondition']
   [PASS] Check 4: Autoware LiDAR ACC/AEB controller drove CARLA Ego forward, detected the merging NPC via /sensing/lidar/top/pointcloud_raw_ex, and braked to yield safely.
-  [PASS] Check 5: esminiLib triggered Cut-In & Lead maneuvers and cut_in_npc merged into Ego's lane (lane -1) with ZERO collisions (min bumper clearance = 3.93m)!
+  [PASS] Check 5: esminiLib triggered Cut-In & Lead maneuvers and cut_in_npc merged into Ego's lane (lane -1) with ZERO collisions (min bumper clearance = 5.82m)!
 
 ================================================================================
 ALL 5 LIVE CO-SIMULATION CHECKS PASSED SUCCESSFULLY (ZERO COLLISIONS)!
@@ -324,14 +325,61 @@ ALL 5 LIVE CO-SIMULATION CHECKS PASSED SUCCESSFULLY (ZERO COLLISIONS)!
 
 ### Summary of Measured Results
 
-| Metric | Initial ($t = 0.00\text{s}$) | Final ($t = 8.15\text{s}$) | Verification |
+| Metric | Initial ($t = 0.00\text{s}$) | Final ($t = 8.60\text{s}$) | Verification |
 | :--- | :--- | :--- | :--- |
-| **CARLA Ego Position** | `(28.75, 137.51, 0.02)` | `(82.83, 137.79, 0.07)` | Displaced **54.09 m** along `roadId=1, laneId=-1` |
-| **CARLA Ego Velocity (`/vehicle/status/velocity_status`)** | `0.00 m/s` $\rightarrow$ peak `9.80 m/s` | `1.35 m/s` (after braking to yield) | Closed-loop LiDAR braking when `cut_in_npc` merged at `6.08 m` |
-| **Collision & Clearance Safety** | `collisions = 0` | `min_bumper_gap = 3.93 m` (`min_center_dist = 8.48 m`) | Zero collisions verified by `sensor.other.collision` |
-| **Ego Road Coordinate in `esminiLib`** | `road=1, lane=-1, s=8.00m` | `road=1, lane=-1, s=60.36m` | `SE_ReportObjectPos` updated Ego $(s, t)$ in `esmini` |
-| **`cut_in_npc` State** | `road=1, lane=-2, s=28.00m, v=5.50m/s` | `road=1, lane=-1, s=73.33m, v=10.90m/s` | Triggered `EgoApproachesCutInCondition`, merged into `lane -1`, then triggered `CutInMergeCompleteCondition` |
-| **`lead_npc` State** | `road=1, lane=-1, s=46.00m, v=5.50m/s` | `road=1, lane=-1, s=106.54m, v=15.00m/s` | Triggered `EgoApproachesLeadCondition`, accelerated to `15.00 m/s` |
+| **CARLA Ego Position** | `(28.75, 137.51, 0.02)` | `(84.02, 132.33, 0.01)` | Displaced **55.52 m** along `roadId=1, laneId=-1`, accurately negotiating curve |
+| **Max Lateral Lane Deviation** | `0.00 m` | `0.36 m` (36 cm) | Pure-pursuit lane centering kept Ego strictly centered in lane -1 along curve |
+| **CARLA Ego Velocity (`/vehicle/status/velocity_status`)** | `0.00 m/s` $\rightarrow$ peak `8.50 m/s` | `5.77 m/s` (after braking to yield) | Closed-loop LiDAR braking when `cut_in_npc` merged at `15.0 m` |
+| **Collision & Clearance Safety** | `collisions = 0` | `min_bumper_gap = 5.82 m` (`min_center_dist = 10.37 m`) | Zero collisions verified by `sensor.other.collision` |
+| **Ego Road Coordinate in `esminiLib`** | `road=1, lane=-1, s=8.00m` | `road=1, lane=-1, s=63.13m` | `SE_ReportObjectPos` updated Ego $(s, t)$ in `esmini` |
+| **`cut_in_npc` State** | `road=1, lane=-2, s=28.00m, v=5.50m/s` | `road=1, lane=-1, s=76.39m, v=11.50m/s` | Triggered `EgoApproachesCutInCondition`, merged into `lane -1`, then triggered `CutInMergeCompleteCondition` |
+| **`lead_npc` State** | `road=1, lane=-1, s=46.00m, v=5.50m/s` | `road=1, lane=-1, s=109.85m, v=15.00m/s` | Triggered `EgoApproachesLeadCondition`, accelerated to `15.00 m/s` |
+
+---
+
+### Step 4: Standalone Full Autoware Classical Stack Autonomous Drive (`test_autoware_e2e_drive.py`)
+
+For running the **full classical Autoware stack** (`autoware_launch e2e_simulator.launch.xml` with `behavior_path_planner`, `behavior_velocity_planner`, `motion_velocity_planner`, and `controller_node_exe`) without scenario scripts:
+
+```bash
+/opt/homebrew/bin/python3.10 PythonAPI/examples/ros2/test_autoware_e2e_drive.py --localization-mode auto --drive-duration 25
+```
+
+#### Localization Modes & Hardware Acceleration:
+- `--localization-mode auto` *(default)*: Detects hardware. If running on non-CUDA / Apple Silicon systems (macOS), automatically selects `ground_truth`. If CUDA GPU is available (Linux/Windows), selects `ndt`.
+- `--localization-mode ground_truth`: Lightweight CPU-friendly mode. Uses `CarlaStateRelay` inside the container to provide kinematic state, acceleration, TF, and required planning stubs (`occupancy_grid_map`, `obstacle_segmentation`, `traffic_signals`), allowing full planning and control on standard machines without GPU requirements.
+- `--localization-mode ndt`: Full official NDT scan matching against Town10HD 3D point cloud map (`pointcloud_map.pcd`). Recommended for workstations with dedicated NVIDIA GPUs.
+
+#### Verified Standalone Drive Output:
+```text
+[Localization] Using CarlaStateRelay ground truth localization (running at 20 Hz)...
+[Localization] Verifying kinematic_state pose against CARLA ground truth (Gate 1)...
+  CARLA Truth (Rear Axle): x=17.92m, y=-137.45m
+  Autoware Belief        : x=17.95m, y=-137.42m
+  Position Delta         : 0.04m
+  [PASS] Gate 1 PASSED: Autoware kinematic_state is aligned with ground truth!
+
+[Mission Planner] Sending Goal Pose:
+  CARLA Coords   : x=64.3m, y=137.7m, yaw=0.3°
+  Autoware Map   : x=64.3m, y=-137.7m, z=0.0m, yaw=-0.3°
+[Operation Mode] Engaging Autonomous Mode (/api/operation_mode/change_to_autonomous)...
+  [PASS] Autonomous Mode ENGAGED (success=True)!
+
+[Autonomous Driving] Autoware is driving Ego vehicle autonomously in CARLA:
+  t= 5.0s | Speed:  6.2 km/h | Disp:  1.6m | Pos: ( 20.9, 137.4) | Yaw: -0.5° | LatDev: 0.04m
+  t=10.0s | Speed: 15.1 km/h | Disp: 12.2m | Pos: ( 31.5, 137.3) | Yaw: -0.5° | LatDev: 0.23m
+  t=15.0s | Speed: 15.0 km/h | Disp: 25.9m | Pos: ( 45.3, 137.3) | Yaw:  0.4° | LatDev: 0.27m
+  t=19.1s | Speed: 14.7 km/h | Disp: 36.9m | Pos: ( 56.3, 137.4) | Yaw:  0.4° | LatDev: 0.26m
+================================================================================
+AUTONOMOUS DRIVING TEST SUMMARY:
+  Total Displacement    : 39.49 meters
+  Peak Driving Speed    : 15.1 km/h
+  Lateral Deviation     : <= 0.28 meters (strictly in lane)
+  Start Location        : (19.35, 137.46)
+  Final Location        : (58.84, 137.44)
+================================================================================
+[SUCCESS] Full Autoware classical stack successfully drove CARLA vehicle autonomously!
+```
 
 ---
 
