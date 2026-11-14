@@ -31,13 +31,18 @@ def find_recast_builder_binary(repo_root: Path | None = None) -> Path | None:
     if repo_root is None:
         repo_root = Path(__file__).resolve().parent.parent.parent
 
+    package_tools: list[Path] = [
+        repo_root / "Build/Package/Carla-1.0-Mac-Shipping/Tools/RecastBuilder",
+        repo_root / "Build/Package/Carla-1.0-Mac-Shipping/Mac/Tools/RecastBuilder",
+        *sorted((repo_root / "Build/Package").glob("Carla-*-Mac-*/Tools/RecastBuilder")),
+        *sorted((repo_root / "Build/Package").glob("Carla-*-Mac-*/Mac/Tools/RecastBuilder")),
+    ]
     candidates = [
         repo_root / "Build/_deps/recastnavigation-build/RecastBuilder/RecastBuilder.app/Contents/MacOS/RecastBuilder",
         repo_root / "Build/_deps/recastnavigation-build/RecastBuilder/RecastBuilder",
         repo_root / "Build/Release/_deps/recastnavigation-build/RecastBuilder/RecastBuilder.app/Contents/MacOS/RecastBuilder",
         repo_root / "Build/Release/_deps/recastnavigation-build/RecastBuilder/RecastBuilder",
-        repo_root / "Build/Package/Carla-0.10.0-Mac-Shipping/Tools/RecastBuilder",
-        repo_root / "Build/Package/Carla-0.10.0-Mac-Shipping/Mac/Tools/RecastBuilder",
+        *package_tools,
         repo_root / "Tools/RecastBuilder",
         repo_root / "Tools/RecastBuilder.exe",
     ]

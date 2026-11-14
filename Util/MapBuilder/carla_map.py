@@ -112,6 +112,7 @@ try:
         extract_osm_crosswalks,
         generate_crosswalk_meshes,
         load_crosswalks_manifest,
+        make_lat_lon_projector,
         save_crosswalks_manifest,
     )
     from Util.MapBuilder.osm_vegetation import (
@@ -232,6 +233,7 @@ except ImportError:
         extract_osm_crosswalks,
         generate_crosswalk_meshes,
         load_crosswalks_manifest,
+        make_lat_lon_projector,
         save_crosswalks_manifest,
     )
     from osm_vegetation import (
@@ -797,21 +799,7 @@ def cmd_build(args: argparse.Namespace) -> int:
     b_verts: list[tuple[float, float, float]] = []
     building_placements: list[dict[str, Any]] = []
     if osm_path:
-        # Read OpenDRIVE header offset for exact geographic coordinate alignment
-        import xml.etree.ElementTree as ET
-        xodr_root = ET.fromstring(xodr_xml_content)
-        header = xodr_root.find("header")
-        offset_elem = header.find("offset") if header is not None else None
-        off_x = float(offset_elem.get("x", "0.0")) if offset_elem is not None else 0.0
-        off_y = float(offset_elem.get("y", "0.0")) if offset_elem is not None else 0.0
-
-        def project_lat_lon(lat: float, lon: float) -> tuple[float, float, float]:
-            loc = carla_map.geolocation_to_transform(carla.GeoLocation(lat, lon, 0.0))
-            # OpenDRIVE maps X_tmerc + off_x to x, and Y_tmerc + off_y to y.
-            # In CARLA left-handed coordinate frame, y_carla = -y_odr = -(loc.y + off_y).
-            x_carla = loc.x + off_x
-            y_carla = -(loc.y + off_y)
-            return x_carla, y_carla, loc.z
+        project_lat_lon = make_lat_lon_projector(carla_map=carla_map, xodr_xml=xodr_xml_content)
 
         osm_bldgs_cfg = recipe_dict.get("osm_buildings", {"enabled": True})
         if osm_bldgs_cfg.get("enabled", True):
@@ -2643,11 +2631,13 @@ def cmd_install(args: argparse.Namespace) -> int:
     """Installs a .carlamap bundle into a target CARLA installation."""
     target_path = Path(args.target).resolve()
     if not getattr(args, "server", ""):
-        pkg_cand = REPO_ROOT / "Build/Package/Carla-0.10.0-Mac-Shipping"
-        if pkg_cand.is_dir():
-            server_root = pkg_cand.resolve()
-        else:
-            server_root = REPO_ROOT
+        pkg_cands = [
+            REPO_ROOT / "Build/Package/Carla-1.0-Mac-Shipping",
+            *sorted((REPO_ROOT / "Build/Package").glob("Carla-*-Mac-Shipping")),
+            *sorted((REPO_ROOT / "Build/Package").glob("Carla-*-Linux-Shipping")),
+        ]
+        pkg_cand = next((p for p in pkg_cands if p.is_dir()), None)
+        server_root = pkg_cand.resolve() if pkg_cand is not None else REPO_ROOT
     else:
         server_root = Path(args.server).resolve()
 
@@ -2759,10 +2749,13 @@ def cmd_install(args: argparse.Namespace) -> int:
                 print(f"  Synced NavMesh cache -> {dest_file}")
 
         # Evict stale client cache if present
-        cache_nav = Path.home() / "carlaCache" / "0.10.0" / "Carla" / "Maps" / "Nav" / f"{map_name}.bin"
-        if cache_nav.parent.is_dir():
-            shutil.copy2(nav_in_bundle, cache_nav)
-            print(f"  Refreshed client NavMesh cache -> {cache_nav}")
+        cache_root = Path.home() / "carlaCache"
+        if cache_root.is_dir():
+            for cache_nav_dir in sorted(cache_root.glob("*/Carla/Maps/Nav")):
+                if cache_nav_dir.is_dir():
+                    cache_nav = cache_nav_dir / f"{map_name}.bin"
+                    shutil.copy2(nav_in_bundle, cache_nav)
+                    print(f"  Refreshed client NavMesh cache -> {cache_nav}")
 
     print(f"[carla-map] Successfully installed map bundle '{map_name}'!")
     print(f"  Installation Location : {dest_bundle_dir}")

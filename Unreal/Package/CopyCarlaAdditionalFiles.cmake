@@ -72,8 +72,10 @@ endif ()
 if (APPLE)
   # Update staged app bundle with freshly compiled Shipping binary if present
   set (FRESH_SHIPPING_BIN "${CARLA_WORKSPACE_PATH}/Unreal/CarlaUnreal/Binaries/Mac/CarlaUnreal-Mac-Shipping.app/Contents/MacOS/CarlaUnreal-Mac-Shipping")
+  file (GLOB CARLA_MAC_APP_BUNDLES LIST_DIRECTORIES true
+    ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal*.app
+    ${CARLA_PACKAGE_ARCHIVE_PATH}/*/CarlaUnreal*.app)
   if (EXISTS "${FRESH_SHIPPING_BIN}")
-    file (GLOB CARLA_MAC_APP_BUNDLES LIST_DIRECTORIES true ${CARLA_PACKAGE_ARCHIVE_PATH}/*/*.app)
     foreach (CARLA_MAC_APP ${CARLA_MAC_APP_BUNDLES})
       if (EXISTS "${CARLA_MAC_APP}/Contents/MacOS/CarlaUnreal-Mac-Shipping")
         file (COPY_FILE "${FRESH_SHIPPING_BIN}" "${CARLA_MAC_APP}/Contents/MacOS/CarlaUnreal-Mac-Shipping")
@@ -85,7 +87,6 @@ if (APPLE)
   # Unreal Engine's default shipping config applies Sandbox.NoNet.entitlements,
   # which enables com.apple.security.app-sandbox without network permissions,
   # causing bind() to fail with "Operation not permitted".
-  file (GLOB CARLA_MAC_APP_BUNDLES LIST_DIRECTORIES true ${CARLA_PACKAGE_ARCHIVE_PATH}/*/*.app)
   foreach (CARLA_MAC_APP ${CARLA_MAC_APP_BUNDLES})
     execute_process (
       COMMAND /usr/bin/codesign --force --sign - ${CARLA_MAC_APP}
@@ -97,9 +98,6 @@ if (APPLE)
       message (WARNING "Failed to re-sign ${CARLA_MAC_APP} (${CODESIGN_RESULT}).")
     endif ()
   endforeach ()
-
-  make_directory (${CARLA_PACKAGE_ARCHIVE_PATH}/Mac/Tools)
-  file (COPY_FILE ${RECASTBUILDER_SRC} ${CARLA_PACKAGE_ARCHIVE_PATH}/Mac/Tools/RecastBuilder)
 
   file (WRITE ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal.sh
 "#!/bin/bash
@@ -123,35 +121,17 @@ while [[ \$# -gt 0 ]]; do
       ;;
   esac
 done
-exec \"\$SCRIPT_DIR/Mac/CarlaUnreal-Mac-Shipping.app/Contents/MacOS/CarlaUnreal-Mac-Shipping\" \"\${ARGS[@]}\"
+if [[ -x \"\$SCRIPT_DIR/CarlaUnreal-Mac-Shipping.app/Contents/MacOS/CarlaUnreal-Mac-Shipping\" ]]; then
+  exec \"\$SCRIPT_DIR/CarlaUnreal-Mac-Shipping.app/Contents/MacOS/CarlaUnreal-Mac-Shipping\" \"\${ARGS[@]}\"
+fi
+APP_BIN=\$(find \"\$SCRIPT_DIR\" -maxdepth 4 -path \"*CarlaUnreal*.app/Contents/MacOS/CarlaUnreal*\" -perm +111 -type f 2>/dev/null | head -n 1)
+if [[ -z \"\$APP_BIN\" ]]; then
+  echo \"ERROR: Could not find CarlaUnreal*.app binary under \$SCRIPT_DIR\" >&2
+  exit 1
+fi
+exec \"\$APP_BIN\" \"\${ARGS[@]}\"
 ")
   execute_process (COMMAND chmod +x ${CARLA_PACKAGE_ARCHIVE_PATH}/CarlaUnreal.sh)
-
-  file (WRITE ${CARLA_PACKAGE_ARCHIVE_PATH}/Mac/CarlaUnreal.sh
-"#!/bin/bash
-SCRIPT_DIR=\"\$(cd \"\$(dirname \"\${BASH_SOURCE[0]}\")\" && pwd)\"
-# Normalize space-separated port flags (-carla-rpc-port 2000 -> -carla-rpc-port=2000)
-ARGS=()
-while [[ \$# -gt 0 ]]; do
-  case \"\$1\" in
-    -carla-rpc-port|-carla-port|-world-port|-carla-streaming-port|-carla-secondary-port)
-      if [[ -n \"\$2\" && \"\$2\" != -* ]]; then
-        ARGS+=(\"\$1=\$2\")
-        shift 2
-      else
-        ARGS+=(\"\$1\")
-        shift
-      fi
-      ;;
-    *)
-      ARGS+=(\"\$1\")
-      shift
-      ;;
-  esac
-done
-exec \"\$SCRIPT_DIR/CarlaUnreal-Mac-Shipping.app/Contents/MacOS/CarlaUnreal-Mac-Shipping\" \"\${ARGS[@]}\"
-")
-  execute_process (COMMAND chmod +x ${CARLA_PACKAGE_ARCHIVE_PATH}/Mac/CarlaUnreal.sh)
 endif ()
 
 make_directory (${CARLA_PACKAGE_ARCHIVE_PATH}/PythonAPI/carla/dist)

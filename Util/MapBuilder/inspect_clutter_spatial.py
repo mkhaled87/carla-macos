@@ -25,6 +25,7 @@ sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "Util" / "MapBuilder"))
 
 from osm_buildings import extract_osm_building_footprints
+from osm_crosswalks import make_lat_lon_projector
 from osm_clutter import (
     ClutterItem,
     extract_osm_clutter,
@@ -158,20 +159,9 @@ def audit_clutter_clearance(
 ) -> dict[str, Any]:
     """Audits spatial clearance of clutter items and parked cars against an OpenDRIVE map and OSM footprints."""
     xodr_file = Path(xodr_path)
-    tree = ET.parse(str(xodr_file))
-    off_x, off_y = 0.0, 0.0
-    header = tree.getroot().find("header")
-    if header is not None:
-        off_elem = header.find("offset")
-        if off_elem is not None:
-            off_x = float(off_elem.get("x", "0.0"))
-            off_y = float(off_elem.get("y", "0.0"))
-
-    carla_map = carla.Map(xodr_file.stem, xodr_file.read_text(encoding="utf-8"))
-
-    def project_coord(lat: float, lon: float) -> tuple[float, float, float]:
-        loc = carla_map.geolocation_to_transform(carla.GeoLocation(lat, lon, 0.0))
-        return loc.x + off_x, -(loc.y + off_y), loc.z
+    xodr_xml = xodr_file.read_text(encoding="utf-8")
+    carla_map = carla.Map(xodr_file.stem, xodr_xml)
+    project_coord = make_lat_lon_projector(carla_map=carla_map, xodr_xml=xodr_xml)
 
     building_polys: list[list[tuple[float, float]]] = []
     if osm_path and Path(osm_path).is_file():
@@ -223,19 +213,8 @@ def main() -> int:
     # Load xodr offset for OSM coordinate projection
     bundle_dir = REPO_ROOT / f"{args.map_name}.carlamap"
     xodr_path = bundle_dir / "OpenDrive" / f"{args.map_name}.xodr"
-    off_x, off_y = 0.0, 0.0
-    if xodr_path.is_file():
-        tree = ET.parse(str(xodr_path))
-        header = tree.getroot().find("header")
-        if header is not None:
-            off_elem = header.find("offset")
-            if off_elem is not None:
-                off_x = float(off_elem.get("x", "0.0"))
-                off_y = float(off_elem.get("y", "0.0"))
-
-    def project_coord(lat: float, lon: float) -> tuple[float, float, float]:
-        loc = carla_map.geolocation_to_transform(carla.GeoLocation(lat, lon, 0.0))
-        return loc.x + off_x, -(loc.y + off_y), loc.z
+    xodr_xml = xodr_path.read_text(encoding="utf-8") if xodr_path.is_file() else None
+    project_coord = make_lat_lon_projector(carla_map=carla_map, xodr_xml=xodr_xml)
 
     # Extract building polygons for collision tests
     osm_path = Path(args.osm)

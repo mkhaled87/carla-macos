@@ -28,6 +28,7 @@ sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "Util" / "MapBuilder"))
 
 from osm_buildings import extract_osm_building_footprints
+from osm_crosswalks import make_lat_lon_projector
 from osm_clutter import (
     extract_osm_clutter,
     generate_curbside_parked_cars,
@@ -91,19 +92,8 @@ def main() -> int:
     if not bundle_dir.is_dir():
         bundle_dir = REPO_ROOT / "MunichStachus.carlamap"
     xodr_path = bundle_dir / "OpenDrive" / "MunichStachus.xodr"
-    off_x, off_y = 0.0, 0.0
-    if xodr_path.is_file():
-        tree = ET.parse(str(xodr_path))
-        header = tree.getroot().find("header")
-        if header is not None:
-            off_elem = header.find("offset")
-            if off_elem is not None:
-                off_x = float(off_elem.get("x", "0.0"))
-                off_y = float(off_elem.get("y", "0.0"))
-
-    def project_coord(lat: float, lon: float) -> tuple[float, float, float]:
-        loc = carla_map.geolocation_to_transform(carla.GeoLocation(lat, lon, 0.0))
-        return loc.x + off_x, -(loc.y + off_y), loc.z
+    xodr_xml = xodr_path.read_text(encoding="utf-8") if xodr_path.is_file() else None
+    project_coord = make_lat_lon_projector(carla_map=carla_map, xodr_xml=xodr_xml)
 
     osm_path = REPO_ROOT / "Docs" / "map-maker" / "output" / "munich_stachus.osm"
     if not osm_path.is_file():

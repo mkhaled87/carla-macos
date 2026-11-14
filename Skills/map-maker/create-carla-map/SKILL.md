@@ -2,7 +2,7 @@
 name: create-carla-map
 description: Creates, compiles, inspects, and installs standalone, editor-free CARLA map bundles (.carlamap.tar.gz) completely offline using the carla-map CLI without Unreal Engine source or Editor access. Supports OpenStreetMap (.osm) conversion to OpenDRIVE (.xodr), 3D building extrusion with ear-clipping triangulation, custom 3D mesh import (.obj, .gltf, .glb) with semantic tagging and automatic Z-fighting elimination, offline Recast pedestrian NavMesh compilation, Traffic Manager cache cooking, and installation into packaged CARLA servers. Use when the user asks to "create a map without unreal editor", "import custom FBX/OBJ roads", "convert OSM to CARLA", "build a carlamap bundle", or "install a custom map into packaged CARLA".
 license: MIT
-compatibility: macOS (Apple Silicon arm64) and Linux (x86_64, aarch64). Works on both source checkouts and packaged standalone CARLA simulators (e.g. Carla-0.10.0-Mac-Shipping) with zero Unreal Editor requirements.
+compatibility: macOS (Apple Silicon arm64) and Linux (x86_64, aarch64). Works on both source checkouts and packaged standalone CARLA simulators (e.g. Carla-1.0-Mac-Shipping) with zero Unreal Editor requirements.
 metadata:
   group: map-maker
 ---
@@ -33,7 +33,7 @@ cp /path/to/city.osm osm/city.osm
 ./carla-map verify MyCity.carlamap.tar.gz
 
 # 5. Install into packaged CARLA server
-./carla-map install MyCity.carlamap.tar.gz --server /path/to/Carla-0.10.0-Mac-Shipping
+./carla-map install MyCity.carlamap.tar.gz --server /path/to/Carla-1.0-Mac-Shipping
 ```
 
 ### Option B: Custom 3D Road / Sidewalk / Building Meshes (.obj / .gltf) + OpenDRIVE (.xodr)

@@ -43,6 +43,16 @@ endif ()
 foreach (PROJECT_DIR ${PROJECT_DIRS})
   file (WRITE ${PROJECT_DIR}/BaseRelease "${CARLA_BASE_RELEASE_NAME}\n")
   message (STATUS "Wrote ${PROJECT_DIR}/BaseRelease = ${CARLA_BASE_RELEASE_NAME}")
+  if (APPLE AND "${PROJECT_DIR}" MATCHES "(.+\\.app)/Contents/UE/CarlaUnreal$")
+    set (MAC_APP_BUNDLE "${CMAKE_MATCH_1}")
+    execute_process (
+      COMMAND /usr/bin/codesign --force --sign - ${MAC_APP_BUNDLE}
+      RESULT_VARIABLE CODESIGN_RESULT
+    )
+    if (NOT CODESIGN_RESULT EQUAL 0)
+      message (WARNING "Failed to re-sign ${MAC_APP_BUNDLE} after writing BaseRelease (${CODESIGN_RESULT}).")
+    endif ()
+  endif ()
 endforeach ()
 # Also at the archive root for humans/tools that never open the project dir.
 file (WRITE ${CARLA_PACKAGE_ARCHIVE_PATH}/BaseRelease "${CARLA_BASE_RELEASE_NAME}\n")

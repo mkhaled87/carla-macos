@@ -50,10 +50,14 @@ def find_packaged_carla_dir() -> Path:
     if env_pkg and Path(env_pkg).is_dir():
         return Path(env_pkg)
 
+    pkg_root = REPO_ROOT / "Build" / "Package"
     candidates = [
-        REPO_ROOT / "Build" / "Package" / "Carla-0.10.0-Mac-Shipping",
-        REPO_ROOT / "Build" / "Package" / "Carla-0.10.0-Linux-Shipping",
-        REPO_ROOT / "Build" / "Package" / "Carla-0.10.0-Mac-Development",
+        pkg_root / "Carla-1.0-Mac-Shipping",
+        pkg_root / "Carla-1.0-Linux-Shipping",
+        pkg_root / "Carla-1.0-Mac-Development",
+        *sorted(p for p in pkg_root.glob("Carla-*-Mac-Shipping") if p.is_dir()),
+        *sorted(p for p in pkg_root.glob("Carla-*-Linux-Shipping") if p.is_dir()),
+        *sorted(p for p in pkg_root.glob("Carla-*-Mac-Development") if p.is_dir()),
     ]
     for c in candidates:
         if c.is_dir():

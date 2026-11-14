@@ -616,6 +616,12 @@ Loads a new world with a basic 3D topology generated from the content of an Open
         - `opendrive` (_str_) - Content of an OpenDRIVE file as `string`, __not the path to the `.xodr`__.  
         - `parameters` (_[carla.OpendriveGenerationParameters](#carla.OpendriveGenerationParameters)_) - Additional settings for the mesh generation. If none are provided, default values will be used.  
         - `reset_settings` (_bool_) - Option to reset the episode setting to default values, set to false to keep the current settings. This is useful to keep sync mode when changing map and to keep deterministic scenarios.  
+- <a name="carla.Client.load_map_bundle"></a>**<font color="#7fb800">load_map_bundle</font>**(<font color="#00a6ed">**self**</font>, <font color="#00a6ed">**bundle_path**</font>, <font color="#00a6ed">**reset_settings**=True</font>)  
+Loads an editor-free `.carlamap` bundle directly on the server. Unpacks OpenDRIVE road networks, pre-compiled Recast pedestrian navigation mesh (`Nav/<MapName>.bin`), Traffic Manager cache (`TM/<MapName>.bin`), and binary `.cmesh` procedural geometry layers with Chaos physics collision and ground-truth semantic segmentation tags.  
+    - **Parameters:**
+        - `bundle_path` (_str_) - Path to a `.carlamap.tar.gz` bundle archive or unpacked map directory.  
+        - `reset_settings` (_bool_) - Option to reset the episode setting to default values, set to false to keep the current settings.  
+    - **Return:** _[carla.World](#carla.World)_  
 - <a name="carla.Client.load_world"></a>**<font color="#7fb800">load_world</font>**(<font color="#00a6ed">**self**</font>, <font color="#00a6ed">**map_name**</font>, <font color="#00a6ed">**reset_settings**=True</font>, <font color="#00a6ed">**map_layers**=[carla.MapLayer.All](#carla.MapLayer.All)</font>)  
 Creates a new world with default settings using `map_name` map. All actors in the current world will be destroyed.  
     - **Parameters:**
@@ -842,6 +848,60 @@ Map names declared by the pack manifest.
 
 ##### Dunder methods
 - <a name="carla.ContentPackInfo.__str__"></a>**<font color="#7fb800">\__str__</font>**(<font color="#00a6ed">**self**</font>)  
+
+---
+
+## carla.CustomMaterialParameters<a name="carla.CustomMaterialParameters"></a>
+Fine-grained material customization parameters for custom procedural meshes.  
+
+### Instance Variables
+- <a name="carla.CustomMaterialParameters.base_color"></a>**<font color="#f8805a">base_color</font>** (_[carla.Color](#carla.Color)_)  
+Base color tint applied to the material.  
+- <a name="carla.CustomMaterialParameters.roughness"></a>**<font color="#f8805a">roughness</font>** (_float_)  
+Surface roughness (0.0 = mirror/smooth, 1.0 = rough/diffuse).  
+- <a name="carla.CustomMaterialParameters.metallic"></a>**<font color="#f8805a">metallic</font>** (_float_)  
+Surface metallic reflectance (0.0 = dielectric, 1.0 = metal).  
+- <a name="carla.CustomMaterialParameters.specular"></a>**<font color="#f8805a">specular</font>** (_float_)  
+Surface specular reflectance multiplier.  
+- <a name="carla.CustomMaterialParameters.uv_scale"></a>**<font color="#f8805a">uv_scale</font>** (_[carla.Vector2D](#carla.Vector2D)_)  
+UV texture tiling multiplier.  
+- <a name="carla.CustomMaterialParameters.albedo_texture_path"></a>**<font color="#f8805a">albedo_texture_path</font>** (_str_)  
+Optional file path to custom albedo diffuse texture.  
+- <a name="carla.CustomMaterialParameters.normal_texture_path"></a>**<font color="#f8805a">normal_texture_path</font>** (_str_)  
+Optional file path to custom normal map texture.  
+- <a name="carla.CustomMaterialParameters.roughness_texture_path"></a>**<font color="#f8805a">roughness_texture_path</font>** (_str_)  
+Optional file path to custom roughness map texture.  
+
+---
+
+## carla.CustomMeshDescription<a name="carla.CustomMeshDescription"></a>
+Specification of a static custom procedural mesh to spawn in the CARLA simulation world.  
+
+### Instance Variables
+- <a name="carla.CustomMeshDescription.name"></a>**<font color="#f8805a">name</font>** (_str_)  
+Unique name or identifier for this custom mesh instance.  
+- <a name="carla.CustomMeshDescription.transform"></a>**<font color="#f8805a">transform</font>** (_[carla.Transform](#carla.Transform)_)  
+World transform (location and rotation) where the mesh will be instantiated.  
+- <a name="carla.CustomMeshDescription.scale"></a>**<font color="#f8805a">scale</font>** (_[carla.Vector3D](#carla.Vector3D)_)  
+Non-uniform 3D scale vector applied to the mesh geometry.  
+- <a name="carla.CustomMeshDescription.vertices"></a>**<font color="#f8805a">vertices</font>** (_list(float)_)  
+Flat array of 3D vertex coordinates (x, y, z) in meters in the client frame.  
+- <a name="carla.CustomMeshDescription.triangles"></a>**<font color="#f8805a">triangles</font>** (_list(int)_)  
+Flat array of 3-tuple triangle indices referencing the vertex array.  
+- <a name="carla.CustomMeshDescription.normals"></a>**<font color="#f8805a">normals</font>** (_list(float)_)  
+Flat array of normal vectors (nx, ny, nz) per vertex.  
+- <a name="carla.CustomMeshDescription.uvs"></a>**<font color="#f8805a">uvs</font>** (_list(float)_)  
+Flat array of texture coordinates (u, v) per vertex.  
+- <a name="carla.CustomMeshDescription.vertex_colors"></a>**<font color="#f8805a">vertex_colors</font>** (_list([carla.Color](#carla.Color))_)  
+Array of per-vertex RGBA color tints.  
+- <a name="carla.CustomMeshDescription.material_preset"></a>**<font color="#f8805a">material_preset</font>** (_str_)  
+Named pre-cooked material preset (e.g. 'road_asphalt', 'sidewalk_concrete', 'building_brick', 'grass', 'wall_concrete').  
+- <a name="carla.CustomMeshDescription.semantic_label"></a>**<font color="#f8805a">semantic_label</font>** (_[carla.CityObjectLabel](#carla.CityObjectLabel)_)  
+Ground-truth Cityscapes semantic segmentation label (e.g. Roads, Sidewalks, Buildings, Vegetation).  
+- <a name="carla.CustomMeshDescription.enable_collision"></a>**<font color="#f8805a">enable_collision</font>** (_bool_)  
+Whether to generate Chaos physics collision for drivable or blocking interactions.  
+- <a name="carla.CustomMeshDescription.material_params"></a>**<font color="#f8805a">material_params</font>** (_[carla.CustomMaterialParameters](#carla.CustomMaterialParameters)_)  
+Optional fine-grained material parameters.  
 
 ---
 
@@ -2204,6 +2264,9 @@ Constructor for this class. Though a map is automatically generated when initial
         - `name` (_str_) - Name of the current map.  
         - `xodr_content` (_str_) - .xodr content in string format.  
     - **Return:** _list([carla.Transform](#carla.Transform))_  
+- <a name="carla.Map.cook_in_memory_map"></a>**<font color="#7fb800">cook_in_memory_map</font>**(<font color="#00a6ed">**self**</font>)  
+Pre-cooks and serializes the Traffic Manager in-memory waypoint topology graph into binary bytes (`TM/<MapName>.bin`) for zero-latency loading and offline `.carlamap` bundle compilation.  
+    - **Return:** _bytes_  
 - <a name="carla.Map.cook_in_memory_map"></a>**<font color="#7fb800">cook_in_memory_map</font>**(<font color="#00a6ed">**self**</font>, <font color="#00a6ed">**path**</font>)  
 Generates a binary file from the CARLA map containing information used by the Traffic Manager. This method is only used during the import process for maps.  
     - **Parameters:**
@@ -2389,6 +2452,14 @@ If __True__, the mesh at junctions will be smoothed to prevent issues where road
 If __True__, the road mesh will be rendered. Setting this to __False__ should reduce the rendering overhead.  __Default is `True`__.  
 - <a name="carla.OpendriveGenerationParameters.enable_pedestrian_navigation"></a>**<font color="#f8805a">enable_pedestrian_navigation</font>** (_bool_)  
 If __True__, Pedestrian navigation will be enabled using Recast tool. For very large maps it is recomended to disable this option. __Default is `True`__.  
+- <a name="carla.OpendriveGenerationParameters.generate_road_mesh"></a>**<font color="#f8805a">generate_road_mesh</font>** (_bool_)  
+If __True__, procedural 3D road meshes will be generated from OpenDRIVE geometry. Set to __False__ when importing custom 3D road meshes to eliminate Z-fighting. __Default is `True`__.  
+- <a name="carla.OpendriveGenerationParameters.generate_ground_mesh"></a>**<font color="#f8805a">generate_ground_mesh</font>** (_bool_)  
+If __True__, procedural ground meshes will be generated underneath the road network. __Default is `True`__.  
+- <a name="carla.OpendriveGenerationParameters.generate_street_furniture"></a>**<font color="#f8805a">generate_street_furniture</font>** (_bool_)  
+If __True__, procedural street furniture (guard rails, poles) will be placed along roads. __Default is `True`__.  
+- <a name="carla.OpendriveGenerationParameters.generate_traffic_signals"></a>**<font color="#f8805a">generate_traffic_signals</font>** (_bool_)  
+If __True__, traffic lights and traffic signs defined in the OpenDRIVE network will be spawned. __Default is `True`__.  
 
 ---
 
@@ -4589,6 +4660,16 @@ Spawns a static procedural mesh with collision in the world. The mesh lives unti
         - `vertices` (_list(float)_) - Flat list of vertex coordinates (x0, y0, z0, x1, y1, z1, ...) in meters, in the client coordinate frame.  
         - `triangles` (_list(int)_) - Triangle indices into the vertex list, three per triangle.  
         - `material` (_str_) - Semantic material hint ("grass", "road", "dirt", "sidewalk") or a full Unreal Engine material object path.  
+- <a name="carla.World.spawn_custom_mesh_ex"></a>**<font color="#7fb800">spawn_custom_mesh_ex</font>**(<font color="#00a6ed">**self**</font>, <font color="#00a6ed">**mesh_description**</font>)  
+Spawns a custom mesh actor with full transform, normals, UVs, collision, material presets, and CityObjectLabel ground-truth semantic segmentation tagging. Returns the unique actor/object ID.  
+    - **Parameters:**
+        - `mesh_description` (_[carla.CustomMeshDescription](#carla.CustomMeshDescription)_) - Full specification of the custom procedural mesh including transform, geometry, normals, UVs, colors, collision, material preset, and semantic label.  
+    - **Return:** _int_  
+- <a name="carla.World.spawn_custom_meshes"></a>**<font color="#7fb800">spawn_custom_meshes</font>**(<font color="#00a6ed">**self**</font>, <font color="#00a6ed">**mesh_descriptions**</font>)  
+Batch spawns multiple custom procedural meshes in a single efficient RPC call. Returns a list of spawned actor/object IDs.  
+    - **Parameters:**
+        - `mesh_descriptions` (_list([carla.CustomMeshDescription](#carla.CustomMeshDescription))_) - List of custom procedural mesh specifications to instantiate.  
+    - **Return:** _list(int)_  
 - <a name="carla.World.tick"></a>**<font color="#7fb800">tick</font>**(<font color="#00a6ed">**self**</font>, <font color="#00a6ed">**seconds**=10.0</font>)  
 This method is used in [__synchronous__ mode](core_synchrony.md), when the server waits for a client tick before computing the next frame. This method will send the tick, and give way to the server. It returns the ID of the new frame computed by the server.  
     - **Parameters:**

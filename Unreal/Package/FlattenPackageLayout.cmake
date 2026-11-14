@@ -11,7 +11,12 @@ if ("${UE_SYSTEM_NAME}" STREQUAL "Win64")
 endif ()
 set (PLATFORM_DIR ${CARLA_PACKAGE_ARCHIVE_PATH}/${ARCHIVE_PLATFORM_NAME})
 
-if (NOT IS_DIRECTORY ${PLATFORM_DIR}/CarlaUnreal)
+if ("${UE_SYSTEM_NAME}" STREQUAL "Mac")
+  file (GLOB MAC_APP_BUNDLES LIST_DIRECTORIES true ${PLATFORM_DIR}/CarlaUnreal*.app)
+  if (NOT MAC_APP_BUNDLES)
+    message (FATAL_ERROR "No ${PLATFORM_DIR}/CarlaUnreal*.app: UAT did not archive the Mac build.")
+  endif ()
+elseif (NOT IS_DIRECTORY ${PLATFORM_DIR}/CarlaUnreal)
   message (FATAL_ERROR "No ${PLATFORM_DIR}/CarlaUnreal: UAT did not archive the build.")
 endif ()
 

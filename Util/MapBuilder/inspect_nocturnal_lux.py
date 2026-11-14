@@ -25,6 +25,10 @@ sys.path.insert(0, str(REPO_ROOT))
 sys.path.insert(0, str(REPO_ROOT / "Util" / "MapBuilder"))
 
 from osm_buildings import extract_osm_building_footprints
+try:
+    from osm_crosswalks import make_lat_lon_projector
+except ImportError:
+    from Util.MapBuilder.osm_crosswalks import make_lat_lon_projector
 from osm_lighting import (
     calculate_roadway_lux_grid,
     extract_osm_street_lamps,
@@ -46,19 +50,8 @@ def run_lux_audit(
     if lighting_manifest_path and Path(lighting_manifest_path).is_file():
         lamps = load_lighting_manifest(lighting_manifest_path)
     elif osm_path and Path(osm_path).is_file():
-        off_x, off_y = 0.0, 0.0
-        if xodr_path and Path(xodr_path).is_file():
-            tree = ET.parse(str(xodr_path))
-            header = tree.getroot().find("header")
-            if header is not None:
-                off_elem = header.find("offset")
-                if off_elem is not None:
-                    off_x = float(off_elem.get("x", "0.0"))
-                    off_y = float(off_elem.get("y", "0.0"))
-
-        def project_coord(lat: float, lon: float) -> tuple[float, float, float]:
-            loc = carla_map.geolocation_to_transform(carla.GeoLocation(lat, lon, 0.0))
-            return loc.x + off_x, -(loc.y + off_y), loc.z
+        xodr_xml = Path(xodr_path).read_text(encoding="utf-8") if xodr_path and Path(xodr_path).is_file() else None
+        project_coord = make_lat_lon_projector(carla_map=carla_map, xodr_xml=xodr_xml)
 
         building_polys = []
         footprints = extract_osm_building_footprints(Path(osm_path))

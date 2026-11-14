@@ -450,6 +450,21 @@ def parse_maxspeed_value(val_str: str) -> float:
         return 50.0
 
 
+def _compute_outer_curb_t(curr_wp: Any, curb_setback: float) -> float:
+    """Accumulate carriageway width from outermost lane inward toward t=0."""
+    total_w = 0.0
+    check_wp = curr_wp
+    visited: set[tuple[int, int]] = set()
+    while check_wp is not None and check_wp.lane_id * curr_wp.lane_id > 0:
+        key = (check_wp.road_id, check_wp.lane_id)
+        if key in visited:
+            break
+        visited.add(key)
+        total_w += check_wp.lane_width
+        check_wp = check_wp.get_left_lane()
+    return -(total_w + curb_setback) if curr_wp.lane_id < 0 else +(total_w + curb_setback)
+
+
 def extract_osm_traffic_signs(
     osm_path: Path | str,
     project_coord_fn: Callable[[float, float], tuple[float, float]],
@@ -601,18 +616,7 @@ def extract_osm_traffic_signs(
                 s_coord = curr_wp.s
 
                 # Calculate cumulative carriageway width to outer curb
-                total_w = 0.0
-                check_wp = curr_wp
-                if curr_wp.lane_id < 0:
-                    while check_wp is not None and check_wp.lane_id < 0:
-                        total_w += check_wp.lane_width
-                        check_wp = check_wp.get_left_lane()
-                    t_coord = -(total_w + curb_setback)
-                else:
-                    while check_wp is not None and check_wp.lane_id > 0:
-                        total_w += check_wp.lane_width
-                        check_wp = check_wp.get_right_lane()
-                    t_coord = +(total_w + curb_setback)
+                t_coord = _compute_outer_curb_t(curr_wp, curb_setback)
 
                 # World position: shift by normal vector past outer curb
                 yaw_rad = math.radians(curr_wp.transform.rotation.yaw)
@@ -771,18 +775,7 @@ def synthesize_procedural_traffic_signs(
                 continue
 
         # Calculate OpenDRIVE t-coordinate (outside carriageway on sidewalk)
-        total_w = 0.0
-        check_wp = curr_wp
-        if curr_wp.lane_id < 0:
-            while check_wp is not None and check_wp.lane_id < 0:
-                total_w += check_wp.lane_width
-                check_wp = check_wp.get_left_lane()
-            t_coord = -(total_w + curb_setback)
-        else:
-            while check_wp is not None and check_wp.lane_id > 0:
-                total_w += check_wp.lane_width
-                check_wp = check_wp.get_right_lane()
-            t_coord = +(total_w + curb_setback)
+        t_coord = _compute_outer_curb_t(curr_wp, curb_setback)
 
         # Yaw facing oncoming traffic (+180 deg)
         facing_yaw = yaw_deg + 180.0

@@ -29,6 +29,7 @@ namespace twinmodel {
     struct IdMap {
       std::map<std::string, unsigned int> road;
       std::map<std::string, unsigned int> junction;
+      std::map<std::string, unsigned int> signal;
 
       const char *RoadOrMinusOne(const std::optional<std::string> &id, std::string &scratch) const {
         if (!id.has_value()) {
@@ -83,6 +84,12 @@ namespace twinmodel {
         junction_ids.push_back(junction.id);
       }
       Allocate(junction_ids, used, map.junction);
+      unsigned int next_signal = 0u;
+      for (const Signal &signal : model.signals) {
+        if (signal.kind != SignalKind::Crosswalk) {
+          map.signal[signal.id] = next_signal++;
+        }
+      }
       return map;
     }
 
@@ -277,13 +284,12 @@ namespace twinmodel {
 
       if (!signals.empty()) {
         pugi::xml_node node = road_node.append_child("signals");
-        unsigned int index = 0u;
         for (const Signal *signal : signals) {
           const SignalType type = GetSignalType(signal->kind);
           pugi::xml_node element = node.append_child("signal");
           SetAttribute(element, "s", signal->s);
           SetAttribute(element, "t", signal->t);
-          element.append_attribute("id").set_value(index++);
+          element.append_attribute("id").set_value(ids.signal.at(signal->id));
           element.append_attribute("name").set_value(signal->id.c_str());
           element.append_attribute("dynamic").set_value(type.dynamic ? "yes" : "no");
           element.append_attribute("orientation").set_value(signal->orientation.c_str());
@@ -409,15 +415,11 @@ namespace twinmodel {
       node.append_attribute("name").set_value(controller.id.c_str());
       node.append_attribute("sequence").set_value(controller.sequence);
       for (const std::string &signal_id : controller.signal_ids) {
-        unsigned int signal_index = 0u;
-        for (const Signal &signal : model.signals) {
-          if (signal.id == signal_id) {
-            pugi::xml_node control = node.append_child("control");
-            control.append_attribute("signalId").set_value(signal_index);
-            control.append_attribute("type").set_value("");
-            break;
-          }
-          ++signal_index;
+        const auto signal_it = ids.signal.find(signal_id);
+        if (signal_it != ids.signal.end()) {
+          pugi::xml_node control = node.append_child("control");
+          control.append_attribute("signalId").set_value(signal_it->second);
+          control.append_attribute("type").set_value("");
         }
       }
     }

@@ -160,10 +160,14 @@ class Milestone3CarlaMapLoaderE2ETest(unittest.TestCase):
             self.skipTest("Skipping live tests (--offline-only requested)")
 
         # Ensure sample bundle is staged into project Maps/ folder for native discovery
+        pkg_dir = REPO_ROOT / "Build" / "Package"
         staging_destinations = [
             REPO_ROOT / "Unreal" / "CarlaUnreal" / "Maps" / "BundleTestTown",
-            REPO_ROOT / "Build" / "Package" / "Carla-0.10.0-Mac-Shipping" / "Mac" / "CarlaUnreal-Mac-Shipping.app" / "Contents" / "UE" / "CarlaUnreal" / "Maps" / "BundleTestTown",
-            REPO_ROOT / "Build" / "Package" / "Carla-0.10.0-Linux-Shipping" / "CarlaUnreal" / "Maps" / "BundleTestTown",
+            pkg_dir / "Carla-1.0-Mac-Shipping" / "Mac" / "CarlaUnreal-Mac-Shipping.app" / "Contents" / "UE" / "CarlaUnreal" / "Maps" / "BundleTestTown",
+            pkg_dir / "Carla-1.0-Mac-Shipping" / "CarlaUnreal-Mac-Shipping.app" / "Contents" / "UE" / "CarlaUnreal" / "Maps" / "BundleTestTown",
+            pkg_dir / "Carla-1.0-Linux-Shipping" / "CarlaUnreal" / "Maps" / "BundleTestTown",
+            *sorted(p / "CarlaUnreal-Mac-Shipping.app" / "Contents" / "UE" / "CarlaUnreal" / "Maps" / "BundleTestTown" for p in pkg_dir.glob("Carla-*-Mac-*") if p.is_dir()),
+            *sorted(p / "CarlaUnreal" / "Maps" / "BundleTestTown" for p in pkg_dir.glob("Carla-*-Linux-*") if p.is_dir()),
         ]
         staged_dirs: list[Path] = []
         for p_dir in staging_destinations:

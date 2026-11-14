@@ -1,6 +1,6 @@
 # CARLA Editor-Free Map Maker (`Docs/map-maker`)
 
-This directory documents CARLA 0.10.0's **Editor-Free, Cross-Platform Map Creation & Packaging** pipeline.
+This directory documents CARLA 1.0's **Editor-Free, Cross-Platform Map Creation & Packaging** pipeline.
 
 The goal of Map Maker is to allow autonomous driving developers to build, customize, package, and load rich 3D simulation maps on **both Linux and macOS (Apple Silicon)** using a shipped CARLA package and Python API—**without** requiring access to the private Unreal Engine 5.8 source repository or opening the Unreal Editor.
 
@@ -38,28 +38,22 @@ The goal of Map Maker is to allow autonomous driving developers to build, custom
 
 ### 1. Architecture & Build System Integration
 
-CARLA's OpenStreetMap-to-OpenDRIVE converter (`libosm2odr`) is built from CARLA's fork of SUMO (`netconvert` / `osm2odr`) and depends on **PROJ 9.7.0**, **Xerces-C 3.3.0**, and **SQLite 3**.
+CARLA's OpenStreetMap-to-OpenDRIVE converter (`osm2odr`) is built in-tree inside `LibCarla/source/osm2odr` without external runtime dependencies:
 
-- **Enabled by Default:** `ENABLE_OSM2ODR` is `ON` by default in `CMake/Options.cmake`.
-- **Zero External Runtime Dependencies:**
-  - `CMake/Dependencies.cmake` builds `libosm2odr.a`, `libproj.a`, `libxerces-c.a`, and `libsqlite3.a` as position-independent static archives (`-fPIC`).
-  - `PROJ 9.7.0` is built with `EMBED_RESOURCE_FILES=ON` and `USE_ONLY_EMBEDDED_RESOURCE_FILES=ON`, embedding `proj.db` directly into `libproj.a` so no external `PROJ_DATA` directory is required at runtime on user machines.
-  - `Xerces-C 3.3.0` is built with `network=OFF`, `transcoder="iconv"`, and `message-loader="inmemory"`, avoiding any external `libcurl` or `ICU` dynamic library dependencies.
+- **Enabled Unconditionally in CARLA 1.0:** Compiled into `LibCarla` (`libcarla-client.a` / `libcarla-server.a`) and statically linked alongside SQLite 3 (`liblibsqlite3.a`), requiring no external SUMO, PROJ, or Xerces-C libraries.
+- **Zero External Runtime Dependencies:** No external `PROJ_DATA` directory or third-party `.dylib`/`.so` files are required at runtime on user machines.
 - **Targets Linked:**
-  1. **Python Wheel (`carla` module):** Linked into `carla.cpython-*.so` with `CARLA_PYTHON_API_HAS_OSM2ODR` defined.
-  2. **Unreal Plugins (`Carla` & `CarlaTools`):** Linked via `Unreal/CMakeLists.txt` (`Includes.def`, `Libraries.def`, `Options.def`) with `WITH_OSM2ODR` defined for `UCustomFileDownloader::ConvertOSMInOpenDrive`.
+  1. **Python Wheel (`carla` module):** Built with `PythonAPI/carla/src/OSM2ODR.cpp` linked into `carla.cpython-*.so` with `CARLA_PYTHON_API_HAS_OSM2ODR` defined.
+  2. **Unreal Plugins (`Carla` & `CarlaTools`):** Linked against `libcarla-server` with `WITH_OSM2ODR` defined for `UCustomFileDownloader::ConvertOSMInOpenDrive`.
 
 #### Building from Source
 
 ```bash
-# Configure CMake (ENABLE_OSM2ODR=ON is enabled by default)
-cmake -B Build -DENABLE_OSM2ODR=ON
+# Configure CMake
+cmake -B Build -G Ninja -DCMAKE_BUILD_TYPE=Release
 
-# Build the osm2odr static archive and its dependencies
-cmake --build Build --target osm2odr
-
-# Build and install the CARLA Python API wheel into the active Python environment
-cmake --build Build --target carla-python-api-install
+# Build LibCarla + Python API wheel and install it into the active Python environment
+cmake --build Build --target carla-client carla-server carla-python-api-install
 ```
 
 ---
@@ -529,7 +523,7 @@ Milestone 5 brings together the entire editor-free pipeline into the distributed
 When extracting a distributed CARLA simulator package, the root directory provides all necessary tools out-of-the-box:
 
 ```text
-Carla-0.10.0-Mac-Shipping/
+Carla-1.0-Mac-Shipping/
 ├── CarlaUnreal.sh                          # Headless or offscreen simulator launcher
 ├── carla-map                               # Standalone Map Maker executable CLI wrapper
 ├── Mac/

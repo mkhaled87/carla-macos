@@ -764,6 +764,14 @@ void ATrafficLightManager::SpawnTrafficLights()
     const auto& Controller = ControllerPair.second;
     for(const auto& SignalId : Controller->GetSignals())
     {
+      if (Signals.count(SignalId) == 0)
+      {
+        UE_LOG(LogCarla, Warning,
+            TEXT("Possible OpenDRIVE error, controller '%s' references nonexistent signal id: %s"),
+            *carla::rpc::ToFString(ControllerPair.first),
+            *carla::rpc::ToFString(SignalId));
+        continue;
+      }
       auto& Signal = Signals.at(SignalId);
       if (!cr::SignalType::IsTrafficLight(Signal->GetType()))
       {

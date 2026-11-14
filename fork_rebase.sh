@@ -9,6 +9,7 @@
 #   -u, --upstream-remote <name>   Upstream remote name (default: upstream)
 #   -b, --upstream-branch <name>   Upstream branch name (default: ue58-dev)
 #   -l, --local-branch    <name>   Local branch to rebase (default: current branch)
+#   --rebase-merges                Preserve PR merge topology during rebase
 #   --skip-content                 Skip syncing the CARLA Content repository
 #   --skip-fetch                   Skip fetching from remotes
 #   --dry-run                      Print what would be executed without doing it
@@ -34,6 +35,7 @@ log_error() { echo -e "${RED}[ERROR]${NC} $*" >&2; }
 UPSTREAM_REMOTE="upstream"
 UPSTREAM_BRANCH="ue58-dev"
 LOCAL_BRANCH=""
+REBASE_MERGES=0
 SKIP_CONTENT=0
 SKIP_FETCH=0
 DRY_RUN=0
@@ -65,6 +67,10 @@ while [[ $# -gt 0 ]]; do
     -l|--local-branch)
       LOCAL_BRANCH="$2"
       shift 2
+      ;;
+    --rebase-merges)
+      REBASE_MERGES=1
+      shift
       ;;
     --skip-content)
       SKIP_CONTENT=1
@@ -128,9 +134,9 @@ fi
 
 # 2. Fetch updates
 if [ $SKIP_FETCH -eq 0 ]; then
-  log_info "Fetching latest changes from ${UPSTREAM_REMOTE}/${UPSTREAM_BRANCH}..."
+  log_info "Fetching latest changes from ${UPSTREAM_REMOTE}/${UPSTREAM_BRANCH} (--no-tags)..."
   if [ $DRY_RUN -eq 0 ]; then
-    git fetch "${UPSTREAM_REMOTE}" "${UPSTREAM_BRANCH}"
+    git fetch --no-tags "${UPSTREAM_REMOTE}" "${UPSTREAM_BRANCH}"
   fi
 else
   log_info "Skipping remote fetch."
@@ -173,9 +179,13 @@ else
 
   # 5. Perform the rebase
   # Using --onto <newbase> <oldbase> <branch> for robustness with shallow/grafted histories
-  log_info "Running: git rebase --onto ${UPSTREAM_REF} ${FORK_BASE} ${LOCAL_BRANCH}"
+  REBASE_FLAGS=(--onto "${UPSTREAM_REF}" "${FORK_BASE}" "${LOCAL_BRANCH}")
+  if [ $REBASE_MERGES -eq 1 ]; then
+    REBASE_FLAGS=(--rebase-merges "${REBASE_FLAGS[@]}")
+  fi
+  log_info "Running: git rebase ${REBASE_FLAGS[*]}"
   if [ $DRY_RUN -eq 0 ]; then
-    if git rebase --onto "${UPSTREAM_REF}" "${FORK_BASE}" "${LOCAL_BRANCH}"; then
+    if git rebase "${REBASE_FLAGS[@]}"; then
       log_ok "Rebase completed successfully!"
     else
       log_error "Rebase encountered conflicts."

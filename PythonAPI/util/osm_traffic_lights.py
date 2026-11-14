@@ -112,41 +112,10 @@ class TrafficSignal:
         )
 
 
-def make_lat_lon_projector(
-    carla_map: Any | None = None,
-    xodr_xml: str | None = None,
-) -> Callable[[float, float], tuple[float, float, float]]:
-    """Creates a geographic-to-simulation projection function."""
-    off_x = 0.0
-    off_y = 0.0
-    if not xodr_xml and carla_map is not None:
-        try:
-            xodr_xml = carla_map.to_opendrive()
-        except Exception:
-            pass
-
-    if xodr_xml:
-        try:
-            root = ET.fromstring(xodr_xml)
-            header = root.find("header")
-            offset_elem = header.find("offset") if header is not None else None
-            if offset_elem is not None:
-                off_x = float(offset_elem.get("x", "0.0"))
-                off_y = float(offset_elem.get("y", "0.0"))
-        except Exception:
-            pass
-
-    def _project(lat: float, lon: float) -> tuple[float, float, float]:
-        if carla_map is not None:
-            try:
-                res = carla_map.geolocation_to_transform(carla.GeoLocation(lat, lon, 0.0))
-                loc = res.location if hasattr(res, "location") else res
-                return loc.x + off_x, -(loc.y + off_y), loc.z
-            except Exception:
-                pass
-        return lon * 111320.0, lat * 110540.0, 0.0
-
-    return _project
+try:
+    from Util.MapBuilder.osm_crosswalks import make_lat_lon_projector
+except ImportError:
+    from osm_crosswalks import make_lat_lon_projector
 
 
 def point_in_polygon(x: float, y: float, poly: Sequence[tuple[float, float]]) -> bool:
@@ -165,6 +134,59 @@ def point_in_polygon(x: float, y: float, poly: Sequence[tuple[float, float]]) ->
                         inside = not inside
         p1x, p1y = p2x, p2y
     return inside
+
+
+def _find_carriageway_curb(
+    wp: Any,
+    valid_road_lanes: tuple[Any, ...],
+    setback: float,
+) -> tuple[Any, float, Any, list[int]]:
+    """Walk outward along the same carriageway to the curb and measure carriageway width.
+
+    In CARLA OpenDRIVE RHT maps, GetRight() moves away from the road centerline
+    for both negative (-s/forward) and positive (+s/reverse) lane IDs, whereas
+    GetLeft() crosses the centerline (+1 <-> -1). Guard lane sign and visited
+    IDs so bidirectional centerlines or cyclic lane links never loop infinitely.
+    """
+    driving_lane_ids = [wp.lane_id] if wp.lane_type == carla.LaneType.Driving else []
+    outermost_lane = wp
+    visited_out = {(outermost_lane.road_id, outermost_lane.lane_id)}
+    while True:
+        nxt = outermost_lane.get_right_lane()
+        if (
+            nxt is None
+            or nxt.lane_id * wp.lane_id <= 0
+            or nxt.lane_type not in valid_road_lanes
+            or (nxt.road_id, nxt.lane_id) in visited_out
+        ):
+            break
+        outermost_lane = nxt
+        visited_out.add((outermost_lane.road_id, outermost_lane.lane_id))
+        if outermost_lane.lane_type == carla.LaneType.Driving:
+            driving_lane_ids.append(outermost_lane.lane_id)
+
+    carriageway_w = 0.0
+    check = outermost_lane
+    visited_in: set[tuple[int, int]] = set()
+    while check is not None and check.lane_id * wp.lane_id > 0:
+        key = (check.road_id, check.lane_id)
+        if key in visited_in:
+            break
+        visited_in.add(key)
+        carriageway_w += check.lane_width
+        if check.lane_type == carla.LaneType.Driving and check.lane_id not in driving_lane_ids:
+            driving_lane_ids.append(check.lane_id)
+        nxt = check.get_left_lane()
+        if nxt is None or nxt.lane_id * wp.lane_id <= 0:
+            break
+        check = nxt
+
+    t_coord = -(carriageway_w + setback) if wp.lane_id < 0 else +(carriageway_w + setback)
+    outward_v = outermost_lane.transform.get_right_vector()
+    curb_pos = outermost_lane.transform.location + outward_v * (
+        outermost_lane.lane_width * 0.5 + setback
+    )
+    return outermost_lane, t_coord, curb_pos, driving_lane_ids
 
 
 def extract_osm_traffic_signals(
@@ -271,51 +293,9 @@ def extract_osm_traffic_signals(
                 # Pick earliest stop line on this approach
                 rep = cluster[0]
                 wp = rep["wp"]
-                outermost_lane = wp
-                driving_lane_ids = [wp.lane_id]
-
-                if wp.lane_id < 0:
-                    while (
-                        outermost_lane.get_right_lane() is not None
-                        and outermost_lane.get_right_lane().lane_type in valid_road_lanes
-                    ):
-                        outermost_lane = outermost_lane.get_right_lane()
-                        if outermost_lane.lane_type == carla.LaneType.Driving:
-                            driving_lane_ids.append(outermost_lane.lane_id)
-                    carriageway_w = 0.0
-                    check = outermost_lane
-                    while check is not None and check.lane_id < 0:
-                        carriageway_w += check.lane_width
-                        check = check.get_left_lane()
-                        if check is not None and check.lane_type == carla.LaneType.Driving:
-                            if check.lane_id not in driving_lane_ids:
-                                driving_lane_ids.append(check.lane_id)
-                    t_pole = -(carriageway_w + 0.8)
-                    right_v = outermost_lane.transform.get_right_vector()
-                    pole_pos = outermost_lane.transform.location + right_v * (
-                        outermost_lane.lane_width * 0.5 + 0.8
-                    )
-                else:
-                    while (
-                        outermost_lane.get_left_lane() is not None
-                        and outermost_lane.get_left_lane().lane_type in valid_road_lanes
-                    ):
-                        outermost_lane = outermost_lane.get_left_lane()
-                        if outermost_lane.lane_type == carla.LaneType.Driving:
-                            driving_lane_ids.append(outermost_lane.lane_id)
-                    carriageway_w = 0.0
-                    check = outermost_lane
-                    while check is not None and check.lane_id > 0:
-                        carriageway_w += check.lane_width
-                        check = check.get_right_lane()
-                        if check is not None and check.lane_type == carla.LaneType.Driving:
-                            if check.lane_id not in driving_lane_ids:
-                                driving_lane_ids.append(check.lane_id)
-                    t_pole = +(carriageway_w + 0.8)
-                    left_v = -outermost_lane.transform.get_right_vector()
-                    pole_pos = outermost_lane.transform.location + left_v * (
-                        outermost_lane.lane_width * 0.5 + 0.8
-                    )
+                _, t_pole, pole_pos, driving_lane_ids = _find_carriageway_curb(
+                    wp, valid_road_lanes, setback=0.8
+                )
 
                 yaw = wp.transform.rotation.yaw + 90.0
                 if yaw > 180.0:
@@ -408,41 +388,10 @@ def extract_osm_traffic_signals(
             road_id = wp.road_id
             lane_id = wp.lane_id
             s_coord = wp.s
-            outermost_lane = wp
-            if wp.lane_id < 0:
-                while (
-                    outermost_lane.get_right_lane() is not None
-                    and outermost_lane.get_right_lane().lane_type in valid_road_lanes
-                ):
-                    outermost_lane = outermost_lane.get_right_lane()
-                carriageway_w = 0.0
-                check = outermost_lane
-                while check is not None and check.lane_id < 0:
-                    carriageway_w += check.lane_width
-                    check = check.get_left_lane()
-                t_coord = -(carriageway_w + 0.5)
-                right_v = outermost_lane.transform.get_right_vector()
-                pos = outermost_lane.transform.location + right_v * (
-                    outermost_lane.lane_width * 0.5 + 0.5
-                )
-                loc = (pos.x, pos.y, outermost_lane.transform.location.z)
-            else:
-                while (
-                    outermost_lane.get_left_lane() is not None
-                    and outermost_lane.get_left_lane().lane_type in valid_road_lanes
-                ):
-                    outermost_lane = outermost_lane.get_left_lane()
-                carriageway_w = 0.0
-                check = outermost_lane
-                while check is not None and check.lane_id > 0:
-                    carriageway_w += check.lane_width
-                    check = check.get_right_lane()
-                t_coord = +(carriageway_w + 0.5)
-                left_v = -outermost_lane.transform.get_right_vector()
-                pos = outermost_lane.transform.location + left_v * (
-                    outermost_lane.lane_width * 0.5 + 0.5
-                )
-                loc = (pos.x, pos.y, outermost_lane.transform.location.z)
+            outermost_lane, t_coord, pos, _ = _find_carriageway_curb(
+                wp, valid_road_lanes, setback=0.5
+            )
+            loc = (pos.x, pos.y, outermost_lane.transform.location.z)
 
             yaw = wp.transform.rotation.yaw + 90.0
             if yaw > 180.0:

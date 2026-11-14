@@ -75,10 +75,14 @@ def make_lat_lon_projector(
         try:
             root = ET.fromstring(xml_str)
             header = root.find("header")
-            offset_elem = header.find("offset") if header is not None else None
-            if offset_elem is not None:
-                off_x = float(offset_elem.get("x", "0.0"))
-                off_y = float(offset_elem.get("y", "0.0"))
+            if header is not None:
+                georef = header.findtext("geoReference") or ""
+                # UTM projections apply <offset> inside GeoProjection C++.
+                if "+proj=utm" not in georef:
+                    offset_elem = header.find("offset")
+                    if offset_elem is not None:
+                        off_x = float(offset_elem.get("x", "0.0"))
+                        off_y = float(offset_elem.get("y", "0.0"))
         except Exception:
             pass
 
@@ -87,7 +91,9 @@ def make_lat_lon_projector(
             try:
                 tf = carla_map.geolocation_to_transform(carla.GeoLocation(lat, lon, 0.0))
                 loc = tf.location if hasattr(tf, "location") else tf
-                return loc.x + off_x, -(loc.y + off_y), loc.z
+                # CARLA 1.0 GeoProjection already swaps OpenDRIVE +Y_north into left-handed
+                # Y_carla = -Y_north; OpenDRIVE <offset> is in +Y_north, so Y_carla = loc.y - off_y.
+                return loc.x + off_x, loc.y - off_y, loc.z
             except Exception:
                 pass
         return lon * 111320.0, lat * 110540.0, 0.0
