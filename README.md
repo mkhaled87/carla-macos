@@ -18,7 +18,7 @@ Compared to upstream [CARLA](https://github.com/carla-simulator/carla), **CARLA 
 
 ### 🍎 Native Apple Silicon (`arm64`) & Metal RHI + Ready-to-Run `.app` Release
 - Targets **Apple Silicon (`M1`–`M5`)** natively with **Metal RHI** rendering — Rosetta wrappers are not used.
-- Includes automated Xcode / Apple Clang compatibility patching (`Util/Patches/UnrealEngine_macOS.patch`) and one-command setup via [`CarlaSetup.sh`](CarlaSetup.sh).
+- Includes automated Xcode / Apple Clang compatibility setup ([`Util/Patches/apply_ue_macos_patch.py`](Util/Patches/apply_ue_macos_patch.py)) and one-command build via [`CarlaSetup.sh`](CarlaSetup.sh).
 - Published as a ready-to-run **`CarlaUnreal-Mac-Shipping.app`** release package (`CARLA 1.0`, split into GitHub-friendly `<= 2 GB` parts with `SHA256SUMS.txt` verification) so you can run CARLA 1.0 on macOS without compiling Unreal Engine from source.
 
 <details>

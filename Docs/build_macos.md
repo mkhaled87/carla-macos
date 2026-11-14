@@ -314,8 +314,8 @@ git checkout 0703595a065dee51538720027ce9cc05bd464517
 ./Setup.command
 ./GenerateProjectFiles.command
 
-# Apply the macOS compatibility patch shipped in CARLA:
-git apply /path/to/CarlaUE58/Util/Patches/UnrealEngine_macOS.patch
+# Apply the macOS compatibility edits shipped in CARLA:
+python3 /path/to/CarlaUE58/Util/Patches/apply_ue_macos_patch.py .
 ```
 
 *(This patch resolves Apple Clang / Xcode SDK version mapping, C++20 designated initializer ordering in MetalViewport, SWindow lambda initialization, and Cocoa launch gating).*

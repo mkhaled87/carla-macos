@@ -171,17 +171,26 @@ if [ -z "$UE_EDITOR_BIN" ]; then
         ./Setup.command
         ./GenerateProjectFiles.command
 
-        # Apply macOS compatibility patch if present
-        PATCH_FILE="$workspace_path/Util/Patches/UnrealEngine_macOS.patch"
-        if [ -f "$PATCH_FILE" ]; then
-            if git apply --check "$PATCH_FILE" >/dev/null 2>&1; then
-                echo "Applying macOS compatibility patch to Unreal Engine..."
-                git apply "$PATCH_FILE"
-                echo "Unreal Engine macOS patch successfully applied."
-            elif git apply --reverse --check "$PATCH_FILE" >/dev/null 2>&1; then
-                echo "Unreal Engine macOS patch is already applied."
+        # Apply macOS compatibility edits if present
+        PATCH_SCRIPT="$workspace_path/Util/Patches/apply_ue_macos_patch.py"
+        if [ -f "$PATCH_SCRIPT" ]; then
+            PATCH_PYTHON="${python_path:-}"
+            if [ -z "$PATCH_PYTHON" ]; then
+                if [ -n "$python_root" ] && [ -x "$python_root/python3" ]; then
+                    PATCH_PYTHON="$python_root/python3"
+                elif [ -x "/opt/homebrew/bin/python3.10" ]; then
+                    PATCH_PYTHON="/opt/homebrew/bin/python3.10"
+                else
+                    PATCH_PYTHON="python3"
+                fi
+            fi
+            if "$PATCH_PYTHON" "$PATCH_SCRIPT" --check "$CARLA_UNREAL_ENGINE_PATH" >/dev/null 2>&1; then
+                echo "Applying macOS compatibility edits to Unreal Engine..."
+                "$PATCH_PYTHON" "$PATCH_SCRIPT" "$CARLA_UNREAL_ENGINE_PATH"
+            elif "$PATCH_PYTHON" "$PATCH_SCRIPT" --check-applied "$CARLA_UNREAL_ENGINE_PATH" >/dev/null 2>&1; then
+                echo "Unreal Engine macOS compatibility edits are already applied."
             else
-                echo "Warning: Unreal Engine patch could not be verified cleanly."
+                echo "Warning: Unreal Engine compatibility edits could not be verified cleanly."
             fi
         fi
 
