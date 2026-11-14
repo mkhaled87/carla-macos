@@ -1,80 +1,101 @@
-CARLA Simulator
-===============
+# 🚗 CARLA Simulator — macOS Edition
 
-[![Documentation](https://readthedocs.org/projects/carla-ue5/badge/?version=latest)](https://carla-ue5.readthedocs.io)
+[![Latest Release](https://img.shields.io/github/v/release/mkhaled87/carla-macos?style=for-the-badge&color=00b4d8&label=Latest%20Release)](https://github.com/mkhaled87/carla-macos/releases/latest)
+[![License: MIT](https://img.shields.io/github/license/mkhaled87/carla-macos?style=for-the-badge&color=2ea44f&label=License)](LICENSE)
 
-[![carla.org](Docs/img/btn/web.webp)](http://carla.org)
-[![download](Docs/img/btn/download.webp)](https://github.com/carla-simulator/carla/releases)
-[![documentation](Docs/img/btn/docs.webp)](https://carla-ue5.readthedocs.io)
-[![forum](Docs/img/btn/forum.webp)](https://github.com/carla-simulator/carla/discussions)
-[![discord](Docs/img/btn/chat.webp)](https://discord.gg/8kqACuC)
+**CARLA macOS** (`carla-macos`) is a downstream distribution of the open-source [CARLA Simulator](https://github.com/carla-simulator/carla) ([carla.org](https://carla.org/)), built on **CARLA 1.0 (Unreal Engine 5.8)** to bring first-class simulation natively to **macOS on Apple Silicon (`arm64` / Metal RHI)**. Alongside upstream CARLA's core simulation platform, sensor suite, and open digital assets, this fork adds an **editor-free offline Map Maker (`carla-map`)**, **ASAM OpenSCENARIO (`esmini`) co-simulation**, and **native C++ ROS 2** enabled out of the box.
 
-CARLA is an open-source simulator for autonomous driving research. CARLA has been developed from the ground up to support development, training, and
-validation of autonomous driving systems. In addition to open-source code and protocols, CARLA provides open digital assets (urban layouts, buildings,
-vehicles) that were created for this purpose and can be used freely. The simulation platform supports flexible specification of sensor suites and
-environmental conditions.
+![CARLA 1.0 macOS — Native Apple Silicon, Editor-Free Map Maker, esmini OpenSCENARIO, and Native ROS 2](Docs/img/carla_macos_hero.jpg)
 
-[![CARLA Video](Docs/img/carla_ue5_readme_img.webp)](https://www.youtube.com/watch?v=q4V9GYjA1pE)
+> [!NOTE]
+> This repository tracks **CARLA 1.0** on **Unreal Engine 5.8** (`main` / tag [`1.0`](https://github.com/mkhaled87/carla-macos/releases/tag/1.0)), rebased onto upstream [`carla-simulator/carla`](https://github.com/carla-simulator/carla) release `1.0`. Pre-built **macOS Apple Silicon** release binaries are available on the [Releases page](https://github.com/mkhaled87/carla-macos/releases/tag/1.0).
 
->[!NOTE]
-> This is the development branch `ue58-dev` for the **Unreal Engine 5.8 version of CARLA**, with native support for **Linux**, **Windows**, and **macOS (Apple Silicon)**. This branch exists in parallel with the Unreal Engine 4.26 version of CARLA, in the `ue4-dev` branch. Please be sure that this version of CARLA is suitable for your needs as there are significant differences between the UE 5.8 and UE 4.26 versions of CARLA. 
+---
 
-### Recommended system
+## ✨ What Makes This Release Different
 
-* **macOS (Apple Silicon):**
-  * Apple Silicon M1 / M2 / M3 / M4 / M5 (native arm64)
-  * macOS 14 (Sonoma) or newer
-  * 32 GB or more Unified Memory recommended
-* **Linux / Windows:**
-  * Intel i7 gen 9th - 11th / Intel i9 gen 9th - 11th / AMD Ryzen 7 / AMD Ryzen 9
-  * +32 Gb RAM memory 
-  * NVIDIA RTX 3070/3080/3090 / NVIDIA RTX 4090 / NVIDIA RTX 5090 or better
-  * 16 Gb or more VRAM
-  * Ubuntu 22.04 or 24.04, or Windows 11
+Compared to upstream [CARLA](https://github.com/carla-simulator/carla), **CARLA 1.0 macOS** introduces several major capabilities alongside upstream `1.0` simulator updates:
 
->[!NOTE]
-> On Linux/Windows, you must use either Ubuntu 22.04 or 24.04, or Windows 11. On macOS, native Apple Silicon is supported with Metal RHI.
+### 🍎 Native Apple Silicon (`arm64`) & Metal RHI + Ready-to-Run `.app` Release
+- Targets **Apple Silicon (`M1`–`M5`)** natively with **Metal RHI** rendering — Rosetta wrappers are not used.
+- Includes automated Xcode / Apple Clang compatibility patching (`Util/Patches/UnrealEngine_macOS.patch`) and one-command setup via [`CarlaSetup.sh`](CarlaSetup.sh).
+- Published as a ready-to-run **`CarlaUnreal-Mac-Shipping.app`** release package (`CARLA 1.0`, split into GitHub-friendly `<= 2 GB` parts with `SHA256SUMS.txt` verification) so you can run CARLA 1.0 on macOS without compiling Unreal Engine from source.
 
-## Documentation
+<details>
+<summary>📦 Quick Start: Verifying & Unpacking the Pre-Built macOS 1.0 Release</summary>
 
-The [CARLA documentation](https://carla-ue5.readthedocs.io/en/latest/) is hosted on ReadTheDocs. Please see the following key links:
+Download all `Carla-1.0-Mac-Shipping.tar.gz.part00`–`part08`, `carla-1.0-Mac-release-metadata.tar.gz`, and `SHA256SUMS.txt` files from the [1.0 Release](https://github.com/mkhaled87/carla-macos/releases/tag/1.0), then reassemble, verify checksums, extract, and launch:
 
-- [Building on macOS (Docs/build_macos.md)](Docs/build_macos.md)
-- [Building on Linux](https://carla-ue5.readthedocs.io/en/latest/build_linux_ue5/)
-- [Building on Windows](https://carla-ue5.readthedocs.io/en/latest/build_windows_ue5/)
-- [First steps](https://carla-ue5.readthedocs.io/en/latest/start_first_steps/)
-- [CARLA asset catalogue](https://carla-ue5.readthedocs.io/en/latest/catalogue/)
-- [Python API reference](https://carla-ue5.readthedocs.io/en/latest/python_api/)
-- [Blueprint library](https://carla-ue5.readthedocs.io/en/latest/bp_library/)
-
-## CARLA Ecosystem
-Repositories associated with the CARLA simulation platform:
-
-* [**CARLA Autonomous Driving leaderboard**](https://leaderboard.carla.org/): Automatic platform to validate Autonomous Driving stacks
-* [**Scenario_Runner**](https://github.com/carla-simulator/scenario_runner): Engine to execute traffic scenarios in CARLA 0.9.X
-* [**ROS-bridge**](https://github.com/carla-simulator/ros-bridge): Interface to connect CARLA 0.9.X to ROS
-* [**Driving-benchmarks**](https://github.com/carla-simulator/driving-benchmarks): Benchmark tools for Autonomous Driving tasks
-* [**Conditional Imitation-Learning**](https://github.com/felipecode/coiltraine): Training and testing Conditional Imitation Learning models in CARLA
-* [**AutoWare AV stack**](https://github.com/carla-simulator/carla-autoware): Bridge to connect AutoWare AV stack to CARLA
-* [**Reinforcement-Learning**](https://github.com/carla-simulator/reinforcement-learning): Code for running Conditional Reinforcement Learning models in CARLA
-* [**RoadRunner**](https://www.mathworks.com/products/roadrunner.html): MATLAB GUI based application to create road networks in OpenDrive format 
-* [**Map Editor**](https://github.com/carla-simulator/carla-map-editor): Standalone GUI application to enhance RoadRunner maps with traffic lights and traffic signs information
-
-
-**Like what you see? Star us on GitHub to support the project!**
-
-Paper
------
-
-If you use CARLA, please cite our CoRL’17 paper.
-
-_CARLA: An Open Urban Driving Simulator_<br>Alexey Dosovitskiy, German Ros,
-Felipe Codevilla, Antonio Lopez, Vladlen Koltun; PMLR 78:1-16
-[[PDF](http://proceedings.mlr.press/v78/dosovitskiy17a/dosovitskiy17a.pdf)]
-[[talk](https://www.youtube.com/watch?v=xfyK03MEZ9Q&feature=youtu.be&t=2h44m30s)]
-
-
+```sh
+cat Carla-1.0-Mac-Shipping.tar.gz.part* > Carla-1.0-Mac-Shipping.tar.gz
+shasum -a 256 -c SHA256SUMS.txt
+tar -xzf Carla-1.0-Mac-Shipping.tar.gz
+cd Carla-1.0-Mac-Shipping
+./CarlaUnreal.sh
 ```
+
+</details>
+
+### 🗺️ Editor-Free Map Maker (`carla-map`)
+- Build, customize, package, and install standalone **`.carlamap.tar.gz`** maps on both **macOS** and **Linux** from OpenStreetMap (`.osm`), OpenDRIVE (`.xodr`), or custom `.obj`/`.gltf` meshes — **without** Epic's Unreal Engine source access or opening the Unreal Editor.
+- Compiles in-tree **`OSM2ODR`** into both the `carla` Python wheel and Unreal plugins (`WITH_OSM2ODR`) with zero external runtime dependencies, alongside the standalone `carla-map` CLI, offline pedestrian NavMesh compilation (`RecastBuilder`), procedural PBR buildings, crosswalks, protected cycleways, dynamic street lights & traffic lights, and zero-Z-fighting custom road replacement.
+- Read [`Docs/map-maker/README.md`](Docs/map-maker/README.md) or follow the [Munich OSM End-to-End Tutorial](Docs/map-maker/tutorial_munich_osm_e2e.md).
+
+### 🚦 `esmini` OpenSCENARIO Integration (`PythonAPI/esmini`)
+- Execute **ASAM OpenSCENARIO 1.x / 1.2 / 1.3 (`.xosc`)** scenarios against a live CARLA server via **`libesminiLib`** (`PythonAPI/esmini/esmini_runner.py`), delegating storyboard logic, conditions, and NPC trajectories to `esmini` while CARLA runs 3D physics, rendering, and sensors.
+- Built to pair cleanly with external autonomous driving stacks (such as **Autoware**) driving the Ego vehicle over CARLA's native `-ros2` interface. See [`Docs/esmini-integration/README.md`](Docs/esmini-integration/README.md).
+
+### 🤖 Native ROS 2 Enabled Out of the Box
+- **`ENABLE_ROS2=ON`** is enabled by default on both **macOS** and **Linux**, building **`libcarla-ros2-native`** directly into the CARLA server with no external `carla_ros_bridge` process needed.
+- Defaults to **CycloneDDS** (`cyclonedds`) for drop-in compatibility with **Autoware** stacks (including macOS host CARLA ↔ Dockerized Autoware), with **Fast-DDS** (`fastdds`) and **Zenoh** (`zenoh`) selectable at runtime via `--rmw=<cyclonedds|fastdds|zenoh>`. See [`Docs/ros2-native/README.md`](Docs/ros2-native/README.md).
+
+### 🔌 Enhanced Unreal MCP Server & Agent Skills
+- Improved compatibility with Unreal Engine's **Editor MCP Server** (`http://localhost:6256/mcp`) alongside repository-bundled AI coding agent skills and MCP tooling ([`AGENTS.md`](AGENTS.md), [`Docs/agent_skills.md`](Docs/agent_skills.md), and [`Docs/build_macos.md#enabling-mcp-server-and-ai-toolsets`](Docs/build_macos.md#enabling-mcp-server-and-ai-toolsets)).
+
+---
+
+## 💻 Recommended System
+
+| Platform | CPU / GPU | Memory | Operating System |
+| :--- | :--- | :--- | :--- |
+| **macOS (Apple Silicon)** | Apple Silicon `M1` / `M2` / `M3` / `M4` / `M5` (native `arm64`, Metal RHI) | **32 GB+** Unified Memory recommended | macOS 14 (Sonoma) or newer |
+| **Linux / Windows** | Intel Core i7/i9 (9th–11th gen) or AMD Ryzen 7/9; NVIDIA RTX 3070/3080/3090 / 4090 / 5090+ (**16 GB+ VRAM**) | **32 GB+** RAM | Ubuntu 22.04 / 24.04 or Windows 11 |
+
+> [!NOTE]
+> On macOS, native **Apple Silicon (`arm64`) with Metal RHI** is supported (Rosetta wrappers are unsupported). On Linux/Windows, Ubuntu 22.04, Ubuntu 24.04, or Windows 11 is required.
+
+---
+
+## 📚 Documentation
+
+### Fork Guides & Added Features
+- 🍎 [Building CARLA on macOS (`Docs/build_macos.md`)](Docs/build_macos.md)
+- 🗺️ [Editor-Free Map Maker (`Docs/map-maker/README.md`)](Docs/map-maker/README.md) & [Munich OSM E2E Tutorial](Docs/map-maker/tutorial_munich_osm_e2e.md)
+- 🚦 [`esmini` OpenSCENARIO Integration (`Docs/esmini-integration/README.md`)](Docs/esmini-integration/README.md)
+- 🤖 [Native ROS 2 & Autoware Integration (`Docs/ros2-native/README.md`)](Docs/ros2-native/README.md)
+- 🧠 [Agentic CARLA Skills (`Docs/agent_skills.md`)](Docs/agent_skills.md)
+
+### Core CARLA Reference
+- 🚀 [First steps](Docs/start_first_steps.md) ([ReadTheDocs](https://carla-ue5.readthedocs.io/en/latest/start_first_steps/))
+- 🐍 [Python API reference](Docs/python_api.md) ([ReadTheDocs](https://carla-ue5.readthedocs.io/en/latest/python_api/))
+- 🧱 [Blueprint library](Docs/bp_library.md) ([ReadTheDocs](https://carla-ue5.readthedocs.io/en/latest/bp_library/))
+- 🏙️ [CARLA asset catalogue](Docs/catalogue.md) ([ReadTheDocs](https://carla-ue5.readthedocs.io/en/latest/catalogue/))
+- 🐧 [Building on Linux (`Docs/build_linux_ue5.md`)](Docs/build_linux_ue5.md) ([ReadTheDocs](https://carla-ue5.readthedocs.io/en/latest/build_linux_ue5/))
+- 🪟 [Building on Windows (`Docs/build_windows_ue5.md`)](Docs/build_windows_ue5.md) ([ReadTheDocs](https://carla-ue5.readthedocs.io/en/latest/build_windows_ue5/))
+- 🌐 [Upstream CARLA UE5 Documentation](https://carla-ue5.readthedocs.io/en/latest/)
+
+---
+
+## 📄 Paper
+
+This fork builds directly on the work of the original [CARLA Simulator](https://github.com/carla-simulator/carla) team. In acknowledgment of the original project, we encourage all users of **CARLA macOS** to cite their foundational CoRL'17 paper:
+
+_CARLA: An Open Urban Driving Simulator_<br>
+Alexey Dosovitskiy, German Ros, Felipe Codevilla, Antonio Lopez, Vladlen Koltun; PMLR 78:1-16
+[[PDF](http://proceedings.mlr.press/v78/dosovitskiy17a/dosovitskiy17a.pdf)]
+[[Talk](https://www.youtube.com/watch?v=xfyK03MEZ9Q&feature=youtu.be&t=2h44m30s)]
+
+```bibtex
 @inproceedings{Dosovitskiy17,
   title = {{CARLA}: {An} Open Urban Driving Simulator},
   author = {Alexey Dosovitskiy and German Ros and Felipe Codevilla and Antonio Lopez and Vladlen Koltun},
@@ -84,118 +105,105 @@ Felipe Codevilla, Antonio Lopez, Vladlen Koltun; PMLR 78:1-16
 }
 ```
 
-## Building CARLA with Unreal Engine 5.8
---------------
+---
 
-Clone this repository locally from GitHub, specifying the *ue58-dev-mac* (or *ue58-dev*) branch:
+## 🛠️ Building CARLA 1.0
+
+**CARLA 1.0** in this repository uses **Unreal Engine 5.8** (built against CARLA's Unreal Engine 5.8 fork).
+
+### 1. Clone the Repository
+
+Clone this repository locally from GitHub (use `-b 1.0` for the tagged `1.0` release, or `-b main` for the latest `main` branch):
 
 ```sh
-git clone -b ue58-dev-mac https://github.com/carla-simulator/carla.git CarlaUE58
+git clone -b main https://github.com/mkhaled87/carla-macos.git CarlaUE58
+cd CarlaUE58
 ```
 
-In order to build CARLA, you need access to the CARLA fork of Unreal Engine 5.8. In order to access this repository, you must first link your GitHub account to Epic Games by following [this guide](https://www.unrealengine.com/en-US/ue-on-github). You then also need to use your git credentials to authorise the download of the Unreal Engine 5.8 repository. 
+> [!IMPORTANT]
+> Building from source requires access to the CARLA fork of **Unreal Engine 5.8**. Link your GitHub account to Epic Games by following [this guide](https://www.unrealengine.com/en-US/ue-on-github), then authorize your Git credentials to download the Unreal Engine 5.8 repository.
 
-__Building in macOS (Apple Silicon)__:
+### 2. Platform Setup (`CarlaSetup`)
 
-CARLA supports native Apple Silicon (arm64) on macOS with Metal rendering. First, make sure to install tools required for MacOS builds as explained in the [build document](Docs/build_macos.md). Then run the setup script:
+#### 🍎 Building on macOS (Apple Silicon)
+
+CARLA 1.0 supports native Apple Silicon (`arm64`) on macOS with Metal rendering. First, install the Xcode Metal Toolchain and Homebrew tools required for macOS builds as explained in [`Docs/build_macos.md`](Docs/build_macos.md), then run:
 
 ```sh
-cd CarlaUE58
 ./CarlaSetup.sh
 ```
 
-This verifies prerequisites, clones CARLA content, clones and builds Unreal Engine 5.8, compiles CARLA, and installs the Python API. For detailed instructions, prerequisites, troubleshooting, content caching, and packaging, see the [macOS Build Guide (Docs/build_macos.md)](Docs/build_macos.md). The setup may prompt you for your GitHub credentials in order to authorise the download of the Unreal Engine repository. 
+This verifies prerequisites, clones CARLA content, clones and builds Unreal Engine 5.8 (with macOS compatibility patches), compiles CARLA, and installs the Python API. You may be prompted for your GitHub credentials to authorize downloading the Unreal Engine repository.
 
-__Building in Linux__:
+#### 🐧 Building on Linux
 
-Run the setup script from a terminal open in the CARLA root directory:
+Run the setup script from a terminal in the CARLA root directory:
 
 ```sh
-cd CarlaUE58
 ./CarlaSetup.sh --interactive
 ```
 
-The setup script will prompt you for your sudo password, in order to install the prerequisites. It will then prompt you for your GitHub credentials in order to authorise the download of the Unreal Engine repository. 
+The setup script prompts for your `sudo` password to install system prerequisites and your GitHub credentials to download the Unreal Engine repository. By default it uses the apt-installed Python 3; pass `--python-root=PATH_TO_PYTHON` (stripping `/python3` from `whereis python3`) to target a custom Python environment.
 
-The setup script will install by default Python 3 using apt. If you want to target an existing Python installation, you should use the `--python-root=PATH_TO_PYTHON` argument with the relevant Python installation path. You can use whereis python3 in your chosen environment and strip the `/python3` suffix from the path.
+<details>
+<summary>Unattended Linux build instructions</summary>
 
-__Building in Linux unattended__:
-
-If you want to run the setup script unattended, your git credentials need to be stored in an environment variable. Add your github credentials to your `.bashrc` file:
+Store your GitHub credentials in `.bashrc` before running unattended:
 
 ```sh
 export GIT_LOCAL_CREDENTIALS=username@github_token
-```
-
-Then run the setup script using the following command:
-
-```sh
-cd CarlaUE58
 sudo -E ./CarlaSetup.sh
 ```
 
-This will download and install Unreal Engine 5.8, install the prerequisites and build CARLA. It may take some time to complete and use a significant amount of disk space.
-
-If you prefer to add the git credentials in the terminal, use the following command:
+Or pass credentials inline in the terminal:
 
 ```sh
-cd CarlaUE58
-sudo -E env GIT_LOCAL_CREDENTIALS=github_username@github_token ./CarlaSetup.sh 
+sudo -E env GIT_LOCAL_CREDENTIALS=github_username@github_token ./CarlaSetup.sh
 ```
 
-__Building in Windows__:
+</details>
 
-To build in Windows, run the batch script:
+#### 🪟 Building on Windows
 
-```sh
-cd CarlaUE58
+Run the batch setup script from the CARLA root directory (unattended mode is not currently available on Windows; administrator privileges and GitHub credentials will be requested when prompted):
+
+```bat
 CarlaSetup.bat
 ```
 
-Unattended mode is currently unavailable in Windows, you will need to enter GitHub credentials or administrator privileges when prompted.
+### 3. Manual CMake Configure, Build & Launch
 
-__Configure__:
+#### Configure
 
-macOS:
+- **macOS:**
+  ```sh
+  cmake -G Ninja -S . -B Build --toolchain=$PWD/CMake/Toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_ROS2=ON -DCARLA_DLSS_SDK_PATH=disabled
+  ```
+- **Linux:**
+  ```sh
+  cmake -G Ninja -S . -B Build --toolchain=$PWD/CMake/Toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_ROS2=ON
+  ```
+- **Windows:**
+  ```sh
+  cmake -G Ninja -S . -B Build --toolchain=$PWD/CMake/Toolchain.cmake -DCMAKE_BUILD_TYPE=Release
+  ```
 
-```sh
-cmake -G Ninja -S . -B Build --toolchain=$PWD/CMake/Toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_ROS2=ON -DCARLA_DLSS_SDK_PATH=disabled
-```
+> [!NOTE]
+> If you intend to target a specific Python installation, add both `-DPython_ROOT_DIR=PATH` and `-DPython3_ROOT_DIR=PATH` to the `cmake` configure command above.
 
->[!NOTE]
-> If you intend to target a specific Python installation, you should add both these arguments to the above cmake command: `-DPython_ROOT_DIR=PATH` and `-DPython3_ROOT_DIR=PATH`.
-
-Linux:
-
-```sh
-cmake -G Ninja -S . -B Build --toolchain=$PWD/CMake/Toolchain.cmake -DCMAKE_BUILD_TYPE=Release -DENABLE_ROS2=ON
-```
-
-Windows:
-
-```sh
-cmake -G Ninja -S . -B Build --toolchain=$PWD/CMake/Toolchain.cmake -DCMAKE_BUILD_TYPE=Release
-```
-
-__Build__:
-
-Linux, Windows, and macOS:
+#### Build
 
 ```sh
 cmake --build Build
 ```
 
-__Build and install the Python API__:
-
-Linux, Windows, and macOS:
+#### Build & Install the Python API
 
 ```sh
 cmake --build Build --target carla-python-api-install
 ```
 
-__Launch the editor__:
-
-Linux, Windows, and macOS:
+#### Launch the Unreal Editor
 
 ```sh
 cmake --build Build --target launch
@@ -203,34 +211,4 @@ cmake --build Build --target launch
 cmake --build Build --target launch-only
 ```
 
-For more instructions on building CARLA UE5, please consult the build documentation for [macOS](Docs/build_macos.md), [Linux](https://carla-ue5.readthedocs.io/en/latest/build_linux_ue5/) or [Windows](https://carla-ue5.readthedocs.io/en/latest/build_windows_ue5/).
-
-Contributing
-------------
-
-Please take a look at our [Contribution guidelines][contriblink].
-
-[contriblink]: https://carla-ue5.readthedocs.io/en/latest/cont_contribution_guidelines/
-
-Licenses
--------
-
-## CARLA licenses
-
-CARLA specific code is distributed under the MIT License.
-
-CARLA specific assets are distributed under the CC-BY License.
-
-## CARLA Dependency and Integration licenses
-
-Unreal Engine 5 follows its [own license terms](https://www.unrealengine.com/en-US/faq).
-
-CARLA uses some dependencies related to 3rd party integrations:
-- [PROJ](https://proj.org/), a generic coordinate transformation software which uses the [X/MIT open source license](https://proj.org/about.html#license).
-- [SQLite](https://www.sqlite.org), part of the PROJ dependencies, which is [in the public domain](https://www.sqlite.org/purchase/license).
-- [Xerces-C](https://xerces.apache.org/xerces-c/), a validating XML parser, which is made available under the [Apache Software License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
-- [Eigen](https://eigen.tuxfamily.org/index.php?title=Main_Page), a C++ template library for linear algebra which uses the [MPL2 license](https://www.mozilla.org/en-US/MPL/2.0/).
-
-CARLA uses the Autodesk FBX SDK for converting FBX to OBJ in the import process of maps. This step is optional, and the SDK is located [here](https://www.autodesk.com/developer-network/platform-technologies/fbx-sdk-2020-0)
-
-This software contains Autodesk® FBX® code developed by Autodesk, Inc. Copyright 2020 Autodesk, Inc. All rights, reserved. Such code is provided "as is" and Autodesk, Inc. disclaims any and all warranties, whether express or implied, including without limitation the implied warranties of merchantability, fitness for a particular purpose or non-infringement of third party rights. In no event shall Autodesk, Inc. be liable for any direct, indirect, incidental, special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data, or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of such code."
+For detailed instructions on building CARLA 1.0 (Unreal Engine 5.8), consult the build documentation for [macOS](Docs/build_macos.md), [Linux](Docs/build_linux_ue5.md), or [Windows](Docs/build_windows_ue5.md).
