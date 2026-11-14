@@ -1,4 +1,4 @@
-# 🚗 CARLA Simulator — macOS Edition
+# 🚗 CARLA Simulator — macOS Edition (Apple Silicon | arm64 | Metal)
 
 [![Latest Release](https://img.shields.io/github/v/release/mkhaled87/carla-macos?style=for-the-badge&color=00b4d8&label=Latest%20Release)](https://github.com/mkhaled87/carla-macos/releases/latest)
 [![License: MIT](https://img.shields.io/github/license/mkhaled87/carla-macos?style=for-the-badge&color=2ea44f&label=License)](LICENSE)
@@ -212,3 +212,12 @@ cmake --build Build --target launch-only
 ```
 
 For detailed instructions on building CARLA 1.0 (Unreal Engine 5.8), consult the build documentation for [macOS](Docs/build_macos.md), [Linux](Docs/build_linux_ue5.md), or [Windows](Docs/build_windows_ue5.md).
+
+---
+
+## ⚖️ Attribution & Notices
+
+- **CARLA Source Code:** Licensed under the [MIT License](LICENSE).
+- **CARLA Digital Assets:** Licensed under [CC-BY-4.0](LICENSES/CC-BY-4.0-CONTENT.txt) (<https://creativecommons.org/licenses/by/4.0/>), adapted and packaged for macOS from upstream [CARLA](https://github.com/carla-simulator/carla).
+- **Unreal® Engine Runtime:** Pre-built simulator binaries use Unreal® Engine (*Unreal® is a trademark or registered trademark of Epic Games, Inc. in the United States of America and elsewhere*) and are subject to the [Unreal Engine EULA](https://www.unrealengine.com/eula).
+- **Third-Party Libraries:** Full copyright notices, license texts, and source-code links for bundled dependencies (`esmini` MPL-2.0, Eclipse CycloneDDS EPL-2.0/EDL-1.0, Fast-DDS/Zenoh-C/oneTBB Apache-2.0, Eigen, Boost, Recast, etc.) are listed in [`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md) and [`LICENSES/`](LICENSES/).
