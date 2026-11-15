@@ -2,14 +2,13 @@ esmini GIT REV: v3.10.2-0-d1d4423b
 esmini GIT TAG: v3.10.2
 esmini GIT BRANCH: tags/v3.10.2^0
 esmini BUILD VERSION: 6464
-[] [info] Loaded /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/town10hd_autoware_cut_in.xosc
-[2026-10-25 15:19:07]
-[] [info] Player options: --osc /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/town10hd_autoware_cut_in.xosc --camera_mode orbit --ground_plane auto --headless --info_text 1 --logfile_path log.txt --log_level info --path /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples --text_scale 1.0 --traj_filter 0.1 --light_mode auto 
+[] [info] Loaded /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/town10hd_autoware_cut_in.xosc
+[2026-11-14 22:59:25]
+[] [info] Player options: --osc /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/town10hd_autoware_cut_in.xosc --camera_mode orbit --ground_plane auto --headless --info_text 1 --logfile_path log.txt --log_level info --path /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios --text_scale 1.0 --traj_filter 0.1 --light_mode auto 
 [] [info] No fixed timestep specified - running in realtime speed
-[] [info] Added path /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v
-[] [info] Added path /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples
-[] [info] Generated seed 3839502308
-[] [info] Loading /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/town10hd_autoware_cut_in.xosc (v1.2)
+[] [info] Added path /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios
+[] [info] Generated seed 4063097796
+[] [info] Loading /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/town10hd_autoware_cut_in.xosc (v1.2)
 [] [info] 0 variables
 [] [error] Unsupported object type: -1 - interpret as NONE
 [] [error] Unsupported object type: -1 - interpret as NONE
@@ -17,12 +16,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -45,12 +42,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -61,12 +56,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -79,12 +72,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -98,12 +89,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -116,12 +105,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -133,12 +120,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -149,29 +134,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
-[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   ./resources/./opendrive_traffic_signals.txt
-[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
-[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
-[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
-[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
-[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
-[] [error] Unsupported object type: -1 - interpret as NONE
-[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
-[] [info]   traffic_signals/opendrive_traffic_signals.txt
-[] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -183,12 +149,25 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   ./resources/./opendrive_traffic_signals.txt
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
+[] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located
+[] [info] Signal Type 1000001--1.0000000000000000e+0 doesn't exists for country opendrive
+[] [info] Signal Type 1000001--1.0000000000000000e+0 exists for country opendrive - but no OSI type defined
+[] [warn] TrafficLight: Traffic light type '1000001' subtype '-1' not supported
+[] [error] Unsupported object type: -1 - interpret as NONE
+[] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
+[] [info]   traffic_signals/opendrive_traffic_signals.txt
+[] [info]   opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -203,12 +182,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -220,12 +197,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -236,12 +211,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -252,12 +225,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -268,12 +239,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -284,12 +253,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -302,12 +269,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -322,12 +287,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -338,12 +301,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -356,12 +317,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -373,12 +332,10 @@ esmini BUILD VERSION: 6464
 [] [info] Traffic sign mapping file search paths attempted for file opendrive_traffic_signals.txt:
 [] [info]   traffic_signals/opendrive_traffic_signals.txt
 [] [info]   opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./traffic_signals/opendrive_traffic_signals.txt
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/./opendrive_traffic_signals.txt
 [] [info]   ./resources/./traffic_signals/opendrive_traffic_signals.txt
 [] [info]   ./resources/./opendrive_traffic_signals.txt
 [] [warn] Traffic sign mapping file traffic_signals/opendrive_traffic_signals.txt not located, using specified file path
@@ -388,43 +345,39 @@ esmini BUILD VERSION: 6464
 [] [error] Unsupported object type: -1 - interpret as NONE
 [] [error] Unsupported object type: -1 - interpret as NONE
 [] [error] Unsupported object type: -1 - interpret as NONE
-[] [info] Loaded OpenDRIVE: /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/Town10HD_Opt.xodr
+[] [info] Loaded OpenDRIVE: /Users/ra94giv/Workspace/carla/Examples/Autoware2/maps/Town10HD/Town10HD_Opt.xodr
 [] [info] 3D model search paths attempted for file car_white.osgb:
 [] [info]   car_white.osgb
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./car_white.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_white.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_white.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./car_white.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/../models/./car_white.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./car_white.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./car_white.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./car_white.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/../models/./car_white.osgb
 [] [warn] 3D model car_white.osgb not located, using specified file path
 [] [info] Assigned 3D model car_white.osgb to vehicle car_ego
 [] [info] Add and deactivate new object "ego" (id 0)
 [] [info] 3D model search paths attempted for file car_red.osgb:
 [] [info]   car_red.osgb
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./car_red.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_red.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_red.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./car_red.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/../models/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/../models/./car_red.osgb
 [] [warn] 3D model car_red.osgb not located, using specified file path
 [] [info] Assigned 3D model car_red.osgb to vehicle car_red
 [] [info] Add and deactivate new object "lead_npc" (id 1)
 [] [info] 3D model search paths attempted for file car_red.osgb:
 [] [info]   car_red.osgb
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./car_red.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_red.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./car_red.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./car_red.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/../models/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./car_red.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/../models/./car_red.osgb
 [] [warn] 3D model car_red.osgb not located, using specified file path
 [] [info] Assigned 3D model car_red.osgb to vehicle car_yellow
 [] [info] Add and deactivate new object "cut_in_npc" (id 2)
 [] [info] 3D model search paths attempted for file walkman.osgb:
 [] [info]   walkman.osgb
-[] [info]   /var/folders/8g/s_myxp8563zd356fjbl0zrrh0000gp/T/carla_esmini_xodr_q5a4p85v/./walkman.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./walkman.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/examples/./walkman.osgb
-[] [info]   /Users/ra94giv/Workspace/carla-worktree_esmini-integration/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./walkman.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./walkman.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Examples/Autoware2/scenarios/./walkman.osgb
+[] [info]   /Users/ra94giv/Workspace/carla/Build/Package/Carla-1.0-Mac-Shipping/PythonAPI/esmini/_vendor/esmini-v3.10.2/esmini/bin/../resources/models//./walkman.osgb
 [] [warn] 3D model walkman.osgb not located, using specified file path
 [] [info] Add and deactivate new object "sidewalk_walker" (id 3)
 [] [info] Parsing global action EnvironmentAction
@@ -479,4 +432,52 @@ esmini BUILD VERSION: 6464
 [0.000] [info] LeadVehicleManeuverGroup initState -> startTransition -> runningState
 [0.000] [info] LeadAccelerateManeuver initState -> startTransition -> runningState
 [0.000] [info] LeadAcceleratesWhenEgoClosesGapEvent initState -> initToStandbyTransition -> standbyState
-[1.000] [info] Closing
+[8.750] [info] EgoApproachesCutInCondition: true, delay: 0.00, rel_dist: 18.96 < 19.00, edge: rising
+[8.750] [info] Trigger /------------------------------------------------
+[8.750] [info] Group 0:
+[8.750] [info] EgoApproachesCutInCondition: true
+[8.750] [info] Triggering entity 0: ego
+[8.750] [info] Trigger  ------------------------------------------------/
+[8.750] [info] CutInWhenEgoApproachesEvent standbyState -> startTransition -> runningState
+[8.750] [info] CutInLaneChangeAction initState -> startTransition -> runningState
+[9.550] [warn] LatLaneChangeAction: Limiting lateral motion and falling back to linear interpolation
+[9.600] [warn] LatLaneChangeAction: Limiting lateral motion and falling back to linear interpolation
+[9.650] [warn] LatLaneChangeAction: Limiting lateral motion and falling back to linear interpolation
+[9.700] [warn] LatLaneChangeAction: Limiting lateral motion and falling back to linear interpolation
+[9.750] [warn] LatLaneChangeAction: Limiting lateral motion and falling back to linear interpolation
+[9.800] [warn] LatLaneChangeAction: Limiting lateral motion and falling back to linear interpolation
+[9.850] [warn] LatLaneChangeAction: Limiting lateral motion and falling back to linear interpolation
+[9.900] [warn] LatLaneChangeAction: Limiting lateral motion and falling back to linear interpolation
+[10.600] [info] CutInLaneChangeAction runningState -> endTransition -> completeState
+[10.600] [info] CutInWhenEgoApproachesEvent complete after 1 execution
+[10.600] [info] CutInWhenEgoApproachesEvent runningState -> endTransition -> completeState
+[10.600] [info] CutInMergeCompleteCondition: true, delay: 0.00, CutInLaneChangeAction, COMPLETE / END_TRANSITION == COMPLETE, edge: rising
+[10.600] [info] Trigger /------------------------------------------------
+[10.600] [info] Group 0:
+[10.600] [info] CutInMergeCompleteCondition: true
+[10.600] [info] Trigger  ------------------------------------------------/
+[10.600] [info] CutInAccelerateAfterMergeEvent standbyState -> startTransition -> runningState
+[10.600] [info] CutInAccelerateAction initState -> startTransition -> runningState
+[11.000] [info] EgoApproachesLeadCondition: true, delay: 0.00, rel_dist: 31.99 < 32.00, edge: rising
+[11.000] [info] Trigger /------------------------------------------------
+[11.000] [info] Group 0:
+[11.000] [info] EgoApproachesLeadCondition: true
+[11.000] [info] Triggering entity 0: ego
+[11.000] [info] Trigger  ------------------------------------------------/
+[11.000] [info] LeadAcceleratesWhenEgoClosesGapEvent standbyState -> startTransition -> runningState
+[11.000] [info] LeadSpeedUpAction initState -> startTransition -> runningState
+[12.850] [info] CutInAccelerateAction runningState -> endTransition -> completeState
+[12.850] [info] CutInAccelerateAfterMergeEvent complete after 1 execution
+[12.850] [info] CutInAccelerateAfterMergeEvent runningState -> endTransition -> completeState
+[12.850] [info] CutInManeuver runningState -> endTransition -> completeState
+[12.850] [info] CutInManeuverGroup complete after 1 execution
+[12.850] [info] CutInManeuverGroup runningState -> endTransition -> completeState
+[13.500] [info] LeadSpeedUpAction runningState -> endTransition -> completeState
+[13.500] [info] LeadAcceleratesWhenEgoClosesGapEvent complete after 1 execution
+[13.500] [info] LeadAcceleratesWhenEgoClosesGapEvent runningState -> endTransition -> completeState
+[13.500] [info] LeadAccelerateManeuver runningState -> endTransition -> completeState
+[13.500] [info] LeadVehicleManeuverGroup complete after 1 execution
+[13.500] [info] LeadVehicleManeuverGroup runningState -> endTransition -> completeState
+[13.500] [info] CutInAndAccelerateAct runningState -> endTransition -> completeState
+[13.500] [info] AutowareCutInStory runningState -> endTransition -> completeState
+[25.750] [info] Closing

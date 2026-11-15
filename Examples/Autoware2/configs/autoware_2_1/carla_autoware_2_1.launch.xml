@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Classical Autoware 2.1.0 launch wrapper for CARLA 1.0 native C++ ROS 2 simulation.
+
+  Composes official Autoware 2.1.0 component launchers with:
+    - carla_sensor_kit + sample_vehicle (rear-axle base_link, undistorted CARLA LiDAR)
+    - launch_vehicle_interface:=false (CARLA handles /control/command/* natively in C++)
+    - rule_based planning + LiDAR clustering perception (CPU arm64 compatible, no GPU/ONNX required)
+    - CARLA-tuned NDT scan matcher, pose initializer, and CARLA diagnostics graph
+-->
+<launch>
+  <arg name="map_path" default="/carla_example/maps/Town10HD"/>
+  <arg name="lanelet2_map_file" default="lanelet2_map.osm"/>
+  <arg name="pointcloud_map_file" default="pointcloud_map.pcd"/>
+  <arg name="vehicle_model" default="sample_vehicle"/>
+  <arg name="sensor_model" default="carla_sensor_kit"/>
+  <arg name="vehicle_id" default="default"/>
+  <arg name="pointcloud_container_name" default="pointcloud_container"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="carla_config_dir" default="/carla_example/configs/autoware_2_1"/>
+  <arg name="rviz" default="false"/>
+  <arg name="rviz_config" default="$(find-pkg-share autoware_launch)/rviz/autoware.rviz"/>
+
+  <set_parameter name="use_sim_time" value="$(var use_sim_time)"/>
+
+  <!-- Global parameters -->
+  <group scoped="false">
+    <include file="$(find-pkg-share autoware_global_parameter_loader)/launch/global_params.launch.py">
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="vehicle_model" value="$(var vehicle_model)"/>
+    </include>
+  </group>
+
+  <!-- Shared pointcloud container -->
+  <include file="$(find-pkg-share autoware_launch)/launch/pointcloud_container.launch.py">
+    <arg name="use_multithread" value="true"/>
+    <arg name="container_name" value="$(var pointcloud_container_name)"/>
+  </include>
+
+  <!-- Vehicle description (URDF + robot_state_publisher; CARLA acts as the vehicle interface) -->
+  <include file="$(find-pkg-share tier4_vehicle_launch)/launch/vehicle.launch.xml">
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="vehicle_model" value="$(var vehicle_model)"/>
+    <arg name="sensor_model" value="$(var sensor_model)"/>
+    <arg name="vehicle_id" value="$(var vehicle_id)"/>
+    <arg name="launch_vehicle_interface" value="false"/>
+    <arg name="config_dir" value="$(find-pkg-share $(var sensor_model)_description)/config"/>
+    <arg name="raw_vehicle_cmd_converter_param_path" value="$(find-pkg-share autoware_launch)/config/vehicle/raw_vehicle_cmd_converter/raw_vehicle_cmd_converter.param.yaml"/>
+  </include>
+
+  <!-- System & CARLA diagnostics -->
+  <group>
+    <include file="$(find-pkg-share tier4_system_launch)/launch/system.launch.xml">
+      <arg name="run_mode" value="online"/>
+      <arg name="launch_system_monitor" value="false"/>
+      <arg name="launch_dummy_diag_publisher" value="false"/>
+      <arg name="sensor_model" value="$(var sensor_model)"/>
+      <arg name="component_state_monitor_topic_path" value="$(find-pkg-share autoware_launch)/config/simulator/carla/component_state_monitor/topics.yaml"/>
+      <arg name="duplicated_node_checker_param_path" value="$(find-pkg-share autoware_launch)/config/system/duplicated_node_checker/duplicated_node_checker.param.yaml"/>
+      <arg name="processing_time_checker_param_path" value="$(find-pkg-share autoware_launch)/config/system/processing_time_checker/processing_time_checker.param.yaml"/>
+      <arg name="pipeline_latency_monitor_param_path" value="$(find-pkg-share autoware_launch)/config/system/pipeline_latency_monitor/pipeline_latency_monitor.param.yaml"/>
+      <arg name="mrm_comfortable_stop_operator_param_path" value="$(find-pkg-share autoware_launch)/config/system/mrm_comfortable_stop_operator/mrm_comfortable_stop_operator.param.yaml"/>
+      <arg name="mrm_emergency_stop_operator_param_path" value="$(find-pkg-share autoware_launch)/config/system/mrm_emergency_stop_operator/mrm_emergency_stop_operator.param.yaml"/>
+      <arg name="dummy_diag_publisher_param_path" value="$(find-pkg-share autoware_launch)/config/system/diagnostics/dummy_diag_publisher.param.yaml"/>
+      <arg name="system_monitor_cpu_monitor_param_path" value="$(find-pkg-share autoware_launch)/config/system/system_monitor/cpu_monitor.param.yaml"/>
+      <arg name="system_monitor_gpu_monitor_param_path" value="$(find-pkg-share autoware_launch)/config/system/system_monitor/gpu_monitor.param.yaml"/>
+      <arg name="system_monitor_hdd_monitor_param_path" value="$(find-pkg-share autoware_launch)/config/system/system_monitor/hdd_monitor.param.yaml"/>
+      <arg name="system_monitor_mem_monitor_param_path" value="$(find-pkg-share autoware_launch)/config/system/system_monitor/mem_monitor.param.yaml"/>
+      <arg name="system_monitor_net_monitor_param_path" value="$(find-pkg-share autoware_launch)/config/system/system_monitor/net_monitor.param.yaml"/>
+      <arg name="system_monitor_ntp_monitor_param_path" value="$(find-pkg-share autoware_launch)/config/system/system_monitor/ntp_monitor.param.yaml"/>
+      <arg name="system_monitor_process_monitor_param_path" value="$(find-pkg-share autoware_launch)/config/system/system_monitor/process_monitor.param.yaml"/>
+      <arg name="system_monitor_voltage_monitor_param_path" value="$(find-pkg-share autoware_launch)/config/system/system_monitor/voltage_monitor.param.yaml"/>
+      <arg name="mrm_handler_param_path" value="$(find-pkg-share autoware_launch)/config/system/mrm_handler/mrm_handler.param.yaml"/>
+      <arg name="diagnostic_graph_aggregator_param_path" value="$(find-pkg-share autoware_diagnostic_graph_aggregator)/config/default.param.yaml"/>
+      <arg name="diagnostic_graph_aggregator_graph_path" value="$(var carla_config_dir)/diagnostics_carla.yaml"/>
+      <arg name="command_mode_switcher_param_path" value="$(find-pkg-share autoware_launch)/config/system/command_mode/switcher.param.yaml"/>
+      <arg name="command_mode_decider_param_path" value="$(find-pkg-share autoware_launch)/config/system/command_mode/decider.param.yaml"/>
+      <arg name="availability_converter_param_path" value="$(find-pkg-share autoware_launch)/config/system/command_mode/converter.param.yaml"/>
+    </include>
+  </group>
+
+  <!-- Map -->
+  <include file="$(find-pkg-share autoware_launch)/launch/components/component_map.launch.xml">
+    <arg name="map_path" value="$(var map_path)"/>
+    <arg name="lanelet2_map_file" value="$(var lanelet2_map_file)"/>
+    <arg name="pointcloud_map_file" value="$(var pointcloud_map_file)"/>
+  </include>
+
+  <!-- Sensing (`carla_sensor_kit` crop boxes, IMU corrector, velocity converter) -->
+  <include file="$(find-pkg-share autoware_launch)/launch/components/component_sensing.launch.xml">
+    <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
+    <arg name="sensor_model" value="$(var sensor_model)"/>
+    <arg name="vehicle_model" value="$(var vehicle_model)"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="launch_sensing_driver" value="true"/>
+  </include>
+
+  <!-- Localization (CPU NDT scan matcher + Gyro odometry + EKF fusion + GNSS pose init) -->
+  <group>
+    <push-ros-namespace namespace="localization"/>
+
+    <group>
+      <push-ros-namespace namespace="pose_estimator"/>
+      <include file="$(find-pkg-share autoware_localization_launch)/launch/pose_twist_estimator/ndt_scan_matcher.launch.xml">
+        <arg name="ndt_scan_matcher/ndt_scan_matcher_param_path" value="$(var carla_config_dir)/ndt_scan_matcher.param.yaml"/>
+        <arg name="output_pose_with_covariance_topic" value="/localization/pose_estimator/pose_with_covariance"/>
+      </include>
+    </group>
+
+    <group>
+      <push-ros-namespace namespace="twist_estimator"/>
+      <include file="$(find-pkg-share autoware_localization_launch)/launch/pose_twist_estimator/gyro_odometer.launch.xml"/>
+    </group>
+
+    <group>
+      <push-ros-namespace namespace="util"/>
+      <include file="$(find-pkg-share autoware_localization_launch)/launch/util/util.launch.xml">
+        <arg name="use_ndt_pose" value="true"/>
+        <arg name="use_yabloc_pose" value="false"/>
+        <arg name="gnss_enabled" value="true"/>
+        <arg name="stop_check_enabled" value="false"/>
+        <arg name="pose_initializer_param_path" value="$(var carla_config_dir)/pose_initializer.param.yaml"/>
+        <arg name="ndt_scan_matcher/pointcloud_preprocessor/voxel_grid_downsample_filter_param_path" value="$(var carla_config_dir)/voxel_grid_filter.param.yaml"/>
+        <arg name="sub_gnss_pose_cov" value="/sensing/gnss/pose_with_covariance"/>
+        <arg name="input_pointcloud" value="/sensing/lidar/concatenated/pointcloud"/>
+        <arg name="localization_pointcloud_container_name" value="/$(var pointcloud_container_name)"/>
+      </include>
+    </group>
+
+    <group>
+      <push-ros-namespace namespace="pose_twist_fusion_filter"/>
+      <include file="$(find-pkg-share autoware_localization_launch)/launch/pose_twist_fusion_filter/pose_twist_fusion_filter.launch.xml"/>
+    </group>
+
+    <include file="$(find-pkg-share autoware_localization_launch)/launch/localization_error_monitor/localization_error_monitor.launch.xml"/>
+  </group>
+
+  <!-- Perception (rule-based ground segmentation + laserscan occupancy grid + single-channel clustering + tracker + prediction) -->
+  <group>
+    <push-ros-namespace namespace="perception"/>
+
+    <!-- Ground segmentation -->
+    <group>
+      <push-ros-namespace namespace="obstacle_segmentation"/>
+      <include file="$(find-pkg-share autoware_perception_launch)/launch/obstacle_segmentation/ground_segmentation_rule_based.launch.xml">
+        <arg name="target_container" value="$(var pointcloud_container_name)"/>
+        <arg name="base_frame" value="base_link"/>
+        <arg name="use_intra_process" value="true"/>
+        <arg name="input/pointcloud" value="/sensing/lidar/concatenated/pointcloud"/>
+        <arg name="output/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
+      </include>
+    </group>
+
+    <!-- Laserscan-based occupancy grid map (the composable node shipped in Autoware 2.1.0) -->
+    <group>
+      <push-ros-namespace namespace="occupancy_grid_map"/>
+      <include file="$(find-pkg-share autoware_perception_launch)/launch/occupancy_grid_map/probabilistic_occupancy_grid_map.launch.xml">
+        <arg name="input/obstacle_pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
+        <arg name="input/raw_pointcloud" value="/sensing/lidar/concatenated/pointcloud"/>
+        <arg name="output" value="/perception/occupancy_grid_map/map"/>
+        <arg name="use_intra_process" value="true"/>
+        <arg name="use_multithread" value="true"/>
+        <arg name="pointcloud_container_name" value="$(var pointcloud_container_name)"/>
+        <arg name="occupancy_grid_map_method" value="laserscan_based_occupancy_grid_map"/>
+        <arg name="occupancy_grid_map_updater" value="binary_bayes_filter"/>
+      </include>
+    </group>
+
+    <!-- Object recognition: clustering detection -> single-channel tracker -> map-based prediction -->
+    <group>
+      <push-ros-namespace namespace="object_recognition"/>
+
+      <!-- Detection -->
+      <group>
+        <push-ros-namespace namespace="detection"/>
+        <include file="$(find-pkg-share autoware_perception_launch)/launch/object_recognition/detection/filter/pointcloud_map_filter.launch.xml">
+          <arg name="target_container" value="$(var pointcloud_container_name)"/>
+          <arg name="input/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
+          <arg name="output/pointcloud" value="/perception/object_recognition/detection/pointcloud_map_filtered/pointcloud"/>
+          <arg name="use_intra_process" value="true"/>
+        </include>
+        <include file="$(find-pkg-share autoware_perception_launch)/launch/object_recognition/detection/detector/lidar_rule_detector.launch.xml">
+          <arg name="ns" value="/perception/object_recognition/detection"/>
+          <arg name="node/pointcloud_container" value="$(var pointcloud_container_name)"/>
+          <arg name="input/pointcloud_map/pointcloud" value="/perception/object_recognition/detection/pointcloud_map_filtered/pointcloud"/>
+          <arg name="input/obstacle_segmentation/pointcloud" value="/perception/obstacle_segmentation/pointcloud"/>
+          <arg name="output/cluster_objects" value="/perception/object_recognition/detection/clustering/objects_with_feature"/>
+          <arg name="output/objects" value="/perception/object_recognition/detection/clustering/unfiltered/objects"/>
+          <arg name="use_low_height_cropbox" value="false"/>
+          <arg name="voxel_grid_based_euclidean_param_path" value="$(find-pkg-share autoware_perception_config)/config/object_recognition/detection/clustering/voxel_grid_based_euclidean_cluster.param.yaml"/>
+        </include>
+        <include file="$(find-pkg-share autoware_perception_launch)/launch/object_recognition/detection/filter/object_filter.launch.xml">
+          <arg name="objects_filter_method" value="lanelet_filter"/>
+          <arg name="input/objects" value="/perception/object_recognition/detection/clustering/unfiltered/objects"/>
+          <arg name="output/objects" value="/perception/object_recognition/detection/clustering/objects"/>
+        </include>
+      </group>
+
+      <!-- Tracking (assign lidar_clustering only to detection01 to avoid duplicate channel declarations) -->
+      <group>
+        <push-ros-namespace namespace="tracking"/>
+        <include file="$(find-pkg-share autoware_multi_object_tracker)/launch/multi_object_tracker.launch.xml">
+          <arg name="input/detection01/objects" value="/perception/object_recognition/detection/clustering/objects"/>
+          <arg name="input/detection01/channel" value="lidar_clustering"/>
+          <arg name="output/objects" value="/perception/object_recognition/tracking/objects"/>
+          <arg name="output/merged_objects" value="/perception/object_recognition/detection/objects"/>
+          <arg name="publish_merged_objects" value="false"/>
+          <arg name="data_association_matrix_path" value="$(find-pkg-share autoware_perception_config)/config/object_recognition/tracking/multi_object_tracker/data_association_matrix.param.yaml"/>
+          <arg name="input_channels_path" value="$(find-pkg-share autoware_perception_config)/config/object_recognition/tracking/multi_object_tracker/input_channels.param.yaml"/>
+          <arg name="tracker_setting_path" value="$(find-pkg-share autoware_perception_config)/config/object_recognition/tracking/multi_object_tracker/multi_object_tracker_node.param.yaml"/>
+        </include>
+      </group>
+
+      <!-- Prediction -->
+      <group>
+        <push-ros-namespace namespace="prediction"/>
+        <include file="$(find-pkg-share autoware_perception_launch)/launch/object_recognition/prediction/prediction.launch.xml">
+          <arg name="use_vector_map" value="true"/>
+          <arg name="input/objects" value="/perception/object_recognition/tracking/objects"/>
+          <arg name="output/objects" value="/perception/object_recognition/objects"/>
+          <arg name="object_recognition_prediction_map_based_prediction_param_path" value="$(var carla_config_dir)/map_based_prediction.param.yaml"/>
+        </include>
+      </group>
+    </group>
+  </group>
+
+  <!-- Traffic light fusion + external V2X signal arbiter (no ML camera detector needed) -->
+  <group>
+    <push-ros-namespace namespace="perception"/>
+    <push-ros-namespace namespace="traffic_light_recognition"/>
+    <include file="$(find-pkg-share autoware_perception_launch)/launch/traffic_light_recognition/traffic_light_fusion.launch.xml">
+      <arg name="camera_namespaces" value="[traffic_light]"/>
+      <arg name="external/traffic_signals" value="/perception/traffic_light_recognition/external/traffic_signals"/>
+      <arg name="output/traffic_signals" value="/perception/traffic_light_recognition/traffic_signals"/>
+    </include>
+  </group>
+
+  <!-- Classical Planning (`rule_based` mission + behavior + motion planning) -->
+  <group scoped="false">
+    <include file="$(find-pkg-share autoware_global_parameter_loader)/launch/global_params.launch.py">
+      <arg name="use_sim_time" value="$(var use_sim_time)"/>
+      <arg name="vehicle_model" value="$(var vehicle_model)"/>
+    </include>
+  </group>
+  <include file="$(find-pkg-share autoware_planning_launch)/launch/planning.launch.xml">
+    <arg name="module_preset" value="default"/>
+    <arg name="planning_setting" value="rule_based"/>
+    <arg name="enable_all_modules_auto_mode" value="false"/>
+    <arg name="is_simulation" value="false"/>
+    <arg name="vehicle_model" value="$(var vehicle_model)"/>
+    <arg name="behavior_path_planner_static_obstacle_avoidance_module_param_path" value="$(var carla_config_dir)/static_obstacle_avoidance.param.yaml"/>
+  </include>
+
+  <!-- Control (MPC lateral + PID longitudinal + vehicle_cmd_gate + AEB) -->
+  <include file="$(find-pkg-share autoware_launch)/launch/components/component_control.launch.xml">
+    <arg name="module_preset" value="default"/>
+    <arg name="check_external_emergency_heartbeat" value="false"/>
+    <arg name="use_aeb_autoware_state_check" value="true"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="vehicle_model" value="$(var vehicle_model)"/>
+    <arg name="vehicle_id" value="$(var vehicle_id)"/>
+  </include>
+
+  <!-- Autoware ADAPI -->
+  <include file="$(find-pkg-share autoware_launch)/launch/components/tier4_autoware_api_component.launch.xml">
+    <arg name="scenario_simulation" value="false"/>
+    <arg name="use_sim_time" value="$(var use_sim_time)"/>
+    <arg name="vehicle_model" value="$(var vehicle_model)"/>
+  </include>
+
+  <!-- Optional RViz -->
+  <group if="$(var rviz)">
+    <node pkg="rviz2" exec="rviz2" name="rviz2" output="screen" args="-d $(var rviz_config)"/>
+  </group>
+</launch>

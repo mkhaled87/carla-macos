@@ -1,0 +1,179 @@
+# Runtime-configurable CARLA sensor rig for Autoware 2.1.0 (carla_sensor_kit + sample_vehicle).
+#
+# Edit this file to add, remove, disable, or retune sensors (LiDAR, cameras, IMU, GNSS, radar)
+# without rebuilding CARLA or any Docker image. CARLA's C++ native ROS 2 bridge creates
+# publishers dynamically from each sensor blueprint's `ros_name`, `ros_topic_name`, and
+# `enable_for_ros` attributes at spawn time.
+#
+# Coordinates:
+#   transform uses CARLA vehicle coordinates (x: forward, y: right, z: up, in meters;
+#   roll, pitch, yaw in degrees) relative to `reference`:
+#     - "car_center" : CARLA's actor origin (midpoint of vehicle bounding box).
+#                      For vehicle.lincoln.mkz (wheelbase = 2.850 m):
+#                        x_base_link (rear axle) = x_car_center + 1.425
+#     - "rear_axle"  : Autoware `base_link` (rear axle center on ground);
+#                      spawn_sensor_rig.py converts using vehicle.wheelbase / 2.
+
+vehicle:
+  blueprint: vehicle.lincoln.mkz
+  role_name: ego
+  wheelbase: 2.850
+  ros2_autoware_control: true
+  color: "255,255,255"
+  # Spawn pose can come from an OpenSCENARIO (.xosc) Ego entity or fallback transform below.
+  default_spawn:
+    x: -44.62
+    y: 44.10
+    z: 0.50
+    yaw: 90.0
+
+vehicle_status:
+  enabled: true
+  blueprint: sensor.other.vehicle_status
+  ros_name: base_link
+  ros_topic_name: /vehicle/status
+  reference: car_center
+  transform: { x: 0.0, y: 0.0, z: 0.0, roll: 0.0, pitch: 0.0, yaw: 0.0 }
+
+sensors:
+  # Primary 360° LiDAR matching `carla_sensor_kit` (`velodyne_top` frame in TF)
+  - name: velodyne_top
+    enabled: true
+    blueprint: sensor.lidar.ray_cast
+    ros_name: velodyne_top
+    ros_topic_name: /sensing/lidar/top/pointcloud_before_sync
+    reference: car_center
+    # x_base_link = -0.390 + 1.425 = 1.035; z = 1.840 + 0.0377 (VLP-16 base_scan_joint)
+    transform: { x: -0.390, y: 0.0, z: 1.8777, roll: 0.0, pitch: 0.0, yaw: 0.0 }
+    attributes:
+      use_ros2_lidar_ex: "false"
+      channels: "32"
+      range: "100.0"
+      points_per_second: "288000"
+      rotation_frequency: "10.0"
+      upper_fov: "10.0"
+      lower_fov: "-20.0"
+      sensor_tick: "0.05"
+      noise_stddev: "0.0"
+
+  # Primary IMU matching `carla_sensor_kit` (`tamagawa/imu_link` in TF)
+  - name: tamagawa_imu
+    enabled: true
+    blueprint: sensor.other.imu
+    ros_name: tamagawa/imu_link
+    ros_topic_name: /sensing/imu/tamagawa/imu_raw
+    reference: car_center
+    # x_base_link = -1.400 + 1.425 = 0.025
+    transform: { x: -1.400, y: 0.0, z: 0.0, roll: 0.0, pitch: 0.0, yaw: 0.0 }
+    attributes:
+      sensor_tick: "0.02"
+
+  # Autoware GNSS matching `carla_sensor_kit` (`gnss_link` -> /sensing/gnss/pose_with_covariance)
+  - name: autoware_gnss
+    enabled: true
+    blueprint: sensor.other.autoware_gnss
+    ros_name: gnss_link
+    ros_topic_name: /sensing/gnss
+    reference: car_center
+    transform: { x: -1.400, y: 0.0, z: 0.0, roll: 0.0, pitch: 0.0, yaw: 0.0 }
+    attributes:
+      sensor_tick: "0.2"
+
+  # Front RGB camera (active for monitoring/RViz; additional surround cameras below can be toggled)
+  - name: cam_front
+    enabled: true
+    blueprint: sensor.camera.rgb
+    ros_name: CAM_FRONT/camera_optical_link
+    ros_topic_name: /sensing/camera/CAM_FRONT
+    reference: car_center
+    # x_base_link = 0.800 + 1.425 = 2.225
+    transform: { x: 0.800, y: 0.0, z: 1.600, roll: 0.0, pitch: 0.0, yaw: 0.0 }
+    attributes:
+      image_size_x: "800"
+      image_size_y: "450"
+      fov: "70"
+      sensor_tick: "0.1"
+
+  # Optional nuScenes-style 360° surround cameras (`carla_sensor_kit` frames pre-mapped).
+  # Toggle `enabled: true` to stream the full 6-camera ring at runtime with zero rebuild.
+  - name: cam_front_left
+    enabled: false
+    blueprint: sensor.camera.rgb
+    ros_name: CAM_FRONT_LEFT/camera_optical_link
+    ros_topic_name: /sensing/camera/CAM_FRONT_LEFT
+    reference: car_center
+    transform: { x: 0.270, y: -0.550, z: 1.600, roll: 0.0, pitch: 0.0, yaw: -55.0 }
+    attributes:
+      image_size_x: "800"
+      image_size_y: "450"
+      fov: "70"
+      sensor_tick: "0.1"
+
+  - name: cam_front_right
+    enabled: false
+    blueprint: sensor.camera.rgb
+    ros_name: CAM_FRONT_RIGHT/camera_optical_link
+    ros_topic_name: /sensing/camera/CAM_FRONT_RIGHT
+    reference: car_center
+    transform: { x: 0.270, y: 0.550, z: 1.600, roll: 0.0, pitch: 0.0, yaw: 55.0 }
+    attributes:
+      image_size_x: "800"
+      image_size_y: "450"
+      fov: "70"
+      sensor_tick: "0.1"
+
+  - name: cam_back
+    enabled: false
+    blueprint: sensor.camera.rgb
+    ros_name: CAM_BACK/camera_optical_link
+    ros_topic_name: /sensing/camera/CAM_BACK
+    reference: car_center
+    transform: { x: -2.000, y: 0.0, z: 1.600, roll: 0.0, pitch: 0.0, yaw: 180.0 }
+    attributes:
+      image_size_x: "800"
+      image_size_y: "450"
+      fov: "110"
+      sensor_tick: "0.1"
+
+  - name: cam_back_left
+    enabled: false
+    blueprint: sensor.camera.rgb
+    ros_name: CAM_BACK_LEFT/camera_optical_link
+    ros_topic_name: /sensing/camera/CAM_BACK_LEFT
+    reference: car_center
+    transform: { x: -0.320, y: -0.550, z: 1.600, roll: 0.0, pitch: 0.0, yaw: -110.0 }
+    attributes:
+      image_size_x: "800"
+      image_size_y: "450"
+      fov: "70"
+      sensor_tick: "0.1"
+
+  - name: cam_back_right
+    enabled: false
+    blueprint: sensor.camera.rgb
+    ros_name: CAM_BACK_RIGHT/camera_optical_link
+    ros_topic_name: /sensing/camera/CAM_BACK_RIGHT
+    reference: car_center
+    transform: { x: -0.320, y: 0.550, z: 1.600, roll: 0.0, pitch: 0.0, yaw: 110.0 }
+    attributes:
+      image_size_x: "800"
+      image_size_y: "450"
+      fov: "70"
+      sensor_tick: "0.1"
+
+  # Optional Radar example: toggle `enabled: true` to stream native RadarDetection ROS 2 msgs.
+  # Note: custom frames beyond `carla_sensor_kit` need a matching static TF publisher in Autoware
+  # if downstream nodes transform them into `base_link`.
+  - name: front_radar
+    enabled: false
+    blueprint: sensor.other.radar
+    ros_name: front_radar_link
+    ros_topic_name: /sensing/radar/front_center/detected_objects
+    reference: car_center
+    transform: { x: 2.200, y: 0.0, z: 0.550, roll: 0.0, pitch: 0.0, yaw: 0.0 }
+    attributes:
+      horizontal_fov: "35.0"
+      vertical_fov: "15.0"
+      range: "100.0"
+      points_per_second: "1500"
+      sensor_tick: "0.1"

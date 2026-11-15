@@ -1,0 +1,6 @@
+# Finer voxel downsample for synthetic CARLA LiDAR scans in NDT localization
+/**:
+  ros__parameters:
+    voxel_size_x: 1.5
+    voxel_size_y: 1.5
+    voxel_size_z: 1.5

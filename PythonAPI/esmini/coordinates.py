@@ -214,6 +214,7 @@ def esmini_state_to_carla_transform(
     carla_bbox_location_x: float = 0.0,
     carla_bbox_location_y: float = 0.0,
     walker_half_height: float | None = None,
+    apply_walker_half_height: bool = True,
     z_clearance: float = 0.0,
     carla_mod: Any = None,
 ) -> Any:
@@ -222,14 +223,17 @@ def esmini_state_to_carla_transform(
     - For vehicles: optionally shifts from esmini's rear-axle reference point by
       ``(state.centerOffsetX - carla_bbox_location_x, state.centerOffsetY + carla_bbox_location_y)``
       so the CARLA vehicle's bounding box center aligns with esmini's bounding box center.
-    - For pedestrians (``SEObjectType.PEDESTRIAN``): adds the pedestrian capsule's
-      half-height to ``z`` because CARLA walker origins are at the center of the capsule.
+    - For pedestrians (``SEObjectType.PEDESTRIAN``): when ``apply_walker_half_height``
+      is True, adds the pedestrian capsule's half-height to ``z`` (used for
+      ``spawn_actor``/``set_transform`` which target the capsule center; disable when
+      passing the transform to ``ApplyWalkerState`` because C++ ``SetWalkerState``
+      already adds ``CapsuleHalfHeight``).
     """
     offset_x = 0.0
     offset_y = 0.0
     z_offset = z_clearance
 
-    if state.objectType == SEObjectType.PEDESTRIAN:
+    if state.objectType == SEObjectType.PEDESTRIAN and apply_walker_half_height:
         if walker_half_height is not None and walker_half_height > 0.0:
             z_offset += walker_half_height
         elif state.height > 0.0:

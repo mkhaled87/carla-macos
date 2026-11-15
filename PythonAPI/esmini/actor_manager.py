@@ -907,16 +907,24 @@ class ActorManager:
         if info.carla_actor_id < 0:
             return []
 
+        cmd_mod = getattr(self.carla_mod, "command", None) if self.carla_mod else None
+        # ApplyWalkerState invokes FWalkerActor::SetWalkerState in C++, which adds
+        # CapsuleHalfHeight itself; pass bottom-of-capsule ground Z to avoid double-lifting.
+        use_walker_state = (
+            state.objectType == SEObjectType.PEDESTRIAN
+            and cmd_mod is not None
+            and hasattr(cmd_mod, "ApplyWalkerState")
+        )
         tf = esmini_state_to_carla_transform(
             state,
             apply_center_offset=self.apply_center_offset,
             carla_bbox_location_x=info.carla_bbox_x,
             carla_bbox_location_y=info.carla_bbox_y,
             walker_half_height=info.walker_half_height,
+            apply_walker_half_height=not use_walker_state,
             carla_mod=self.carla_mod,
         )
 
-        cmd_mod = getattr(self.carla_mod, "command", None) if self.carla_mod else None
         if cmd_mod is None:
             # Direct actor API fallback when carla.command is not available
             if info.carla_actor is not None:
@@ -926,7 +934,7 @@ class ActorManager:
         cmds: list[Any] = []
 
         if state.objectType == SEObjectType.PEDESTRIAN:
-            if hasattr(cmd_mod, "ApplyWalkerState"):
+            if use_walker_state:
                 cmds.append(
                     cmd_mod.ApplyWalkerState(
                         info.carla_actor_id, tf, float(max(0.0, state.speed))

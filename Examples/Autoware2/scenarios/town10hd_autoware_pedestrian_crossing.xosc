@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSCENARIO>
+    <FileHeader revMajor="1" revMinor="2" date="2026-11-15T00:00:00" description="Town10HD Autoware + esminiLib Right-Lane Pedestrian Crossing Scenario" author="CARLA"/>
+    <ParameterDeclarations>
+        <ParameterDeclaration name="CrossingTriggerDistance" parameterType="double" value="19.0"/>
+    </ParameterDeclarations>
+    <CatalogLocations/>
+    <RoadNetwork>
+        <LogicFile filepath="../maps/Town10HD/Town10HD_Opt.xodr"/>
+    </RoadNetwork>
+    <Entities>
+        <ScenarioObject name="ego">
+            <Vehicle name="car_ego" vehicleCategory="car">
+                <BoundingBox>
+                    <Center x="1.4" y="0.0" z="0.75"/>
+                    <Dimensions width="2.0" length="4.9" height="1.5"/>
+                </BoundingBox>
+                <Performance maxSpeed="60.0" maxAcceleration="10.0" maxDeceleration="10.0"/>
+                <Axles>
+                    <FrontAxle maxSteering="0.5" wheelDiameter="0.7" trackWidth="1.6" positionX="2.85" positionZ="0.35"/>
+                    <RearAxle maxSteering="0.0" wheelDiameter="0.7" trackWidth="1.6" positionX="0.0" positionZ="0.35"/>
+                </Axles>
+                <Properties>
+                    <Property name="carla_blueprint" value="vehicle.lincoln.mkz"/>
+                    <Property name="color" value="#143CC8"/>
+                </Properties>
+            </Vehicle>
+        </ScenarioObject>
+        <ScenarioObject name="crossing_pedestrian">
+            <Pedestrian name="walker_01" pedestrianCategory="pedestrian" model="walker" mass="75.0">
+                <BoundingBox>
+                    <Center x="0.0" y="0.0" z="0.9"/>
+                    <Dimensions width="0.5" length="0.6" height="1.8"/>
+                </BoundingBox>
+                <Properties/>
+            </Pedestrian>
+        </ScenarioObject>
+    </Entities>
+    <Storyboard>
+        <Init>
+            <Actions>
+                <GlobalAction>
+                    <EnvironmentAction>
+                        <Environment name="ClearDayEnvironment">
+                            <TimeOfDay animation="false" dateTime="2026-06-15T14:00:00"/>
+                            <Weather cloudState="free">
+                                <Sun illuminance="100000.0" azimuth="0.8" elevation="0.95"/>
+                                <Fog visualRange="10000.0"/>
+                                <Precipitation precipitationType="dry" precipitationIntensity="0.0"/>
+                            </Weather>
+                            <RoadCondition frictionScaleFactor="1.0"/>
+                        </Environment>
+                    </EnvironmentAction>
+                </GlobalAction>
+                <Private entityRef="ego">
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <LanePosition roadId="1" laneId="-2" offset="0.0" s="8.0"/>
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                </Private>
+                <Private entityRef="crossing_pedestrian">
+                    <PrivateAction>
+                        <TeleportAction>
+                            <Position>
+                                <LanePosition roadId="1" laneId="-2" offset="-4.0" s="40.0">
+                                    <Orientation type="relative" h="1.570796"/>
+                                </LanePosition>
+                            </Position>
+                        </TeleportAction>
+                    </PrivateAction>
+                    <PrivateAction>
+                        <LongitudinalAction>
+                            <SpeedAction>
+                                <SpeedActionDynamics dynamicsShape="step" value="0.0" dynamicsDimension="time"/>
+                                <SpeedActionTarget>
+                                    <AbsoluteTargetSpeed value="0.0"/>
+                                </SpeedActionTarget>
+                            </SpeedAction>
+                        </LongitudinalAction>
+                    </PrivateAction>
+                </Private>
+            </Actions>
+        </Init>
+        <Story name="AutowarePedestrianCrossingStory">
+            <Act name="PedestrianCrossingAct">
+                <ManeuverGroup maximumExecutionCount="1" name="PedestrianCrossingManeuverGroup">
+                    <Actors selectTriggeringEntities="false">
+                        <EntityRef entityRef="crossing_pedestrian"/>
+                    </Actors>
+                    <Maneuver name="PedestrianCrossingManeuver">
+                        <Event name="CrossWhenEgoApproachesEvent" priority="override">
+                            <Action name="PedestrianCrossRoadAction">
+                                <PrivateAction>
+                                    <RoutingAction>
+                                        <FollowTrajectoryAction>
+                                            <TrajectoryRef>
+                                                <Trajectory name="PedestrianCrossRoadTrajectory" closed="false">
+                                                    <Shape>
+                                                        <Polyline>
+                                                            <Vertex time="0.0">
+                                                                <Position>
+                                                                    <LanePosition roadId="1" laneId="-2" offset="-4.0" s="40.0"/>
+                                                                </Position>
+                                                            </Vertex>
+                                                            <Vertex time="3.0">
+                                                                <Position>
+                                                                    <LanePosition roadId="1" laneId="-2" offset="0.0" s="40.0"/>
+                                                                </Position>
+                                                            </Vertex>
+                                                            <Vertex time="6.0">
+                                                                <Position>
+                                                                    <LanePosition roadId="1" laneId="-2" offset="4.0" s="40.0"/>
+                                                                </Position>
+                                                            </Vertex>
+                                                            <Vertex time="12.0">
+                                                                <Position>
+                                                                    <LanePosition roadId="1" laneId="-2" offset="12.5" s="40.0"/>
+                                                                </Position>
+                                                            </Vertex>
+                                                        </Polyline>
+                                                    </Shape>
+                                                </Trajectory>
+                                            </TrajectoryRef>
+                                            <TimeReference>
+                                                <Timing domainAbsoluteRelative="relative" scale="1.0" offset="0.0"/>
+                                            </TimeReference>
+                                            <TrajectoryFollowingMode followingMode="position"/>
+                                        </FollowTrajectoryAction>
+                                    </RoutingAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition name="EgoApproachesCrosswalkCondition" delay="0.0" conditionEdge="rising">
+                                        <ByEntityCondition>
+                                            <TriggeringEntities triggeringEntitiesRule="any">
+                                                <EntityRef entityRef="ego"/>
+                                            </TriggeringEntities>
+                                            <EntityCondition>
+                                                <RelativeDistanceCondition entityRef="crossing_pedestrian"
+                                                                           relativeDistanceType="longitudinal"
+                                                                           value="$CrossingTriggerDistance"
+                                                                           freespace="false"
+                                                                           rule="lessThan"/>
+                                            </EntityCondition>
+                                        </ByEntityCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                        <Event name="StopAfterCrossingEvent" priority="override">
+                            <Action name="PedestrianStopAction">
+                                <PrivateAction>
+                                    <LongitudinalAction>
+                                        <SpeedAction>
+                                            <SpeedActionDynamics dynamicsShape="step" value="0.0" dynamicsDimension="time"/>
+                                            <SpeedActionTarget>
+                                                <AbsoluteTargetSpeed value="0.0"/>
+                                            </SpeedActionTarget>
+                                        </SpeedAction>
+                                    </LongitudinalAction>
+                                </PrivateAction>
+                            </Action>
+                            <StartTrigger>
+                                <ConditionGroup>
+                                    <Condition name="CrossingCompleteCondition" delay="0.0" conditionEdge="rising">
+                                        <ByValueCondition>
+                                            <StoryboardElementStateCondition storyboardElementType="action"
+                                                                             storyboardElementRef="PedestrianCrossRoadAction"
+                                                                             state="completeState"/>
+                                        </ByValueCondition>
+                                    </Condition>
+                                </ConditionGroup>
+                            </StartTrigger>
+                        </Event>
+                    </Maneuver>
+                </ManeuverGroup>
+                <StartTrigger>
+                    <ConditionGroup>
+                        <Condition name="ActStartCondition" delay="0.0" conditionEdge="none">
+                            <ByValueCondition>
+                                <SimulationTimeCondition value="0.0" rule="greaterOrEqual"/>
+                            </ByValueCondition>
+                        </Condition>
+                    </ConditionGroup>
+                </StartTrigger>
+            </Act>
+        </Story>
+        <StopTrigger>
+            <ConditionGroup>
+                <Condition name="ScenarioStopCondition" delay="0.0" conditionEdge="rising">
+                    <ByValueCondition>
+                        <SimulationTimeCondition value="60.0" rule="greaterThan"/>
+                    </ByValueCondition>
+                </Condition>
+            </ConditionGroup>
+        </StopTrigger>
+    </Storyboard>
+</OpenSCENARIO>

@@ -873,6 +873,20 @@ class TestEsminiCarlaCoSimulation(unittest.TestCase):
 
             # 3) Applied RainWeatherAction (precipitation = 75%)
             self.assertAlmostEqual(world.get_weather().precipitation, 75.0, places=1)
+
+            # 4) ApplyWalkerState expects foot ground Z (SetWalkerState adds half-height in C++)
+            walker_cmds = [
+                cmd for cmd in client.batches[-1]
+                if isinstance(cmd, MockCommandNamespace.ApplyWalkerState)
+                and cmd.actor_id == walker_info.carla_actor_id
+            ]
+            self.assertEqual(len(walker_cmds), 1)
+            walker_esmini_state = runner.esmini.get_object_state(2)
+            self.assertIsNotNone(walker_esmini_state)
+            assert walker_esmini_state is not None
+            self.assertAlmostEqual(
+                walker_cmds[0].transform.location.z, walker_esmini_state.z, places=6
+            )
         finally:
             runner.cleanup()
 
